@@ -1,0 +1,2 @@
+10 ; Sprite (Lata 350ml) ; 5.0
+25 ; Chocolate Kit-Kat ; 4.5

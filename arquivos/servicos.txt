@@ -1,0 +1,2 @@
+101 ; Lavanderia ; 30.0
+102 ; Limpeza de quarto ; 40.0

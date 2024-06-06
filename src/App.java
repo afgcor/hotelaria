@@ -13,15 +13,15 @@ public class App {
         System.out.println("1. Exibir opções");
         System.out.println("2. Sair");
         System.out.print("INSIRA A OPÇÃO DESEJADA: ");
-        int opcao = scan.nextInt();
+        String opcao = scan.nextLine();
         switch (opcao) {
-            case 1: 
+            case "1": 
                 menuOpcoes();
                 break;
-            case 2: 
+            case "2": 
                 break; 
         }
-        if (opcao == 2) {
+        if (opcao == "2") {
             System.out.println("Encerrando.");
             System.out.println("");
         }
@@ -45,45 +45,45 @@ public class App {
         System.out.println("11. Voltar ao menu anterior");
         System.out.println("12. Sair");
         System.out.print("INSIRA A OPÇÃO DESEJADA: ");
-        int opcao = scan.nextInt();
+        String opcao = scan.nextLine();
         switch (opcao) {
-            case 1: 
+            case "1": 
                 menuHospede();
                 break;
-            case 2:
+            case "2":
                 menuFuncionario();
                 break;
-            case 3: 
+            case "3": 
                 menuQuarto();
                 break;
-            case 4:
+            case "4":
                 menuReserva();
                 break;
-            case 5:
+            case "5":
                 menuServico();
                 break;
-            case 6: 
+            case "6": 
                 menuCategoria();
                 break;
-            case 7: 
+            case "7": 
                 menuItem();
                 break;
-            case 8:
+            case "8":
                 menuCategoriaItem();
                 break;
-            case 9: 
+            case "9": 
                 menuConsumo();
                 break;
-            case 10: 
+            case "10": 
                 menuConsumoServico();
                 break;
-            case 11: 
+            case "11": 
                 menuPrincipal();
                 break;
-            case 12: 
+            case "12": 
                 break;
         }
-        if (opcao == 12) {
+        if (opcao == "12") {
             System.out.println("Encerrando.");
         }
         scan.close();
@@ -100,30 +100,33 @@ public class App {
         System.out.println("5. Voltar ao menu anterior");
         System.out.println("6. Sair");
         System.out.print("INSIRA A OPÇÃO DESEJADA: ");
-        int opcao = scan.nextInt();
+        String opcao = scan.nextLine();
         try {
             switch (opcao) {
-                case 1: 
+                case "1": 
                     Hospede.cadastrarHospede();
                     break;
-                case 2:
+                case "2":
                     Hospede.editarHospede();
                     break;
-                case 3:
+                case "3":
                     Hospede.consultarHospede();
                     break;
-                case 4:
+                case "4":
                     Hospede.listarHospedes();
                     break;
-                case 5:
+                case "5":
                     menuOpcoes();
                     break;
-                case 6: 
+                case "6": 
                     break; 
+            }
+            if (opcao == "6") {
+                System.out.println("Encerrando.");
             }
         }
         catch (IOException e) {
-            System.out.println("ERRO: Falha na gravação do arquivo hospedes.txt!");
+            System.out.println("ERRO: Falha operacional!");
         }
         scan.close();
     }
@@ -139,30 +142,33 @@ public class App {
         System.out.println("5. Voltar ao menu anterior");
         System.out.println("6. Sair");
         System.out.print("INSIRA A OPÇÃO DESEJADA: ");
-        int opcao = scan.nextInt();
+        String opcao = scan.nextLine();
         try {
             switch (opcao) {
-                case 1: 
+                case "1": 
                     Funcionario.cadastrarFuncionario();
                     break;
-                case 2:
+                case "2":
                     Funcionario.editarFuncionario();
                     break;
-                case 3:
+                case "3":
                     Funcionario.consultarFuncionario();
                     break;
-                case 4:
+                case "4":
                     Funcionario.listarFuncionarios();
                     break;
-                case 5:
+                case "5":
                     menuOpcoes();
                     break;
-                case 6: 
+                case "6": 
                     break; 
+            }
+            if (opcao == "6") {
+                System.out.println("Encerrando.");
             }
         }
         catch (IOException e) {
-            System.out.println("ERRO: Falha na gravação do arquivo hospedes.txt!");
+            System.out.println("ERRO: Falha operacional!");
         }
         scan.close();
     }
@@ -178,30 +184,30 @@ public class App {
         System.out.println("5. Voltar ao menu anterior");
         System.out.println("6. Sair");
         System.out.print("INSIRA A OPÇÃO DESEJADA: ");
-        int opcao = scan.nextInt();
+        String opcao = scan.nextLine();
         try {
             switch (opcao) {
-                case 1: 
+                case "1": 
                     Quarto.cadastrarQuarto();
                     break;
-                case 2:
+                case "2":
                     Quarto.editarQuarto();
                     break;
-                case 3:
+                case "3":
                     Quarto.consultarQuarto();
                     break;
-                case 4:
+                case "4":
                     Quarto.listarQuartos();
                     break;
-                case 5:
+                case "5":
                     menuOpcoes();
                     break;
-                case 6: 
+                case "6": 
                     break; 
             }
         }
         catch (IOException e) {
-            System.out.println("ERRO: Falha na gravação do arquivo hospedes.txt!");
+            System.out.println("ERRO: Falha operacional!");
         }
         scan.close();
     }
@@ -217,22 +223,22 @@ public class App {
         System.out.println("5. Voltar ao menu anterior");
         System.out.println("6. Sair");
         System.out.print("INSIRA A OPÇÃO DESEJADA: ");
-        int opcao = scan.nextInt();
+        String opcao = scan.nextLine();
         switch (opcao) {
             /* case 1: cadastrarReserva();
             case 2: editarReserva();
             case 3: consultarReserva();
             case 4: listarReservas(); */
-            case 5: menuOpcoes();
-            case 6: break; 
+            case "5": menuOpcoes();
+            case "6": break; 
         }
-        if (opcao == 6) {
+        if (opcao == "6") {
             System.out.println("Encerrando.");
         }
         scan.close();
     }
 
-    public static void menuServico() { /* AINDA NÃO ESTÁ 100% FUNCIONAL */
+    public static void menuServico() {
         System.out.println("");
         Scanner scan = new Scanner(System.in);
         System.out.println("*** MENU ***");
@@ -243,22 +249,38 @@ public class App {
         System.out.println("5. Voltar ao menu anterior");
         System.out.println("6. Sair");
         System.out.print("INSIRA A OPÇÃO DESEJADA: ");
-        int opcao = scan.nextInt();
-        switch (opcao) {
-            /* case 1: cadastrarServico();
-            case 2: editarServico();
-            case 3: consultarServico();
-            case 4: listarServicos(); */
-            case 5: menuOpcoes();
-            case 6: break; 
+        String opcao = scan.nextLine();
+        try {
+            switch (opcao) {
+                case "1": 
+                    Servico.cadastrarServico();
+                    break;
+                case "2":
+                    Servico.editarServico();
+                    break;
+                case "3":
+                    Servico.consultarServico();
+                    break;
+                case "4":
+                    Servico.listarServicos();
+                    break;
+                case "5":
+                    menuOpcoes();
+                    break;
+                case "6": 
+                    break; 
+            }
+            if (opcao == "6") {
+                System.out.println("Encerrando.");
+            }
         }
-        if (opcao == 6) {
-            System.out.println("Encerrando.");
+        catch (IOException e) {
+            System.out.println("ERRO: Falha operacional!");
         }
         scan.close();
     }
 
-    public static void menuCategoria() { /* AINDA NÃO ESTÁ 100% FUNCIONAL */
+    public static void menuCategoria() {
         System.out.println("");
         Scanner scan = new Scanner(System.in);
         System.out.println("*** MENU ***");
@@ -269,17 +291,33 @@ public class App {
         System.out.println("5. Voltar ao menu anterior");
         System.out.println("6. Sair");
         System.out.print("INSIRA A OPÇÃO DESEJADA: ");
-        int opcao = scan.nextInt();
-        switch (opcao) {
-            /* case 1: cadastrarCategoria();
-            case 2: editarCategoria();
-            case 3: consultarCategoria();
-            case 4: listarCategorias(); */
-            case 5: menuOpcoes();
-            case 6: break; 
+        String opcao = scan.nextLine();
+        try {
+            switch (opcao) {
+                case "1": 
+                    Categoria.cadastrarCategoria();
+                    break;
+                case "2":
+                    Categoria.editarCategoria();
+                    break;
+                case "3":
+                    Categoria.consultarCategoria();
+                    break;
+                case "4":
+                    Categoria.listarCategorias();
+                    break;
+                case "5":
+                    menuOpcoes();
+                    break;
+                case "6": 
+                    break; 
+            }
+            if (opcao == "6") {
+                System.out.println("Encerrando.");
+            }
         }
-        if (opcao == 6) {
-            System.out.println("Encerrando.");
+        catch (IOException e) {
+            System.out.println("ERRO: Falha operacional!");
         }
         scan.close();
     }
@@ -295,30 +333,33 @@ public class App {
         System.out.println("5. Voltar ao menu anterior");
         System.out.println("6. Sair");
         System.out.print("INSIRA A OPÇÃO DESEJADA: ");
-        int opcao = scan.nextInt();
+        String opcao = scan.nextLine();
         try {
             switch (opcao) {
-                case 1: 
+                case "1": 
                     Item.cadastrarItem();
                     break;
-                case 2:
+                case "2":
                     Item.editarItem();
                     break;
-                case 3:
+                case "3":
                     Item.consultarItem();
                     break;
-                case 4:
+                case "4":
                     Item.listarItens();
                     break;
-                case 5:
+                case "5":
                     menuOpcoes();
                     break;
-                case 6: 
+                case "6": 
                     break; 
+            }
+            if (opcao == "6") {
+                System.out.println("Encerrando.");
             }
         }
         catch (IOException e) {
-            System.out.println("ERRO: Falha na gravação do arquivo hospedes.txt!");
+            System.out.println("ERRO: Falha operacional!");
         }
         scan.close();
     }
@@ -334,16 +375,16 @@ public class App {
         System.out.println("5. Voltar ao menu anterior");
         System.out.println("6. Sair");
         System.out.print("INSIRA A OPÇÃO DESEJADA: ");
-        int opcao = scan.nextInt();
+        String opcao = scan.nextLine();
         switch (opcao) {
             /* case 1: cadastrarCategoriaItem();
             case 2: editarCategoriaItem();
             case 3: consultarCategoriaItem();
             case 4: listarCategoriasItens(); */ /* CORRIGIR */
-            case 5: menuOpcoes();
-            case 6: break; 
+            case "5": menuOpcoes();
+            case "6": break; 
         }
-        if (opcao == 6) {
+        if (opcao == "6") {
             System.out.println("Encerrando.");
         }
         scan.close();
@@ -360,16 +401,16 @@ public class App {
         System.out.println("5. Voltar ao menu anterior");
         System.out.println("6. Sair");
         System.out.print("INSIRA A OPÇÃO DESEJADA: ");
-        int opcao = scan.nextInt();
+        String opcao = scan.nextLine();
         switch (opcao) {
             /* case 1: cadastrarConsumo();
             case 2: editarConsumo();
             case 3: consultarConsumo();
             case 4: listarConsumos(); */
-            case 5: menuOpcoes();
-            case 6: break; 
+            case "5": menuOpcoes();
+            case "6": break; 
         }
-        if (opcao == 6) {
+        if (opcao == "6") {
             System.out.println("Encerrando.");
         }
         scan.close();
@@ -386,16 +427,16 @@ public class App {
         System.out.println("5. Voltar ao menu anterior");
         System.out.println("6. Sair");
         System.out.print("INSIRA A OPÇÃO DESEJADA: ");
-        int opcao = scan.nextInt();
+        String opcao = scan.nextLine();
         switch (opcao) {
             /* case 1: cadastrarItem();
             case 2: editarItem();
             case 3: consultarItem();
             case 4: listarItens(); */
-            case 5: menuOpcoes();
-            case 6: break; 
+            case "5": menuOpcoes();
+            case "6": break; 
         }
-        if (opcao == 6) {
+        if (opcao == "6") {
             System.out.println("Encerrando.");
         }
         scan.close();

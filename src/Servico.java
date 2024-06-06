@@ -1,3 +1,14 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class Servico {
     private int codigo;
     private String descricao;
@@ -31,5 +42,235 @@ public class Servico {
 
     public double getValor() {
         return valor;
+    }
+
+    public static boolean cadastrarServico() throws IOException {
+        Scanner scan = new Scanner(System.in);
+        try {
+            System.out.println("");
+            System.out.println("*** CADASTRAR SERVIÇO ***");
+            System.out.print("Insira o código: ");
+            String codigo = scan.nextLine();
+            System.out.print("Insira a descrição: ");
+            String descricao = scan.nextLine();
+            System.out.print("Insira o valor: ");
+            String valor = scan.nextLine();
+
+            if (codigo.isEmpty()|| descricao.isEmpty() || valor.isEmpty()) {
+                throw new NullPointerException();
+            }
+
+            FileWriter fw = new FileWriter("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\servicos.txt", true);
+            BufferedWriter bw = new BufferedWriter(fw);
+    
+            bw.write(Integer.parseInt(codigo) + " ; " + descricao + " ; " + Double.parseDouble(valor));
+            bw.newLine();
+            bw.close();
+            System.out.println("SERVIÇO CADASTRADO!");
+            System.out.println("");
+        } catch (NullPointerException e) {
+            System.out.println("");
+            System.out.println("*** ERRO: ENTRADA INVÁLIDA ***");
+            System.out.println("Por favor, insira todos os dados do serviço ou encerre a operação.");
+            System.out.print("Continuar cadastro (1) ou encerrar a operação (2)? ");
+            int opcao = scan.nextInt();
+            scan.nextLine();
+            switch (opcao) {
+                case 1:
+                    cadastrarServico();
+                    break;
+                case 2:
+                    System.out.println("Encerrando.");
+                    System.out.println("");
+                    break;
+            }
+        } catch (IOException e) {
+            System.out.println("ERRO: Falha na gravação do arquivo servicos.txt!");
+        } finally {
+            scan.close();
+        }
+        return true;
+    }
+
+    public static boolean editarServico() throws IOException {
+        Scanner scan = new Scanner(System.in);
+        List<Servico> listaServicos = new ArrayList<>();
+        File servicos = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\servicos.txt");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(servicos))) {
+            if (!servicos.exists() || servicos.length() == 0) {
+                throw new FileNotFoundException();
+            }
+
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(" ; ");
+                if (dados.length == 3) {
+                    Servico servico = new Servico(Integer.parseInt(dados[0]), dados[1], Double.parseDouble(dados[2]));
+                    listaServicos.add(servico);
+                }
+            }
+
+        System.out.println("");
+        System.out.println("*** EDITAR SERVIÇO ***");
+        System.out.print("Digite o código do serviço a ser editado: ");
+        int codigo = scan.nextInt();
+        scan.nextLine();
+        System.out.println("");
+
+        boolean cadastrado = false;
+        List<String> listaLinhas = new ArrayList<>();
+
+        for (Servico servico : listaServicos) {
+            if (servico.getCodigo() == codigo) {
+                cadastrado = true;
+                System.out.println("Serviço identificado!");
+                System.out.println("");
+                System.out.println("*** ALTERAR DADOS ***");
+                System.out.println("Insira os dados atualizados abaixo. Caso nenhuma alteração seja necessária, aperte ENTER.");
+                System.out.println("");
+                System.out.println("Código atual: " + servico.getCodigo());
+                System.out.print("Novo código: ");
+                String codigoAtualizadoS = scan.nextLine();
+                int codigoAtualizado;
+                if (codigoAtualizadoS.isEmpty()) {
+                    codigoAtualizado = servico.getCodigo();
+                } else {
+                    codigoAtualizado = Integer.parseInt(codigoAtualizadoS);
+                }
+                System.out.println("Descrição atual: " + servico.getDescricao());
+                System.out.print("Nova descrição: ");
+                String descricaoAtualizada = scan.nextLine();
+                if (descricaoAtualizada.isEmpty()) {
+                    descricaoAtualizada = servico.getDescricao();
+                }
+                System.out.printf("Valor atual: R$ %.2f%n", servico.getValor());
+                System.out.print("Novo valor: ");
+                String valorAtualizadoS = scan.nextLine();
+                double valorAtualizado;
+                if (valorAtualizadoS.isEmpty()) {
+                    valorAtualizado = servico.getValor();
+                } else {
+                    valorAtualizado = Double.parseDouble(valorAtualizadoS);
+                }    
+                String linhaAtualizada = codigoAtualizado + " ; " + descricaoAtualizada + " ; " + valorAtualizado;
+                listaLinhas.add(linhaAtualizada);
+                System.out.println("");
+                System.out.println("Dados atualizados com sucesso!");
+            } else {
+                listaLinhas.add(servico.getCodigo() + " ; " + servico.getDescricao() + " ; " + servico.getValor());
+            }
+        }
+
+        if (!cadastrado) {
+            System.out.println("Serviço com código " + codigo + " não encontrado.");
+            return false;
+        }
+
+        FileWriter fw = new FileWriter(servicos);
+        BufferedWriter bw = new BufferedWriter(fw);
+        for (String linhaAtualizada : listaLinhas) {
+            bw.write(linhaAtualizada);
+            bw.newLine();
+        }
+        bw.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("ERRO: O arquivo servicos.txt não foi encontrado!");
+        } catch (IOException e) {
+            System.out.println("ERRO: Falha na gravação do arquivo servicos.txt!");
+        } finally {
+            scan.close();
+        }
+
+        return true;
+    }
+
+    public static Servico consultarServico() {
+        List<Servico> listaServicos = new ArrayList<>();
+        File servicos = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\servicos.txt");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(servicos))) {
+            if (!servicos.exists() || servicos.length() == 0) {
+                throw new FileNotFoundException();
+            }
+
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(" ; ");
+                if (dados.length == 3) {
+                    Servico servico = new Servico(Integer.parseInt(dados[0]), dados[1], Double.parseDouble(dados[2]));
+                    listaServicos.add(servico);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("ERRO: O arquivo servicos.txt não foi encontrado!");
+        } catch (IOException e) {
+            System.out.println("ERRO: Falha na leitura do arquivo servicos.txt!");
+        }
+
+        Scanner scan = new Scanner(System.in);
+        System.out.println("");
+        System.out.println("*** CONSULTAR SERVIÇO ***");
+        System.out.print("Digite o código do serviço a ser consultado: ");
+        int codigo = scan.nextInt();
+        scan.nextLine();
+        System.out.println("");
+        scan.close();
+
+        boolean cadastrado = false;
+
+        for (int i = 0; i < listaServicos.size(); i++) {
+            if (listaServicos.get(i).getCodigo() == codigo) {
+                cadastrado = true;
+                Servico servico = listaServicos.get(i);
+                System.out.println("Serviço identificado!");
+                System.out.println("");
+                System.out.println("SERVIÇO " + (i + 1));
+                System.out.printf("CÓDIGO: %d | DESCRIÇÃO: %s | VALOR: R$ %.2f%n", servico.getCodigo(), servico.getDescricao(), servico.getValor());
+                System.out.println("");
+            }
+        }
+
+        if (!cadastrado) {
+            System.out.println("Serviço com código " + codigo + " não encontrado.");
+        }
+
+        return null;
+    }
+
+    public static List<Servico> listarServicos() {
+        List<Servico> listaServicos = new ArrayList<>();
+        File servicos = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\servicos.txt");
+    
+        try (BufferedReader br = new BufferedReader(new FileReader(servicos))) {
+
+            if (!servicos.exists() || servicos.length() == 0) {
+                throw new FileNotFoundException();
+            }
+
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(" ; ");
+                if (dados.length == 3) {
+                    Servico servico = new Servico(Integer.parseInt(dados[0]), dados[1], Double.parseDouble(dados[2]));
+                    listaServicos.add(servico);
+                }
+            }
+
+            System.out.println("");
+            System.out.println("*** LISTA DE SERVIÇOS ***");
+            for (Servico servico : listaServicos) {
+                System.out.println("");
+                System.out.println("SERVIÇO " + (listaServicos.indexOf(servico) + 1));
+                System.out.printf("CÓDIGO: %d | DESCRIÇÃO: %s | VALOR: R$ %.2f%n", servico.getCodigo(), servico.getDescricao(), servico.getValor());
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("ERRO: O arquivo servicos.txt não foi encontrado!");
+        } catch (IOException e) {
+            System.out.println("ERRO: Falha na leitura do arquivo servicos.txt!");
+        }
+        System.out.println("");
+        return listaServicos;
     }
 }

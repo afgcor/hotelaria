@@ -46,6 +46,7 @@ public class Item {
         return valor;
     }
 
+    /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
     public static boolean cadastrarItem() throws IOException {
         Scanner scan = new Scanner(System.in);
         try {

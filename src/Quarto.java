@@ -1,10 +1,4 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -52,23 +46,26 @@ public class Quarto {
         try {
             System.out.println("");
             System.out.println("*** CADASTRAR QUARTO ***");
-            System.out.print("Insira o código: ");
+            
+            System.out.print("Insira o código do quarto: ");
             String codigo = scan.nextLine();
-            System.out.print("Insira a categoria: ");
-            String descricaoCategoria = scan.nextLine();
-            Categoria categoria = identificarCategoria(descricaoCategoria);
-            String descricao = categoria.getDescricao();
-            System.out.print("Insira o status: ");
+            
+            System.out.print("Insira o código da categoria: ");
+            String idCategoria = scan.nextLine();
+
+            System.out.print("Insira o status do quarto: ");
             String status = scan.nextLine();
     
-            if (codigo.isEmpty() || descricao.isEmpty() || status.isEmpty()) {
+            if (codigo.isEmpty() || idCategoria.isEmpty() || status.isEmpty()) {
                 throw new NullPointerException();
             }
     
+            Categoria categoria = identificarCategoria(Integer.parseInt(idCategoria));
+            
             FileWriter fw = new FileWriter("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\quartos.txt", true);
             BufferedWriter bw = new BufferedWriter(fw);
     
-            bw.write(Integer.parseInt(codigo) + " ; " + descricao + " ; " + status);
+            bw.write(Integer.parseInt(codigo) + " ; " + categoria.getCodigo() + " ; " + status);
             bw.newLine();
             bw.close();
 
@@ -78,14 +75,13 @@ public class Quarto {
             System.out.println("");
             System.out.println("*** ERRO: ENTRADA INVÁLIDA ***");
             System.out.println("Por favor, insira todos os dados do quarto ou encerre a operação.");
-            System.out.print("Continuar cadastro (1) ou encerrar a operação (2)? ");
-            int opcao = scan.nextInt();
-            scan.nextLine();
-            switch (opcao) {
-                case 1:
+            System.out.print("Continuar cadastro (S) ou encerrar a operação (N)? ");
+            String opcao = scan.nextLine();
+            switch (opcao.toUpperCase()) {
+                case "S":
                     cadastrarQuarto();
                     break;
-                case 2:
+                case "N":
                     System.out.println("Encerrando.");
                     System.out.println("");
                     break;
@@ -96,40 +92,6 @@ public class Quarto {
             scan.close();
         }
         return true;
-    }
-
-    public static List<Categoria> leituraCategorias() {
-        List<Categoria> listaCategorias = new ArrayList<>();
-        File categorias = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\categorias.txt");
-
-        try (BufferedReader br = new BufferedReader(new FileReader(categorias))) {
-
-            if (!categorias.exists() || categorias.length() == 0) {
-                throw new FileNotFoundException();
-            }
-
-            String linha;
-            while ((linha = br.readLine()) != null) {
-                String[] dados = linha.split(" ; ");
-                if (dados.length == 3) {
-                    Categoria categoria = new Categoria(Integer.parseInt(dados[0]), dados[1], Double.parseDouble(dados[2]));
-                    listaCategorias.add(categoria);
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("ERRO! Falha na leitura do arquivo.");
-        }
-        return listaCategorias;
-    }
-
-    public static Categoria identificarCategoria(String descricao) {
-        List<Categoria> listaCategorias = leituraCategorias();
-        for (Categoria categoria : listaCategorias) {
-            if (categoria.getDescricao().equalsIgnoreCase(descricao)) {
-                return categoria;
-            }
-        }
-        return null;
     }
 
     public static boolean editarQuarto() throws IOException {
@@ -146,7 +108,7 @@ public class Quarto {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(" ; ");
                 if (dados.length == 3) {
-                    Categoria categoria = identificarCategoria(dados[1]);
+                    Categoria categoria = identificarCategoria(Integer.parseInt(dados[1]));
                     if (categoria != null) {
                         Quarto quarto = new Quarto(Integer.parseInt(dados[0]), categoria, dados[2]);
                         listaQuartos.add(quarto);
@@ -198,7 +160,7 @@ public class Quarto {
                 System.out.println("");
                 System.out.println("Dados atualizados com sucesso!");
             } else {
-                listaLinhas.add(quarto.getCodigo() + " ; " + quarto.getCategoria().getDescricao() + " ; " + quarto.getStatus());
+                listaLinhas.add(quarto.getCodigo() + " ; " + quarto.getCategoria() + " ; " + quarto.getStatus());
             }
         }
 
@@ -239,7 +201,7 @@ public class Quarto {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(" ; ");
                 if (dados.length == 3) {
-                    Categoria categoria = identificarCategoria(dados[1]);
+                    Categoria categoria = identificarCategoria(Integer.parseInt(dados[1]));
                     if (categoria != null) {
                         Quarto quarto = new Quarto(Integer.parseInt(dados[0]), categoria, dados[2]);
                         listaQuartos.add(quarto);
@@ -247,9 +209,9 @@ public class Quarto {
                 }
             }
         } catch (FileNotFoundException e) {
-            System.out.println("ERRO: O arquivo itens.txt não foi encontrado!");
+            System.out.println("ERRO: O arquivo quartos.txt não foi encontrado!");
         } catch (IOException e) {
-            System.out.println("ERRO: Falha na leitura do arquivo itens.txt!");
+            System.out.println("ERRO: Falha na leitura do arquivo quartos.txt!");
         }
 
         Scanner scan = new Scanner(System.in);
@@ -296,7 +258,7 @@ public class Quarto {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(" ; ");
                 if (dados.length == 3) {
-                    Categoria categoria = identificarCategoria(dados[1]);
+                    Categoria categoria = identificarCategoria(Integer.parseInt(dados[1]));
                     if (categoria != null) {
                         Quarto quarto = new Quarto(Integer.parseInt(dados[0]), categoria, dados[2]);
                         listaQuartos.add(quarto);
@@ -305,18 +267,52 @@ public class Quarto {
             }
 
             System.out.println("");
-            System.out.println("*** LISTA DE ITENS ***");
+            System.out.println("*** LISTA DE QUARTOS ***");
             for (Quarto quarto : listaQuartos) {
                 System.out.println("");
                 System.out.println("QUARTO " + (listaQuartos.indexOf(quarto) + 1));
                 System.out.println("CÓDIGO: " + quarto.getCodigo() + " | CATEGORIA: " + quarto.getCategoria().getDescricao() + " | STATUS: " + quarto.getStatus());
             }
         } catch (FileNotFoundException e) {
-            System.out.println("ERRO: O arquivo itens.txt não foi encontrado!");
+            System.out.println("ERRO: O arquivo quartos.txt não foi encontrado!");
         } catch (IOException e) {
-            System.out.println("ERRO: Falha na leitura do arquivo itens.txt!");
+            System.out.println("ERRO: Falha na leitura do arquivo quartos.txt!");
         }
         System.out.println("");
         return listaQuartos;
+    }
+
+    public static List<Categoria> leituraCategorias() {
+        List<Categoria> listaCategorias = new ArrayList<>();
+        File categorias = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\categorias.txt");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(categorias))) {
+
+            if (!categorias.exists() || categorias.length() == 0) {
+                throw new FileNotFoundException();
+            }
+
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(" ; ");
+                if (dados.length == 3) {
+                    Categoria categoria = new Categoria(Integer.parseInt(dados[0]), dados[1], Double.parseDouble(dados[2]));
+                    listaCategorias.add(categoria);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("ERRO! Falha na leitura do arquivo.");
+        }
+        return listaCategorias;
+    }
+
+    public static Categoria identificarCategoria(int codigo) {
+        List<Categoria> listaCategorias = leituraCategorias();
+        for (Categoria categoria : listaCategorias) {
+            if (categoria.getCodigo() == codigo) {
+                return categoria;
+            }
+        }
+        return null;
     }
 }

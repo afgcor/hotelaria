@@ -39,9 +39,9 @@ public class App {
         System.out.println("5. Serviços");
         System.out.println("6. Categorias");
         System.out.println("7. Itens");
-        System.out.println("8. Categorias de itens");
-        System.out.println("9. Consumo");
-        System.out.println("10. Consumo de serviços");
+        System.out.println("8. Categorias (itens)");
+        System.out.println("9. Consumos");
+        System.out.println("10. Consumos (serviços)");
         System.out.println("11. Voltar ao menu anterior");
         System.out.println("12. Sair");
         System.out.print("INSIRA A OPÇÃO DESEJADA: ");
@@ -203,7 +203,7 @@ public class App {
                     menuOpcoes();
                     break;
                 case "6": 
-                    break; 
+                    break;
             }
         }
         catch (IOException e) {
@@ -364,31 +364,48 @@ public class App {
         scan.close();
     }
 
-    public static void menuCategoriaItem() { /* AINDA NÃO ESTÁ 100% FUNCIONAL */
+    public static void menuCategoriaItem() {
         System.out.println("");
         Scanner scan = new Scanner(System.in);
         System.out.println("*** MENU ***");
-        System.out.println("1. Cadastrar categoria de item");
-        System.out.println("2. Editar categoria de item");
-        System.out.println("3. Consultar categoria de item");
-        System.out.println("4. Listar categorias de itens");
+        System.out.println("1. Cadastrar categoria (item)");
+        System.out.println("2. Editar categoria (item)");
+        System.out.println("3. Consultar categoria (item)");
+        System.out.println("4. Listar categorias (itens)");
         System.out.println("5. Voltar ao menu anterior");
         System.out.println("6. Sair");
         System.out.print("INSIRA A OPÇÃO DESEJADA: ");
         String opcao = scan.nextLine();
-        switch (opcao) {
-            /* case 1: cadastrarCategoriaItem();
-            case 2: editarCategoriaItem();
-            case 3: consultarCategoriaItem();
-            case 4: listarCategoriasItens(); */ /* CORRIGIR */
-            case "5": menuOpcoes();
-            case "6": break; 
+        try {
+            switch (opcao) {
+                case "1": 
+                    CategoriaItem.cadastrarCategoriaItem();
+                    break;
+                case "2":
+                    CategoriaItem.editarCategoriaItem();
+                    break;
+                case "3":
+                    CategoriaItem.consultarCategoriaItem();
+                    break;
+                case "4":
+                    CategoriaItem.listarCategoriasItens();
+                    break;
+                case "5":
+                    menuOpcoes();
+                    break;
+                case "6": 
+                    break; 
+            }
+            if (opcao == "6") {
+                System.out.println("Encerrando.");
+            }
         }
-        if (opcao == "6") {
-            System.out.println("Encerrando.");
+        catch (IOException e) {
+            System.out.println("ERRO: Falha operacional!");
         }
         scan.close();
     }
+
 
     public static void menuConsumo() { /* AINDA NÃO ESTÁ 100% FUNCIONAL */
         System.out.println("");

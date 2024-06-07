@@ -1,3 +1,4 @@
-10 ; Sprite (Lata 350ml) ; 5.0
+10 ; Sprite Lata 350ml ; 5.0
 25 ; Chocolate Kit-Kat ; 4.5
-11 ; µgua mineral com g s (500ml) ; 2.5
+11 ; ï¿½gua mineral com gï¿½s (500ml) ; 2.5
+12 ; Coca-cola sem aï¿½ï¿½car Lata 350ml ; 5.0

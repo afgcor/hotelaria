@@ -14,12 +14,14 @@ public class Servico {
     private String descricao;
     private double valor;
 
+    /* CONSTRUTOR */
     public Servico(int codigo, String descricao, double valor) {
         this.codigo = codigo;
         this.descricao = descricao;
         this.valor = valor;
     }
 
+    /* GETTERS & SETTERS */
     public void setCodigo(int codigo) {
         this.codigo = codigo;
     }
@@ -44,6 +46,7 @@ public class Servico {
         return valor;
     }
 
+    /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
     public static boolean cadastrarServico() throws IOException {
         Scanner scan = new Scanner(System.in);
         try {

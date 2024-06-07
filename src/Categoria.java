@@ -46,6 +46,7 @@ public class Categoria {
         return valor;
     }
 
+    /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
     public static boolean cadastrarCategoria() throws IOException {
         Scanner scan = new Scanner(System.in);
         try {

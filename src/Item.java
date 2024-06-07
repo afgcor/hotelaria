@@ -190,7 +190,7 @@ public class Item {
         return true;
     }
 
-    public static Hospede consultarItem() {
+    public static Item consultarItem() {
         List<Item> listaItens = new ArrayList<>();
         File itens = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\itens.txt");
 

@@ -1,2 +1,3 @@
-101 ; Lavanderia ; 30.0
-102 ; Limpeza de quarto ; 40.0
+1 ; Lavanderia ; 30.0
+2 ; Limpeza de quarto ; 40.0
+3 ; Despertador ; 10.0

@@ -1,0 +1,5 @@
+101 ; Simples ; Dispon¡vel
+102 ; Simples ; Indispon¡vel
+103 ; Duplo ; Dispon¡vel
+104 ; Duplo ; Indispon¡vel
+105 ; Luxo ; Dispon¡vel

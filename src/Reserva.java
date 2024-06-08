@@ -1,4 +1,8 @@
+import java.io.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
 public class Reserva {
     private int codigo;
@@ -13,6 +17,7 @@ public class Reserva {
     private double valorReserva;
     private double valorPago;
 
+    /* CONSTRUTOR */
     public Reserva(int codigo, Hospede hospede, Quarto quarto, Funcionario funcionarioReserva, Funcionario funcionarioFechamento, LocalDateTime dataEntradaReserva, LocalDateTime dataSaidaReserva, LocalDateTime dataCheckin, LocalDateTime dataCheckout, double valorReserva, double valorPago) {
         this.codigo = codigo;
         this.hospede = hospede;
@@ -27,6 +32,7 @@ public class Reserva {
         this.valorPago = valorPago;
     }
 
+    /* GETTERS & SETTERS */
     public void setCodigo(int codigo) {
         this.codigo = codigo;
     }
@@ -113,5 +119,23 @@ public class Reserva {
 
     public double valorPago() {
         return valorPago;
+    }
+
+    /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
+    public static boolean cadastrarReserva() throws IOException {
+        return true;
+    }
+
+    public static boolean editarReserva() throws IOException {
+        return true;
+    }
+
+    public static Reserva consultarReserva() {
+        return null;
+    }
+
+    public static List<Reserva> listarReservas() {
+        List<Reserva> listaReservas = new ArrayList<>();
+        return listaReservas;
     }
 }

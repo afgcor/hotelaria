@@ -24,42 +24,55 @@ public class Hospede extends Pessoa {
     /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
     public static boolean cadastrarHospede() throws IOException {
         Scanner scan = new Scanner(System.in);
+        String cpf = "";
         try {
             System.out.println("");
             System.out.println("*** CADASTRAR HÓSPEDE ***");
             System.out.print("Insira o CPF: ");
-            String cpf = scan.nextLine();
+            cpf = scan.nextLine();
+
+            Hospede hospede = identificarHospede(cpf);
+
+            if (hospede != null) {
+                System.out.println("");
+                System.out.println("ERRO: Já existe um hóspede registrado com este CPF!");
+                System.out.println("");
+                System.out.println("NOME: " + hospede.getNome() + " | CPF: " + hospede.getCPF() + " | E-MAIL: " + hospede.getEmail() + " | ENDEREÇO: " + hospede.getEnderecoCompleto());
+                throw new NullPointerException();
+            }
+
             System.out.print("Insira o nome: ");
             String nome = scan.nextLine();
             System.out.print("Insira o e-mail: ");
             String email = scan.nextLine();
             System.out.print("Insira o endereço: ");
             String enderecoCompleto = scan.nextLine();
-    
+
             if (nome.isEmpty() || cpf.isEmpty() || email.isEmpty() || enderecoCompleto.isEmpty()) {
+                System.out.println("");
+                System.out.println("ERRO: Entrada inválida (campos em branco)!");
+                System.out.println("Por favor, insira todos os dados do hóspede ou encerre a operação.");
                 throw new NullPointerException();
             }
-    
-            FileWriter fw = new FileWriter("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\hospedes.txt", true);
+
+            FileWriter fw = new FileWriter("./arquivos/hospedes.txt", true);
             BufferedWriter bw = new BufferedWriter(fw);
     
             bw.write(cpf + " ; " + nome + " ; " + email + " ; " + enderecoCompleto);
             bw.newLine();
             bw.close();
+            
             System.out.println("HÓSPEDE CADASTRADO!");
             System.out.println("");
         } catch (NullPointerException e) {
             System.out.println("");
-            System.out.println("*** ERRO: ENTRADA INVÁLIDA ***");
-            System.out.println("Por favor, insira todos os dados do hóspede ou encerre a operação.");
-            System.out.print("Continuar cadastro (1) ou encerrar a operação (2)? ");
-            int opcao = scan.nextInt();
-            scan.nextLine();
-            switch (opcao) {
-                case 1:
+            System.out.print("Continuar cadastro (S/N)? ");
+            String opcao = scan.nextLine();
+            switch (opcao.toUpperCase()) {
+                case "S":
                     cadastrarHospede();
                     break;
-                case 2:
+                case "N":
                     System.out.println("Encerrando.");
                     System.out.println("");
                     break;
@@ -75,7 +88,7 @@ public class Hospede extends Pessoa {
     public static boolean editarHospede() throws IOException {
         Scanner scan = new Scanner(System.in);
         List<Hospede> listaHospedes = new ArrayList<>();
-        File hospedes = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\hospedes.txt");
+        File hospedes = new File("./arquivos/hospedes.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(hospedes))) {
             if (!hospedes.exists() || hospedes.length() == 0) {
@@ -167,7 +180,7 @@ public class Hospede extends Pessoa {
 
     public static Hospede consultarHospede() {
         List<Hospede> listaHospedes = new ArrayList<>();
-        File hospedes = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\hospedes.txt");
+        File hospedes = new File("./arquivos/hospedes.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(hospedes))) {
             if (!hospedes.exists() || hospedes.length() == 0) {
@@ -219,7 +232,7 @@ public class Hospede extends Pessoa {
 
     public static List<Hospede> listarHospedes() {
         List<Hospede> listaHospedes = new ArrayList<>();
-        File hospedes = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\hospedes.txt");
+        File hospedes = new File("./arquivos/hospedes.txt");
     
         try (BufferedReader br = new BufferedReader(new FileReader(hospedes))) {
 
@@ -250,5 +263,39 @@ public class Hospede extends Pessoa {
         }
         System.out.println("");
         return listaHospedes;
+    }
+
+    public static List<Hospede> leituraHospedes() {
+        List<Hospede> listaHospedes = new ArrayList<>();
+        File hospedes = new File("./arquivos/hospedes.txt");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(hospedes))) {
+
+            if (!hospedes.exists() || hospedes.length() == 0) {
+                throw new FileNotFoundException();
+            }
+
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(" ; ");
+                if (dados.length == 4) {
+                    Hospede hospede = new Hospede(dados[0], dados[1], dados[2], dados[3]);
+                    listaHospedes.add(hospede);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("ERRO! Falha na leitura do arquivo.");
+        }
+        return listaHospedes;
+    }
+
+    public static Hospede identificarHospede(String cpf) {
+        List<Hospede> listaHospedes = leituraHospedes();
+        for (Hospede hospede : listaHospedes) {
+            if (hospede.getCPF().equals(cpf)) {
+                return hospede;
+            }
+        }
+        return null;
     }
 }

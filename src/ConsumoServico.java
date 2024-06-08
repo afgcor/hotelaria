@@ -6,6 +6,7 @@ public class ConsumoServico {
     private int quantidadeSolicitada;
     private LocalDateTime dataConsumo;
 
+    /* CONSTRUTOR */
     public ConsumoServico(Servico servico, Reserva reserva, int quantidadeSolicitada, LocalDateTime dataConsumo) {
         this.servico = servico;
         this.reserva = reserva;
@@ -13,6 +14,7 @@ public class ConsumoServico {
         this.dataConsumo = dataConsumo;
     }
 
+    /* GETTERS & SETTERS */
     public void setServico(Servico servico) {
         this.servico = servico;
     }
@@ -44,4 +46,6 @@ public class ConsumoServico {
     public LocalDateTime getDataConsumo() {
         return dataConsumo;
     }
+
+    /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
 }

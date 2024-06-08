@@ -24,11 +24,23 @@ public class Funcionario extends Pessoa {
     /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
     public static boolean cadastrarFuncionario() throws IOException {
         Scanner scan = new Scanner(System.in);
+        String cpf = "";
         try {
             System.out.println("");
             System.out.println("*** CADASTRAR FUNCIONÁRIO ***");
             System.out.print("Insira o CPF: ");
-            String cpf = scan.nextLine();
+            cpf = scan.nextLine();
+
+            Funcionario funcionario = identificarFuncionario(cpf);
+
+            if (funcionario != null) {
+                System.out.println("");
+                System.out.println("ERRO: Já existe um funcionário registrado com este CPF!");
+                System.out.println("");
+                System.out.println("NOME: " + funcionario.getNome() + " | CPF: " + funcionario.getCPF() + " | E-MAIL: " + funcionario.getEmail() + " | ENDEREÇO: " + funcionario.getSetor());
+                throw new NullPointerException();
+            }
+
             System.out.print("Insira o nome: ");
             String nome = scan.nextLine();
             System.out.print("Insira o e-mail: ");
@@ -37,29 +49,30 @@ public class Funcionario extends Pessoa {
             String setor = scan.nextLine();
     
             if (nome.isEmpty() || cpf.isEmpty() || email.isEmpty() || setor.isEmpty()) {
+                System.out.println("");
+                System.out.println("ERRO: Entrada inválida (campos em branco)!");
+                System.out.println("Por favor, insira todos os dados do funcionário ou encerre a operação.");
                 throw new NullPointerException();
             }
     
-            FileWriter fw = new FileWriter("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\funcionarios.txt", true);
+            FileWriter fw = new FileWriter("./arquivos/funcionarios.txt", true);
             BufferedWriter bw = new BufferedWriter(fw);
     
             bw.write(cpf + " ; " + nome + " ; " + email + " ; " + setor);
             bw.newLine();
             bw.close();
+            
             System.out.println("FUNCIONÁRIO CADASTRADO!");
             System.out.println("");
         } catch (NullPointerException e) {
             System.out.println("");
-            System.out.println("*** ERRO: ENTRADA INVÁLIDA ***");
-            System.out.println("Por favor, insira todos os dados do funcionário ou encerre a operação.");
-            System.out.print("Continuar cadastro (1) ou encerrar a operação (2)? ");
-            int opcao = scan.nextInt();
-            scan.nextLine();
-            switch (opcao) {
-                case 1:
+            System.out.print("Continuar cadastro (S/N)? ");
+            String opcao = scan.nextLine();
+            switch (opcao.toUpperCase()) {
+                case "S":
                     cadastrarFuncionario();
                     break;
-                case 2:
+                case "N":
                     System.out.println("Encerrando.");
                     System.out.println("");
                     break;
@@ -75,7 +88,7 @@ public class Funcionario extends Pessoa {
     public static boolean editarFuncionario() throws IOException {
         Scanner scan = new Scanner(System.in);
         List<Funcionario> listaFuncionarios = new ArrayList<>();
-        File funcionarios = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\funcionarios.txt");
+        File funcionarios = new File("./arquivos/funcionarios.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(funcionarios))) {
             if (!funcionarios.exists() || funcionarios.length() == 0) {
@@ -167,7 +180,7 @@ public class Funcionario extends Pessoa {
 
     public static Funcionario consultarFuncionario() {
         List<Funcionario> listaFuncionarios = new ArrayList<>();
-        File funcionarios = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\funcionarios.txt");
+        File funcionarios = new File("./arquivos/funcionarios.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(funcionarios))) {
             if (!funcionarios.exists() || funcionarios.length() == 0) {
@@ -219,7 +232,7 @@ public class Funcionario extends Pessoa {
 
     public static List<Funcionario> listarFuncionarios() {
         List<Funcionario> listaFuncionarios = new ArrayList<>();
-        File funcionarios = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\funcionarios.txt");
+        File funcionarios = new File("./arquivos/funcionarios.txt");
     
         try (BufferedReader br = new BufferedReader(new FileReader(funcionarios))) {
 
@@ -250,5 +263,39 @@ public class Funcionario extends Pessoa {
         }
         System.out.println("");
         return listaFuncionarios;
+    }
+
+    public static List<Funcionario> leituraFuncionarios() {
+        List<Funcionario> listaFuncionarios = new ArrayList<>();
+        File funcionarios = new File("./arquivos/funcionarios.txt");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(funcionarios))) {
+
+            if (!funcionarios.exists() || funcionarios.length() == 0) {
+                throw new FileNotFoundException();
+            }
+
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(" ; ");
+                if (dados.length == 4) {
+                    Funcionario funcionario = new Funcionario(dados[0], dados[1], dados[2], dados[3]);
+                    listaFuncionarios.add(funcionario);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("ERRO! Falha na leitura do arquivo.");
+        }
+        return listaFuncionarios;
+    }
+
+    public static Funcionario identificarFuncionario(String cpf) {
+        List<Funcionario> listaFuncionarios = leituraFuncionarios();
+        for (Funcionario funcionario : listaFuncionarios) {
+            if (funcionario.getCPF().equals(cpf)) {
+                return funcionario;
+            }
+        }
+        return null;
     }
 }

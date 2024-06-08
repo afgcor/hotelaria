@@ -42,23 +42,50 @@ public class CategoriaItem {
 
     /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
     public static boolean cadastrarCategoriaItem() throws IOException {
-        Scanner scan = new Scanner(System.in);    
+        Scanner scan = new Scanner(System.in);
+        String idItem = "";
         try {
             System.out.println("");
             System.out.println("*** CADASTRAR CATEGORIA (ITEM) ***");
-
             System.out.print("Insira o código do item: ");
-            String idItem = scan.nextLine();
+            idItem = scan.nextLine();
+
+            Item item = identificarItem(Integer.parseInt(idItem));
+
+            if (item == null) {
+                System.out.println("");
+                System.out.println("ERRO: O código informado não corresponde a um item registrado!");
+                throw new InterruptedException();
+            }
+
+            CategoriaItem categoriaItem = identificarCategoriaItem(Integer.parseInt(idItem));
+
+            if (categoriaItem != null) {
+                System.out.println("");
+                System.out.println("ERRO: Já existe uma categoria (item) registrada para este item!");
+                System.out.println("");
+                System.out.println("ITEM: " + categoriaItem.getItem().getCodigo() + ", Cód. " + categoriaItem.getItem().getCodigo() + " | CATEGORIA: " + categoriaItem.getCategoria().getDescricao() + ", Cód. " + categoriaItem.getCategoria().getCodigo() + " | QUANTIDADE: " + categoriaItem.getQuantidade());
+                throw new NullPointerException();
+            }
             
             System.out.print("Insira o código da categoria: ");
             String idCategoria = scan.nextLine();
 
+            Categoria categoria = identificarCategoria(Integer.parseInt(idCategoria));
+
+            if (categoria == null) {
+                System.out.println("");
+                System.out.println("ERRO: O código informado não corresponde a uma categoria registrada!");
+                throw new Exception();
+            }
+
             System.out.print("Insira a quantidade: ");
             String quantidade = scan.nextLine();
-
-            Item item = identificarItem(Integer.parseInt(idItem));
-            Categoria categoria = identificarCategoria(Integer.parseInt(idCategoria));
+            
             if (idItem.isEmpty() || idCategoria.isEmpty() || quantidade.isEmpty()) {
+                System.out.println("");
+                System.out.println("ERRO: Entrada inválida (campos em branco)!");
+                System.out.println("Por favor, insira todos os dados da categoria (item) ou encerre a operação.");
                 throw new NullPointerException();
             }
 
@@ -73,9 +100,7 @@ public class CategoriaItem {
             System.out.println("");
         } catch (NullPointerException e) {
             System.out.println("");
-            System.out.println("*** ERRO: ENTRADA INVÁLIDA ***");
-            System.out.println("Por favor, insira todos os dados da categoria (item) ou encerre a operação.");
-            System.out.print("Continuar cadastro (S) ou encerrar a operação (N)? ");
+            System.out.print("Continuar cadastro (S/N)? ");
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
@@ -88,6 +113,28 @@ public class CategoriaItem {
             }
         } catch (IOException e) {
             System.out.println("ERRO: Falha na gravação do arquivo categoriasitens.txt!");
+        } catch (InterruptedException e) {
+            System.out.println("");
+            System.out.print("Deseja cadastrar o item agora (S/N)? ");
+            String opcao = scan.nextLine();
+            switch (opcao.toUpperCase()) {
+                case "S":
+                    Item.cadastrarItem();
+                    break;
+                case "N":
+                    break;
+            }
+        } catch (Exception e) {
+            System.out.println("");
+            System.out.print("Deseja cadastrar a categoria agora (S/N)? ");
+            String opcao = scan.nextLine();
+            switch (opcao.toUpperCase()) {
+                case "S":
+                    Categoria.cadastrarCategoria();
+                    break;
+                case "N":
+                    break;
+            }
         } finally {
             scan.close();
         }
@@ -248,14 +295,14 @@ public class CategoriaItem {
         }
 
         if (!cadastrado) {
-            System.out.println("Quarto com código " + codigo + " não encontrado.");
+            System.out.println("Categoria (item) com código " + codigo + " não encontrado.");
         }
 
         return null;
     }
 
     public static List<CategoriaItem> listarCategoriasItens() {
-        List<CategoriaItem> listaCategoriaItens = new ArrayList<>();
+        List<CategoriaItem> listaCategoriasItens = new ArrayList<>();
         File categoriasitens = new File("./arquivos/categoriasitens.txt");
     
         try (BufferedReader br = new BufferedReader(new FileReader(categoriasitens))) {
@@ -272,16 +319,16 @@ public class CategoriaItem {
                     Categoria categoria = identificarCategoria(Integer.parseInt(dados[1]));
                     if (item != null && categoria != null) {
                         CategoriaItem categoriaItem = new CategoriaItem(item, categoria, Integer.parseInt(dados[2]));
-                        listaCategoriaItens.add(categoriaItem);
+                        listaCategoriasItens.add(categoriaItem);
                     }
                 }
             }
 
             System.out.println("");
             System.out.println("*** LISTA DE CATEGORIAS (ITENS) ***");
-            for (CategoriaItem categoriaItem : listaCategoriaItens) {
+            for (CategoriaItem categoriaItem : listaCategoriasItens) {
                 System.out.println("");
-                System.out.println("CATEGORIA (ITEM) " + (listaCategoriaItens.indexOf(categoriaItem) + 1));
+                System.out.println("CATEGORIA (ITEM) " + (listaCategoriasItens.indexOf(categoriaItem) + 1));
                 System.out.println("ITEM: " + categoriaItem.getItem().getDescricao() + ", Cod. " + categoriaItem.getItem().getCodigo() + " | CATEGORIA: " + categoriaItem.getCategoria().getDescricao() + ", Cod. " + categoriaItem.getCategoria().getCodigo() + " | QUANTIDADE: " + categoriaItem.getQuantidade());
             }
         } catch (FileNotFoundException e) {
@@ -290,7 +337,43 @@ public class CategoriaItem {
             System.out.println("ERRO: Falha na leitura do arquivo categoriasitens.txt!");
         }
         System.out.println("");
-        return listaCategoriaItens;
+        return listaCategoriasItens;
+    }
+
+    public static List<CategoriaItem> leituraCategoriasItens() {
+        List<CategoriaItem> listaItens = new ArrayList<>();
+        File categoriasitens = new File("./arquivos/categoriasitens.txt");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(categoriasitens))) {
+
+            if (!categoriasitens.exists() || categoriasitens.length() == 0) {
+                throw new FileNotFoundException();
+            }
+
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(" ; ");
+                if (dados.length == 3) {
+                    Item item = identificarItem(Integer.parseInt(dados[0]));
+                    Categoria categoria = identificarCategoria(Integer.parseInt(dados[1]));
+                    CategoriaItem categoriaItem = new CategoriaItem(item, categoria, Integer.parseInt(dados[2]));
+                    listaItens.add(categoriaItem);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("ERRO! Falha na leitura do arquivo.");
+        }
+        return listaItens;
+    }
+
+    public static CategoriaItem identificarCategoriaItem(int codigo) {
+        List<CategoriaItem> listaCategoriasItens = leituraCategoriasItens();
+        for (CategoriaItem categoriaItem : listaCategoriasItens) {
+            if (categoriaItem.getItem().getCodigo() == codigo) {
+                return categoriaItem;
+            }
+        }
+        return null;
     }
 
     public static List<Categoria> leituraCategorias() {

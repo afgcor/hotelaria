@@ -2,3 +2,4 @@
 2 ; Quarto duplo ; 220.0
 3 ; Quarto luxo ; 360.0
 101 ; Refrigerante (Lata) ; 5.0
+201 ; Salgadinho ; 7.5

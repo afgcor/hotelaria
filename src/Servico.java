@@ -43,40 +43,53 @@ public class Servico {
     /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
     public static boolean cadastrarServico() throws IOException {
         Scanner scan = new Scanner(System.in);
+        String codigo = "";
         try {
             System.out.println("");
             System.out.println("*** CADASTRAR SERVIÇO ***");
             System.out.print("Insira o código: ");
-            String codigo = scan.nextLine();
-            System.out.print("Insira a descrição: ");
-            String descricao = scan.nextLine();
-            System.out.print("Insira o valor: ");
-            String valor = scan.nextLine();
+            codigo = scan.nextLine();
 
-            if (codigo.isEmpty()|| descricao.isEmpty() || valor.isEmpty()) {
+            Servico servico = identificarServico(Integer.parseInt(codigo));
+
+            if (servico != null) {
+                System.out.println("");
+                System.out.println("ERRO: Já existe um serviço registrado com este código!");
+                System.out.println("");
+                System.out.printf("CÓDIGO: %d | DESCRIÇÃO: %s | VALOR: R$ %.2f%n", servico.getCodigo(), servico.getDescricao(), servico.getValor());
                 throw new NullPointerException();
             }
 
-            FileWriter fw = new FileWriter("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\servicos.txt", true);
+            System.out.print("Insira o nome: ");
+            String descricao = scan.nextLine();
+            System.out.print("Insira o e-mail: ");
+            String valor = scan.nextLine();
+
+            if (codigo.isEmpty() || descricao.isEmpty() || valor.isEmpty()) {
+                System.out.println("");
+                System.out.println("ERRO: Entrada inválida (campos em branco)!");
+                System.out.println("Por favor, insira todos os dados do serviço ou encerre a operação.");
+                throw new NullPointerException();
+            }
+
+            FileWriter fw = new FileWriter("./arquivos/servicos.txt", true);
             BufferedWriter bw = new BufferedWriter(fw);
     
             bw.write(Integer.parseInt(codigo) + " ; " + descricao + " ; " + Double.parseDouble(valor));
             bw.newLine();
             bw.close();
+            
             System.out.println("SERVIÇO CADASTRADO!");
             System.out.println("");
         } catch (NullPointerException e) {
             System.out.println("");
-            System.out.println("*** ERRO: ENTRADA INVÁLIDA ***");
-            System.out.println("Por favor, insira todos os dados do serviço ou encerre a operação.");
-            System.out.print("Continuar cadastro (1) ou encerrar a operação (2)? ");
-            int opcao = scan.nextInt();
-            scan.nextLine();
-            switch (opcao) {
-                case 1:
+            System.out.print("Continuar cadastro (S/N)? ");
+            String opcao = scan.nextLine();
+            switch (opcao.toUpperCase()) {
+                case "S":
                     cadastrarServico();
                     break;
-                case 2:
+                case "N":
                     System.out.println("Encerrando.");
                     System.out.println("");
                     break;
@@ -92,7 +105,7 @@ public class Servico {
     public static boolean editarServico() throws IOException {
         Scanner scan = new Scanner(System.in);
         List<Servico> listaServicos = new ArrayList<>();
-        File servicos = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\servicos.txt");
+        File servicos = new File("./arquivos/servicos.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(servicos))) {
             if (!servicos.exists() || servicos.length() == 0) {
@@ -185,7 +198,7 @@ public class Servico {
 
     public static Servico consultarServico() {
         List<Servico> listaServicos = new ArrayList<>();
-        File servicos = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\servicos.txt");
+        File servicos = new File("./arquivos/servicos.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(servicos))) {
             if (!servicos.exists() || servicos.length() == 0) {
@@ -238,7 +251,7 @@ public class Servico {
 
     public static List<Servico> listarServicos() {
         List<Servico> listaServicos = new ArrayList<>();
-        File servicos = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\servicos.txt");
+        File servicos = new File("./arquivos/servicos.txt");
     
         try (BufferedReader br = new BufferedReader(new FileReader(servicos))) {
 
@@ -269,5 +282,39 @@ public class Servico {
         }
         System.out.println("");
         return listaServicos;
+    }
+
+    public static List<Servico> leituraServicos() {
+        List<Servico> listaServicos = new ArrayList<>();
+        File servicos = new File("./arquivos/servicos.txt");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(servicos))) {
+
+            if (!servicos.exists() || servicos.length() == 0) {
+                throw new FileNotFoundException();
+            }
+
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(" ; ");
+                if (dados.length == 3) {
+                    Servico servico = new Servico(Integer.parseInt(dados[0]), dados[1], Double.parseDouble(dados[2]));
+                    listaServicos.add(servico);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("ERRO! Falha na leitura do arquivo.");
+        }
+        return listaServicos;
+    }
+
+    public static Servico identificarServico(int codigo) {
+        List<Servico> listaServicos = leituraServicos();
+        for (Servico servico : listaServicos) {
+            if (servico.getCodigo() == codigo) {
+                return servico;
+            }
+        }
+        return null;
     }
 }

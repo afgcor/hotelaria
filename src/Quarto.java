@@ -43,29 +43,39 @@ public class Quarto {
     /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
     public static boolean cadastrarQuarto() throws IOException {
         Scanner scan = new Scanner(System.in);
+        String codigo = "";
         try {
             System.out.println("");
             System.out.println("*** CADASTRAR QUARTO ***");
-            
             System.out.print("Insira o código do quarto: ");
-            String codigo = scan.nextLine();
+            codigo = scan.nextLine();
             
-            System.out.print("Insira o código da categoria: ");
-            String idCategoria = scan.nextLine();
+            Quarto quarto = identificarQuarto(Integer.parseInt(codigo));
 
+            if (quarto != null) {
+                System.out.println("");
+                System.out.println("ERRO: Já existe uma categoria registrada com este código!");
+                System.out.println("");
+                System.out.println("CÓDIGO: " + quarto.getCodigo() + " | CATEGORIA: " + quarto.getCategoria().getDescricao() + " | STATUS: " + quarto.getStatus());
+                throw new NullPointerException();
+            }
+
+            System.out.print("Insira o código da categoria do quarto: ");
+            String categoria = scan.nextLine();
             System.out.print("Insira o status do quarto: ");
             String status = scan.nextLine();
     
-            if (codigo.isEmpty() || idCategoria.isEmpty() || status.isEmpty()) {
+            if (codigo.isEmpty() || categoria.isEmpty() || status.isEmpty()) {
+                System.out.println("");
+                System.out.println("ERRO: Entrada inválida (campos em branco)!");
+                System.out.println("Por favor, insira todos os dados do quarto ou encerre a operação.");
                 throw new NullPointerException();
             }
-    
-            Categoria categoria = identificarCategoria(Integer.parseInt(idCategoria));
             
-            FileWriter fw = new FileWriter("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\quartos.txt", true);
+            FileWriter fw = new FileWriter("./arquivos/quartos.txt", true);
             BufferedWriter bw = new BufferedWriter(fw);
     
-            bw.write(Integer.parseInt(codigo) + " ; " + categoria.getCodigo() + " ; " + status);
+            bw.write(Integer.parseInt(codigo) + " ; " + categoria + " ; " + status);
             bw.newLine();
             bw.close();
 
@@ -73,9 +83,7 @@ public class Quarto {
             System.out.println("");
         } catch (NullPointerException e) {
             System.out.println("");
-            System.out.println("*** ERRO: ENTRADA INVÁLIDA ***");
-            System.out.println("Por favor, insira todos os dados do quarto ou encerre a operação.");
-            System.out.print("Continuar cadastro (S) ou encerrar a operação (N)? ");
+            System.out.print("Continuar cadastro (S/N)? ");
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
@@ -97,7 +105,7 @@ public class Quarto {
     public static boolean editarQuarto() throws IOException {
         Scanner scan = new Scanner(System.in);
         List<Quarto> listaQuartos = new ArrayList<>();
-        File quartos = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\quartos.txt");
+        File quartos = new File("./arquivos/quartos.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(quartos))) {
             if (!quartos.exists() || quartos.length() == 0) {
@@ -145,9 +153,12 @@ public class Quarto {
                 }
                 System.out.println("Categoria atual: " + quarto.getCategoria().getDescricao());
                 System.out.print("Nova categoria: ");
-                String categoriaAtualizada = scan.nextLine();
-                if (categoriaAtualizada.isEmpty()) {
-                    categoriaAtualizada = quarto.getCategoria().getDescricao();
+                String categoriaAtualizadaS = scan.nextLine();
+                int categoriaAtualizada;
+                if (categoriaAtualizadaS.isEmpty()) {
+                    categoriaAtualizada = quarto.getCategoria().getCodigo();
+                } else {
+                    categoriaAtualizada = Integer.parseInt(categoriaAtualizadaS);
                 }
                 System.out.println("Status atual: " + quarto.getStatus());
                 System.out.print("Novo status: ");
@@ -160,7 +171,7 @@ public class Quarto {
                 System.out.println("");
                 System.out.println("Dados atualizados com sucesso!");
             } else {
-                listaLinhas.add(quarto.getCodigo() + " ; " + quarto.getCategoria() + " ; " + quarto.getStatus());
+                listaLinhas.add(quarto.getCodigo() + " ; " + quarto.getCategoria().getCodigo() + " ; " + quarto.getStatus());
             }
         }
 
@@ -190,7 +201,7 @@ public class Quarto {
 
     public static Quarto consultarQuarto() {
         List<Quarto> listaQuartos = new ArrayList<>();
-        File quartos = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\quartos.txt");
+        File quartos = new File("./arquivos/quartos.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(quartos))) {
             if (!quartos.exists() || quartos.length() == 0) {
@@ -246,7 +257,7 @@ public class Quarto {
 
     public static List<Quarto> listarQuartos() {
         List<Quarto> listaQuartos = new ArrayList<>();
-        File quartos = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\quartos.txt");
+        File quartos = new File("./arquivos/quartos.txt");
     
         try (BufferedReader br = new BufferedReader(new FileReader(quartos))) {
 
@@ -282,9 +293,44 @@ public class Quarto {
         return listaQuartos;
     }
 
+    public static List<Quarto> leituraQuartos() {
+        List<Quarto> listaQuartos = new ArrayList<>();
+        File quartos = new File("./arquivos/quartos.txt");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(quartos))) {
+
+            if (!quartos.exists() || quartos.length() == 0) {
+                throw new FileNotFoundException();
+            }
+
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(" ; ");
+                if (dados.length == 3) {
+                    Categoria categoria = identificarCategoria(Integer.parseInt(dados[1]));
+                    Quarto quarto = new Quarto(Integer.parseInt(dados[0]), categoria, dados[2]);
+                    listaQuartos.add(quarto);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("ERRO! Falha na leitura do arquivo.");
+        }
+        return listaQuartos;
+    }
+
+    public static Quarto identificarQuarto(int codigo) {
+        List<Quarto> listaQuartos = leituraQuartos();
+        for (Quarto quarto : listaQuartos) {
+            if (quarto.getCodigo() == codigo) {
+                return quarto;
+            }
+        }
+        return null;
+    }
+
     public static List<Categoria> leituraCategorias() {
         List<Categoria> listaCategorias = new ArrayList<>();
-        File categorias = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\categorias.txt");
+        File categorias = new File("./arquivos/categorias.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(categorias))) {
 

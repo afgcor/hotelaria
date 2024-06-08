@@ -43,40 +43,53 @@ public class Categoria {
     /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
     public static boolean cadastrarCategoria() throws IOException {
         Scanner scan = new Scanner(System.in);
+        String codigo = "";
         try {
             System.out.println("");
             System.out.println("*** CADASTRAR CATEGORIA ***");
             System.out.print("Insira o código: ");
-            String codigo = scan.nextLine();
+            codigo = scan.nextLine();
+
+            Categoria categoria = identificarCategoria(Integer.parseInt(codigo));
+
+            if (categoria != null) {
+                System.out.println("");
+                System.out.println("ERRO: Já existe uma categoria registrada com este código!");
+                System.out.println("");
+                System.out.printf("CÓDIGO: %d | DESCRIÇÃO: %s | VALOR: R$ %.2f%n", categoria.getCodigo(), categoria.getDescricao(), categoria.getValor());
+                throw new NullPointerException();
+            }
+
             System.out.print("Insira a descrição: ");
             String descricao = scan.nextLine();
             System.out.print("Insira o valor: ");
             String valor = scan.nextLine();
 
             if (codigo.isEmpty()|| descricao.isEmpty() || valor.isEmpty()) {
+                System.out.println("");
+                System.out.println("ERRO: Entrada inválida (campos em branco)!");
+                System.out.println("Por favor, insira todos os dados do serviço ou encerre a operação.");
                 throw new NullPointerException();
             }
 
-            FileWriter fw = new FileWriter("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\categorias.txt", true);
+            FileWriter fw = new FileWriter("./arquivos/categorias.txt", true);
             BufferedWriter bw = new BufferedWriter(fw);
     
             bw.write(Integer.parseInt(codigo) + " ; " + descricao + " ; " + Double.parseDouble(valor));
             bw.newLine();
             bw.close();
+
             System.out.println("CATEGORIA CADASTRADA!");
             System.out.println("");
         } catch (NullPointerException e) {
             System.out.println("");
-            System.out.println("*** ERRO: ENTRADA INVÁLIDA ***");
-            System.out.println("Por favor, insira todos os dados da categoria ou encerre a operação.");
-            System.out.print("Continuar cadastro (1) ou encerrar a operação (2)? ");
-            int opcao = scan.nextInt();
-            scan.nextLine();
-            switch (opcao) {
-                case 1:
+            System.out.print("Continuar cadastro (S/N)? ");
+            String opcao = scan.nextLine();
+            switch (opcao.toUpperCase()) {
+                case "S":
                     cadastrarCategoria();
                     break;
-                case 2:
+                case "N":
                     System.out.println("Encerrando.");
                     System.out.println("");
                     break;
@@ -92,7 +105,7 @@ public class Categoria {
     public static boolean editarCategoria() throws IOException {
         Scanner scan = new Scanner(System.in);
         List<Categoria> listaCategorias = new ArrayList<>();
-        File categorias = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\categorias.txt");
+        File categorias = new File("./arquivos/categorias.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(categorias))) {
             if (!categorias.exists() || categorias.length() == 0) {
@@ -185,7 +198,7 @@ public class Categoria {
 
     public static Categoria consultarCategoria() {
         List<Categoria> listaCategorias = new ArrayList<>();
-        File categorias = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\categorias.txt");
+        File categorias = new File("./arquivos/categorias.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(categorias))) {
             if (!categorias.exists() || categorias.length() == 0) {
@@ -238,7 +251,7 @@ public class Categoria {
 
     public static List<Categoria> listarCategorias() {
         List<Categoria> listaCategorias = new ArrayList<>();
-        File categorias = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\categorias.txt");
+        File categorias = new File("./arquivos/categorias.txt");
     
         try (BufferedReader br = new BufferedReader(new FileReader(categorias))) {
 
@@ -269,5 +282,39 @@ public class Categoria {
         }
         System.out.println("");
         return listaCategorias;
+    }
+
+    public static List<Categoria> leituraCategorias() {
+        List<Categoria> listaCategorias = new ArrayList<>();
+        File categorias = new File("./arquivos/categorias.txt");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(categorias))) {
+
+            if (!categorias.exists() || categorias.length() == 0) {
+                throw new FileNotFoundException();
+            }
+
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(" ; ");
+                if (dados.length == 3) {
+                    Categoria categoria = new Categoria(Integer.parseInt(dados[0]), dados[1], Double.parseDouble(dados[2]));
+                    listaCategorias.add(categoria);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("ERRO! Falha na leitura do arquivo.");
+        }
+        return listaCategorias;
+    }
+
+    public static Categoria identificarCategoria(int codigo) {
+        List<Categoria> listaCategorias = leituraCategorias();
+        for (Categoria categoria : listaCategorias) {
+            if (categoria.getCodigo() == codigo) {
+                return categoria;
+            }
+        }
+        return null;
     }
 }

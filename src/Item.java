@@ -43,41 +43,52 @@ public class Item {
     /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
     public static boolean cadastrarItem() throws IOException {
         Scanner scan = new Scanner(System.in);
+        String codigo = "";
         try {
             System.out.println("");
             System.out.println("*** CADASTRAR ITEM ***");
             System.out.print("Insira o código: ");
-            int codigo = scan.nextInt();
-            scan.nextLine();
-            System.out.print("Insira a descrição: ");
-            String descricao = scan.nextLine();
-            System.out.print("Insira o valor: ");
-            double valor = scan.nextDouble();
+            codigo = scan.nextLine();
 
-            if (Integer.toString(codigo).isEmpty() || descricao.isEmpty() || Double.toString(valor).isEmpty()) {
+            Item item = identificarItem(Integer.parseInt(codigo));
+
+            if (item != null) {
+                System.out.println("");
+                System.out.println("ERRO: Já existe um item registrado com este código!");
+                System.out.println("");
+                System.out.printf("CÓDIGO: %d | DESCRIÇÃO: %s | VALOR: R$ %.2f%n", item.getCodigo(), item.getDescricao(), item.getValor());
                 throw new NullPointerException();
             }
 
-            FileWriter fw = new FileWriter("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\itens.txt", true);
+            System.out.print("Insira a descrição: ");
+            String descricao = scan.nextLine();
+            System.out.print("Insira o valor: ");
+            String valor = scan.nextLine();
+
+            if (codigo.isEmpty() || descricao.isEmpty() || valor.isEmpty()) {
+                System.out.println("");
+                System.out.println("ERRO: Entrada inválida (campos em branco)!");
+                System.out.println("Por favor, insira todos os dados do serviço ou encerre a operação.");
+                throw new NullPointerException();
+            }
+
+            FileWriter fw = new FileWriter("./arquivos/itens.txt", true);
             BufferedWriter bw = new BufferedWriter(fw);
     
-            bw.write(codigo + " ; " + descricao + " ; " + valor);
+            bw.write(Integer.parseInt(codigo) + " ; " + descricao + " ; " + Double.parseDouble(valor));
             bw.newLine();
             bw.close();
             System.out.println("ITEM CADASTRADO!");
             System.out.println("");
         } catch (NullPointerException e) {
             System.out.println("");
-            System.out.println("*** ERRO: ENTRADA INVÁLIDA ***");
-            System.out.println("Por favor, insira todos os dados do item ou encerre a operação.");
-            System.out.print("Continuar cadastro (1) ou encerrar a operação (2)? ");
-            int opcao = scan.nextInt();
-            scan.nextLine();
-            switch (opcao) {
-                case 1:
+            System.out.print("Continuar cadastro (S/N)? ");
+            String opcao = scan.nextLine();
+            switch (opcao.toUpperCase()) {
+                case "S":
                     cadastrarItem();
                     break;
-                case 2:
+                case "N":
                     System.out.println("Encerrando.");
                     System.out.println("");
                     break;
@@ -93,7 +104,7 @@ public class Item {
     public static boolean editarItem() throws IOException {
         Scanner scan = new Scanner(System.in);
         List<Item> listaItens = new ArrayList<>();
-        File itens = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\itens.txt");
+        File itens = new File("./arquivos/itens.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(itens))) {
             if (!itens.exists() || itens.length() == 0) {
@@ -186,7 +197,7 @@ public class Item {
 
     public static Item consultarItem() {
         List<Item> listaItens = new ArrayList<>();
-        File itens = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\itens.txt");
+        File itens = new File("./arquivos/itens.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(itens))) {
             if (!itens.exists() || itens.length() == 0) {
@@ -239,7 +250,7 @@ public class Item {
 
     public static List<Item> listarItens() {
         List<Item> listaItens = new ArrayList<>();
-        File itens = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\itens.txt");
+        File itens = new File("./arquivos/itens.txt");
     
         try (BufferedReader br = new BufferedReader(new FileReader(itens))) {
 
@@ -270,5 +281,39 @@ public class Item {
         }
         System.out.println("");
         return listaItens;
+    }
+
+    public static List<Item> leituraItens() {
+        List<Item> listaItens = new ArrayList<>();
+        File itens = new File("./arquivos/itens.txt");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(itens))) {
+
+            if (!itens.exists() || itens.length() == 0) {
+                throw new FileNotFoundException();
+            }
+
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(" ; ");
+                if (dados.length == 3) {
+                    Item item = new Item(Integer.parseInt(dados[0]), dados[1], Double.parseDouble(dados[2]));
+                    listaItens.add(item);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("ERRO! Falha na leitura do arquivo.");
+        }
+        return listaItens;
+    }
+
+    public static Item identificarItem(int codigo) {
+        List<Item> listaItens = leituraItens();
+        for (Item item : listaItens) {
+            if (item.getCodigo() == codigo) {
+                return item;
+            }
+        }
+        return null;
     }
 }

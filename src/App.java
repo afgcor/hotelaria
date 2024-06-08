@@ -212,7 +212,7 @@ public class App {
         scan.close();
     }
 
-    public static void menuReserva() { /* AINDA NÃO ESTÁ 100% FUNCIONAL */
+    public static void menuReserva() {
         System.out.println("");
         Scanner scan = new Scanner(System.in);
         System.out.println("*** MENU ***");
@@ -224,16 +224,32 @@ public class App {
         System.out.println("6. Sair");
         System.out.print("INSIRA A OPÇÃO DESEJADA: ");
         String opcao = scan.nextLine();
-        switch (opcao) {
-            /* case 1: cadastrarReserva();
-            case 2: editarReserva();
-            case 3: consultarReserva();
-            case 4: listarReservas(); */
-            case "5": menuOpcoes();
-            case "6": break; 
+        try {
+            switch (opcao) {
+                case "1": 
+                    Reserva.cadastrarReserva();
+                    break;
+                case "2":
+                    Reserva.editarReserva();
+                    break;
+                case "3":
+                    Reserva.consultarReserva();
+                    break;
+                case "4":
+                    Reserva.listarReservas();
+                    break;
+                case "5":
+                    menuOpcoes();
+                    break;
+                case "6": 
+                    break; 
+            }
+            if (opcao == "6") {
+                System.out.println("Encerrando.");
+            }
         }
-        if (opcao == "6") {
-            System.out.println("Encerrando.");
+        catch (IOException e) {
+            System.out.println("ERRO: Falha operacional!");
         }
         scan.close();
     }

@@ -167,15 +167,14 @@ public class CategoriaItem {
         System.out.println("");
         System.out.println("*** EDITAR CATEGORIA (ITEM) ***");
         System.out.print("Digite o código do item cuja categoria será editada: ");
-        int codigo = scan.nextInt();
-        scan.nextLine();
+        String codigo = scan.nextLine();
         System.out.println("");
 
         boolean cadastrado = false;
         List<String> listaLinhas = new ArrayList<>();
 
         for (CategoriaItem categoriaItem : listaCategoriaItens) {
-            if (categoriaItem.getItem().getCodigo() == codigo) {
+            if (categoriaItem.getItem().getCodigo() == Integer.parseInt(codigo)) {
                 cadastrado = true;
                 System.out.println("Categoria (item) identificada!");
                 System.out.println("");

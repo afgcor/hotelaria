@@ -47,7 +47,7 @@ public class Categoria {
         try {
             System.out.println("");
             System.out.println("*** CADASTRAR CATEGORIA ***");
-            System.out.print("Insira o código: ");
+            System.out.print("Insira o código da categoria: ");
             codigo = scan.nextLine();
 
             Categoria categoria = identificarCategoria(Integer.parseInt(codigo));
@@ -65,7 +65,7 @@ public class Categoria {
             System.out.print("Insira o valor: ");
             String valor = scan.nextLine();
 
-            if (codigo.isEmpty()|| descricao.isEmpty() || valor.isEmpty()) {
+            if (codigo.isEmpty() || descricao.isEmpty() || valor.isEmpty()) {
                 System.out.println("");
                 System.out.println("ERRO: Entrada inválida (campos em branco)!");
                 System.out.println("Por favor, insira todos os dados do serviço ou encerre a operação.");

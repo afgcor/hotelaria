@@ -1,7 +1,10 @@
 import java.io.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Reserva {
@@ -16,6 +19,9 @@ public class Reserva {
     private LocalDateTime dataCheckout;
     private double valorReserva;
     private double valorPago;
+
+    public static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy, HH:mm:ss");
+    public static DateTimeFormatter dtts = DateTimeFormatter.ofPattern("dd/MM/yyy - HH:mm:ss");
 
     /* CONSTRUTOR */
     public Reserva(int codigo, Hospede hospede, Quarto quarto, Funcionario funcionarioReserva, Funcionario funcionarioFechamento, LocalDateTime dataEntradaReserva, LocalDateTime dataSaidaReserva, LocalDateTime dataCheckin, LocalDateTime dataCheckout, double valorReserva, double valorPago) {
@@ -109,7 +115,7 @@ public class Reserva {
         this.valorReserva = valorReserva;
     }
 
-    public double valorReserva() {
+    public double getValorReserva() {
         return valorReserva;
     }
 
@@ -117,25 +123,577 @@ public class Reserva {
         this.valorPago = valorPago;
     }
 
-    public double valorPago() {
+    public double getValorPago() {
         return valorPago;
+    }
+
+    public static double valorTotal() {
+        return 0.0; /* editar aqui pra somar com consumo e serviços, copiar esses métodos... puta que pariu chega kkkkkkkkk */
     }
 
     /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
     public static boolean cadastrarReserva() throws IOException {
+        Scanner scan = new Scanner(System.in);
+        String codigo = "";
+        try {
+            System.out.println("");
+            System.out.println("*** CADASTRAR RESERVA ***");
+            System.out.print("Insira o código da reserva: ");
+            codigo = scan.nextLine();
+
+            Reserva reserva = identificarReserva(Integer.parseInt(codigo));
+
+            if (reserva != null) {
+                System.out.println("");
+                System.out.println("ERRO: Já existe uma reserva registrada com este código!");
+                System.out.println("");
+                System.out.println("CÓDIGO: " + reserva.getCodigo() + " | HÓSPEDE: " + reserva.getHospede().getCPF()); 
+                System.out.println("FUNCIONÁRIO (RESERVA): " + reserva.getFuncionarioReserva().getNome() + " (CPF " + reserva.getFuncionarioReserva().getCPF() + ") | FUNCIONÁRIO (FECHAMENTO): " + reserva.getFuncionarioFechamento().getNome() + " (CPF " + reserva.getFuncionarioReserva().getCPF() + ")");
+                System.out.println("DATA DE ENTRADA DA RESERVA: " + reserva.getDataEntradaReserva().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataEntradaReserva().format(dtts) + " | DATA DE SAÍDA DA RESERVA: " + reserva.getDataSaidaReserva().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataSaidaReserva().format(dtts));
+                System.out.println("DATA DO CHECK-IN: " + reserva.getDataCheckin().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataCheckin().format(dtts) + " | DATA DO CHECK-OUT: " + reserva.getDataCheckout().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataCheckout().format(dtts));
+                System.out.printf("VALOR TOTAL: R$ %.2f | VALOR PAGO: R$ %.2f%n", reserva.getValorReserva(), reserva.getValorPago());
+                throw new NullPointerException();
+            }
+
+            System.out.print("Insira o CPF do hóspede: ");
+            String cpfHospede = scan.nextLine();
+
+            Hospede hospede = identificarHospede(cpfHospede);
+
+            if (hospede == null) {
+                System.out.println("");
+                System.out.println("ERRO: O CPF informado não corresponde a um hóspede registrado!");
+                throw new Exception();
+            }
+
+            System.out.print("Insira o código do quarto: ");
+            String codigoQuarto = scan.nextLine();
+
+            Quarto quarto = identificarQuarto(Integer.parseInt(codigoQuarto));
+
+            if (quarto == null) {
+                System.out.println("");
+                System.out.println("ERRO: O código informado não corresponde a um quarto registrado!");
+                throw new NoSuchFieldException();
+            }
+
+            System.out.print("Insira o CPF do funcionário responsável pela abertura da reserva: ");
+            String cpfFuncionarioReserva = scan.nextLine();
+            String cpf = cpfFuncionarioReserva;
+
+            Funcionario funcionarioReserva = identificarFuncionario(cpf);
+
+            if (funcionarioReserva == null) {
+                System.out.println("");
+                System.out.println("ERRO: O CPF informado não corresponde a um funcionário registrado!");
+                throw new InterruptedException();
+            }
+
+            System.out.print("Insira o CPF do funcionário responsável pelo fechamento da reserva: ");
+            String cpfFuncionarioFechamento = scan.nextLine();
+            cpf = cpfFuncionarioFechamento;
+
+            Funcionario funcionarioFechamento = identificarFuncionario(cpf);
+
+            if (funcionarioFechamento == null) {
+                System.out.println("");
+                System.out.println("ERRO: O CPF informado não corresponde a um funcionário registrado!");
+                throw new InterruptedException();
+            }
+
+            System.out.print("Insira a data de abertura (dd-MM-yyyy, HH:mm:ss): ");
+            String dataEntrada = scan.nextLine();
+
+            System.out.print("Insira a data de fechamento (dd-MM-yyyy, HH:mm:ss): ");
+            String dataSaida = scan.nextLine();
+
+            System.out.print("Insira a data do check-in (dd-MM-yyyy, HH:mm:ss): ");
+            String dataCheckin = scan.nextLine();
+
+            System.out.print("Insira a data do check-out (dd-MM-yyyy, HH:mm:ss): ");
+            String dataCheckout = scan.nextLine();
+
+            System.out.print("Insira o valor da reserva: ");
+            String valorReserva = scan.nextLine();
+
+            System.out.print("Insira o valor pago: ");
+            String valorPago = scan.nextLine();
+
+            if (codigo.isEmpty() || cpfHospede.isEmpty() || codigoQuarto.isEmpty() || cpfFuncionarioReserva.isEmpty() || cpfFuncionarioFechamento.isEmpty() || dataEntrada.isEmpty() || dataSaida.isEmpty() || dataCheckin.isEmpty() || dataCheckout.isEmpty() || valorReserva.isEmpty() || valorPago.isEmpty()) {
+                System.out.println("");
+                System.out.println("ERRO: Entrada inválida (campos em branco)!");
+                System.out.println("Por favor, insira todos os dados da reserva ou encerre a operação.");
+                throw new NullPointerException();
+            }
+
+            FileWriter fw = new FileWriter("./arquivos/reservas.txt", true);
+            BufferedWriter bw = new BufferedWriter(fw);
+
+            bw.write(Integer.parseInt(codigo) + " ; " + hospede.getCPF() + " ; " + quarto.getCodigo() + " ; " + funcionarioReserva.getCPF() + " ; " + funcionarioFechamento.getCPF() + " ; " + dataEntrada + " ; " + dataSaida + " ; " + dataCheckin + " ; " + dataCheckout + " ; " + valorReserva + " ; " + valorPago);
+            bw.newLine();
+            bw.close();
+
+
+            System.out.println("RESERVA CADASTRADA!");
+            System.out.println("");
+        } catch (NullPointerException e) {
+            System.out.println("");
+            System.out.print("Continuar cadastro (S/N)? ");
+            String opcao = scan.nextLine();
+            switch (opcao.toUpperCase()) {
+                case "S":
+                    cadastrarReserva();
+                    break;
+                case "N":
+                    System.out.println("Encerrando.");
+                    System.out.println("");
+                    break;
+            }
+        } catch (NoSuchFieldException e) {
+            System.out.println("");
+            System.out.print("Deseja cadastrar o quarto agora (S/N)? ");
+            String opcao = scan.nextLine();
+            switch (opcao.toUpperCase()) {
+                case "S":
+                    Quarto.cadastrarQuarto();
+                    break;
+                case "N":
+                    break;
+            }
+        } catch (InterruptedException e) {
+            System.out.println("");
+            System.out.print("Deseja cadastrar o funcionário agora (S/N)? ");
+            String opcao = scan.nextLine();
+            switch (opcao.toUpperCase()) {
+                case "S":
+                    Funcionario.cadastrarFuncionario();
+                    break;
+                case "N":
+                    break;
+            }
+        } catch (IOException e) {
+            System.out.println("ERRO: Falha na gravação do arquivo reservas.txt!");
+        } catch (Exception e) {
+            System.out.println("");
+            System.out.print("Deseja cadastrar o hóspede agora (S/N)? ");
+            String opcao = scan.nextLine();
+            switch (opcao.toUpperCase()) {
+                case "S":
+                    Hospede.cadastrarHospede();
+                    break;
+                case "N":
+                    break;
+            }
+        } finally {
+            scan.close();
+        }
         return true;
     }
 
     public static boolean editarReserva() throws IOException {
+        Scanner scan = new Scanner(System.in);
+        List<Reserva> listaReservas = new ArrayList<>();
+        File reservas = new File("./arquivos/reservas.txt");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(reservas))) {
+            if (!reservas.exists()) {
+                throw new FileNotFoundException();
+            }
+
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(" ; ");
+                if (dados.length == 11) {
+                    Hospede hospede = identificarHospede(dados[1]);
+                    Quarto quarto = identificarQuarto(Integer.parseInt(dados[2]));
+                    Funcionario funcionarioReserva = identificarFuncionario(dados[3]);
+                    Funcionario funcionarioFechamento = identificarFuncionario(dados[4]);
+                    Reserva reserva = new Reserva(Integer.parseInt(dados[0]), hospede, quarto, funcionarioReserva, funcionarioFechamento, LocalDateTime.parse(dados[5], dtf), LocalDateTime.parse(dados[6], dtf), LocalDateTime.parse(dados[7], dtf), LocalDateTime.parse(dados[8], dtf), Double.parseDouble(dados[9]), Double.parseDouble(dados[10]));
+                    listaReservas.add(reserva);
+                }
+            }
+
+        System.out.println("");
+        System.out.println("*** EDITAR RESERVA ***");
+        System.out.print("Digite o código do item cuja categoria será editada: ");
+        String codigo = scan.nextLine();
+        System.out.println("");
+
+        boolean cadastrado = false;
+        List<String> listaLinhas = new ArrayList<>();
+
+        for (Reserva reserva : listaReservas) {
+            if (reserva.getCodigo() == Integer.parseInt(codigo)) {
+                cadastrado = true;
+                System.out.println("Reserva identificada!");
+                System.out.println("");
+                System.out.println("*** ALTERAR DADOS ***");
+                System.out.println("Insira os dados atualizados abaixo. Caso nenhuma alteração seja necessária, aperte ENTER.");
+                System.out.println("");
+                System.out.println("Código atual: " + reserva.getCodigo());
+                System.out.print("Novo código: ");
+                String codigoAtualizadoS = scan.nextLine();
+                int codigoAtualizado;
+                if (codigoAtualizadoS.isEmpty()) {
+                    codigoAtualizado = reserva.getCodigo();
+                } else {
+                    codigoAtualizado = Integer.parseInt(codigoAtualizadoS);
+                }
+                System.out.println("Hóspede atual: " + reserva.getHospede().getNome() + " (CPF " + reserva.getHospede().getCPF() + ")");
+                System.out.print("Novo hóspede: ");
+                String hospedeAtualizado = scan.nextLine();
+                if (hospedeAtualizado.isEmpty()) {
+                    hospedeAtualizado = reserva.getHospede().getCPF();
+                }
+                System.out.println("Quarto atual: " + reserva.getQuarto().getCodigo());
+                System.out.print("Novo quarto: ");
+                String quartoAtualizadoS = scan.nextLine();
+                int quartoAtualizado;
+                if (quartoAtualizadoS.isEmpty()) {
+                    quartoAtualizado = reserva.getQuarto().getCodigo();
+                } else {
+                    quartoAtualizado = Integer.parseInt(quartoAtualizadoS);
+                }
+                System.out.println("Funcionário (reserva) atual: " + reserva.getFuncionarioReserva().getNome() + " (CPF " + reserva.getFuncionarioReserva().getCPF() + ")");
+                System.out.print("Novo funcionário (reserva): ");
+                String reservaAtualizado = scan.nextLine();
+                if (reservaAtualizado.isEmpty()) {
+                    reservaAtualizado = reserva.getFuncionarioReserva().getCPF();
+                }
+                System.out.println("Funcionário (fechamento) atual: " + reserva.getFuncionarioFechamento().getNome() + " (CPF " + reserva.getFuncionarioFechamento().getCPF() + ")");
+                System.out.print("Novo funcionário (fechamento): ");
+                String fechamentoAtualizado = scan.nextLine();
+                if (fechamentoAtualizado.isEmpty()) {
+                    fechamentoAtualizado = reserva.getFuncionarioFechamento().getCPF();
+                }
+                System.out.println("Data de entrada da reserva atual: " + reserva.getDataEntradaReserva().format(dtts));
+                System.out.print("Nova data de entrada da reserva atual (dd-MM-yyyy, HH:mm:ss): ");
+                String dataEntradaAtualizadaS = scan.nextLine();
+                LocalDateTime dataEntradaAtualizada;
+                if (dataEntradaAtualizadaS.isEmpty()) {
+                    dataEntradaAtualizada = reserva.getDataEntradaReserva();
+                } else {
+                    dataEntradaAtualizada = LocalDateTime.parse(dataEntradaAtualizadaS, dtf);
+                }
+                System.out.println("Data de saída da reserva atual: " + reserva.getDataSaidaReserva().format(dtts));
+                System.out.print("Nova data de saída da reserva atual (dd-MM-yyyy, HH:mm:ss): ");
+                String dataSaidaAtualizadaS = scan.nextLine();
+                LocalDateTime dataSaidaAtualizada;
+                if (dataSaidaAtualizadaS.isEmpty()) {
+                    dataSaidaAtualizada = reserva.getDataSaidaReserva();
+                } else {
+                    dataSaidaAtualizada = LocalDateTime.parse(dataSaidaAtualizadaS, dtf);
+                }
+                System.out.println("Data de check-in da reserva atual: " + reserva.getDataCheckin().format(dtts));
+                System.out.print("Nova data de check-in da reserva atual (dd-MM-yyyy, HH:mm:ss): ");
+                String dataCheckinAtualizadaS = scan.nextLine();
+                LocalDateTime dataCheckinAtualizada;
+                if (dataCheckinAtualizadaS.isEmpty()) {
+                    dataCheckinAtualizada = reserva.getDataCheckin();
+                } else {
+                    dataCheckinAtualizada = LocalDateTime.parse(dataCheckinAtualizadaS, dtf);
+                }
+                System.out.println("Data de check-out da reserva atual: " + reserva.getDataCheckout().format(dtts));
+                System.out.print("Nova data de check-out da reserva atual (dd-MM-yyyy, HH:mm:ss): ");
+                String dataCheckoutAtualizadaS = scan.nextLine();
+                LocalDateTime dataCheckoutAtualizada;
+                if (dataCheckoutAtualizadaS.isEmpty()) {
+                    dataCheckoutAtualizada = reserva.getDataCheckout();
+                } else {
+                    dataCheckoutAtualizada = LocalDateTime.parse(dataCheckoutAtualizadaS, dtf);
+                }
+                System.out.printf("Valor da reserva atual: R$ %.2f%n", reserva.getValorReserva());
+                System.out.print("Novo valor da reserva: ");
+                String valorReservaAtualizadoS = scan.nextLine();
+                double valorReservaAtualizado;
+                if (valorReservaAtualizadoS.isEmpty()) {
+                    valorReservaAtualizado = reserva.getValorReserva();
+                } else {
+                    valorReservaAtualizado = Double.parseDouble(valorReservaAtualizadoS);
+                }
+                System.out.printf("Valor pago atual: R$ %.2f%n", reserva.getValorPago());
+                System.out.print("Novo valor pago: ");
+                String valorPagoAtualizadoS = scan.nextLine();
+                double valorPagoAtualizado;
+                if (valorPagoAtualizadoS.isEmpty()) {
+                    valorPagoAtualizado = reserva.getValorReserva();
+                } else {
+                    valorPagoAtualizado = Double.parseDouble(valorPagoAtualizadoS);
+                }
+
+                String linhaAtualizada = (codigoAtualizado + " ; " + hospedeAtualizado + " ; " + quartoAtualizado + " ; " + reservaAtualizado + " ; " + fechamentoAtualizado + " ; " + dataEntradaAtualizada.format(dtf) + " ; " + dataSaidaAtualizada.format(dtf) + " ; " + dataCheckinAtualizada.format(dtf) + " ; " + dataCheckoutAtualizada.format(dtf) + " ; " + valorReservaAtualizado + " ; " + valorPagoAtualizado);
+                listaLinhas.add(linhaAtualizada);
+                System.out.println("");
+                System.out.println("Dados atualizados com sucesso!");
+            } else {
+                listaLinhas.add(reserva.getCodigo() + " ; " + reserva.getHospede().getCPF() + " ; " + reserva.getFuncionarioReserva().getCPF() + " ; " + reserva.getFuncionarioFechamento().getCPF() + " ; " + reserva.getDataEntradaReserva() + " ; " + reserva.getDataSaidaReserva() + " ; " + reserva.getDataCheckin() + " ; " + reserva.getDataCheckout() + " ; " + reserva.getValorReserva() + " ; " + reserva.getValorPago());
+            }
+        }
+
+        if (!cadastrado) {
+            System.out.println("Reserva com código " + codigo + " não encontrada.");
+            return false;
+        }
+
+        FileWriter fw = new FileWriter(reservas);
+        BufferedWriter bw = new BufferedWriter(fw);
+        for (String linhaAtualizada : listaLinhas) {
+            bw.write(linhaAtualizada);
+            bw.newLine();
+        }
+        bw.close();
+
+        } catch (FileNotFoundException e) {
+            System.out.println("ERRO: O arquivo reservas.txt não foi encontrado!");
+        } catch (IOException e) {
+            System.out.println("ERRO: Falha na gravação do arquivo reservas.txt!");
+        } finally {
+            scan.close();
+        }
+
         return true;
     }
 
     public static Reserva consultarReserva() {
+        List<Reserva> listaReservas = new ArrayList<>();
+        File reservas = new File("./arquivos/reservas.txt");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(reservas))) {
+            if (!reservas.exists() || reservas.length() == 0) {
+                throw new FileNotFoundException();
+            }
+
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(" ; ");
+                if (dados.length == 11) {
+                    Hospede hospede = identificarHospede(dados[1]);
+                    Quarto quarto = identificarQuarto(Integer.parseInt(dados[2]));
+                    Funcionario funcionarioReserva = identificarFuncionario(dados[3]);
+                    Funcionario funcionarioFechamento = identificarFuncionario(dados[4]);
+                    Reserva reserva = new Reserva(Integer.parseInt(dados[0]), hospede, quarto, funcionarioReserva, funcionarioFechamento, LocalDateTime.parse(dados[5], dtf), LocalDateTime.parse(dados[6], dtf), LocalDateTime.parse(dados[7], dtf), LocalDateTime.parse(dados[8], dtf), Double.parseDouble(dados[9]), Double.parseDouble(dados[10]));
+                    listaReservas.add(reserva);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("ERRO: O arquivo reservas.txt não foi encontrado!");
+        } catch (IOException e) {
+            System.out.println("ERRO: Falha na leitura do arquivo reservas.txt!");
+        }
+
+        Scanner scan = new Scanner(System.in);
+        System.out.println("");
+        System.out.println("*** CONSULTAR RESERVA ***");
+        System.out.print("Digite o código da reserva cuja categoria será consultada: ");
+        int codigo = scan.nextInt();
+        scan.nextLine();
+        System.out.println("");
+        scan.close();
+
+        boolean cadastrado = false;
+
+        for (int i = 0; i < listaReservas.size(); i++) {
+            if (listaReservas.get(i).getCodigo() == codigo) {
+                cadastrado = true;
+                Reserva reserva = listaReservas.get(i);
+                System.out.println("Categoria (item) identificada!");
+                System.out.println("");
+                System.out.println("CÓDIGO: " + reserva.getCodigo() + " | HÓSPEDE: " + reserva.getHospede().getCPF()); 
+                System.out.println("FUNCIONÁRIO (RESERVA): " + reserva.getFuncionarioReserva().getNome() + " (CPF " + reserva.getFuncionarioReserva().getCPF() + ") | FUNCIONÁRIO (FECHAMENTO): " + reserva.getFuncionarioFechamento().getNome() + " (CPF " + reserva.getFuncionarioReserva().getCPF() + ")");
+                System.out.println("DATA DE ENTRADA DA RESERVA: " + reserva.getDataEntradaReserva().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataEntradaReserva().format(dtts) + " | DATA DE SAÍDA DA RESERVA: " + reserva.getDataSaidaReserva().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataSaidaReserva().format(dtts));
+                System.out.println("DATA DO CHECK-IN: " + reserva.getDataCheckin().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataCheckin().format(dtts) + " | DATA DO CHECK-OUT: " + reserva.getDataCheckout().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataCheckout().format(dtts));
+                System.out.printf("VALOR TOTAL: R$ %.2f | VALOR PAGO: R$ %.2f%n", reserva.getValorReserva(), reserva.getValorPago());
+                System.out.println("");
+            }
+        }
+
+        if (!cadastrado) {
+            System.out.println("Reserva com código " + codigo + " não encontrada.");
+        }
+
         return null;
     }
 
     public static List<Reserva> listarReservas() {
         List<Reserva> listaReservas = new ArrayList<>();
+        File reservas = new File("./arquivos/reservas.txt");
+        try (BufferedReader br = new BufferedReader(new FileReader(reservas))) {
+
+            if (!reservas.exists() || reservas.length() == 0) {
+                throw new FileNotFoundException();
+            }
+
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(" ; ");
+                if (dados.length == 11) {
+                    Hospede hospede = identificarHospede(dados[1]);
+                    Quarto quarto = identificarQuarto(Integer.parseInt(dados[2]));
+                    Funcionario funcionarioReserva = identificarFuncionario(dados[3]);
+                    Funcionario funcionarioFechamento = identificarFuncionario(dados[4]);
+                    Reserva reserva = new Reserva(Integer.parseInt(dados[0]), hospede, quarto, funcionarioReserva, funcionarioFechamento, LocalDateTime.parse(dados[5], dtf), LocalDateTime.parse(dados[6], dtf), LocalDateTime.parse(dados[7], dtf), LocalDateTime.parse(dados[8], dtf), Double.parseDouble(dados[9]), Double.parseDouble(dados[10]));
+                    listaReservas.add(reserva);
+                }
+            }
+
+            System.out.println("");
+            System.out.println("*** LISTA DE RESERVAS ***");
+            for (Reserva reserva : listaReservas) {
+                System.out.println("");
+                System.out.println("RESERVA " + (listaReservas.indexOf(reserva) + 1));
+                System.out.println("CÓDIGO: " + reserva.getCodigo() + " | HÓSPEDE: " + reserva.getHospede().getCPF()); 
+                System.out.println("FUNCIONÁRIO (RESERVA): " + reserva.getFuncionarioReserva().getNome() + " (CPF " + reserva.getFuncionarioReserva().getCPF() + ") | FUNCIONÁRIO (FECHAMENTO): " + reserva.getFuncionarioFechamento().getNome() + " (CPF " + reserva.getFuncionarioReserva().getCPF() + ")");
+                System.out.println("DATA DE ENTRADA DA RESERVA: " + reserva.getDataEntradaReserva().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataEntradaReserva().format(dtts) + " | DATA DE SAÍDA DA RESERVA: " + reserva.getDataSaidaReserva().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataSaidaReserva().format(dtts));
+                System.out.println("DATA DO CHECK-IN: " + reserva.getDataCheckin().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataCheckin().format(dtts) + " | DATA DO CHECK-OUT: " + reserva.getDataCheckout().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataCheckout().format(dtts));
+                System.out.printf("VALOR TOTAL: R$ %.2f | VALOR PAGO: R$ %.2f%n", reserva.getValorReserva(), reserva.getValorPago());
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("ERRO: O arquivo reservas.txt não foi encontrado!");
+        } catch (IOException e) {
+            System.out.println("ERRO: Falha na leitura do arquivo reservas.txt!");
+        }
+        System.out.println("");
         return listaReservas;
+    }
+
+    public static List<Reserva> leituraReservas() {
+        List<Reserva> listaReservas = new ArrayList<>();
+        File reservas = new File("./arquivos/reservas.txt");
+    
+        try (BufferedReader br = new BufferedReader(new FileReader(reservas))) {
+    
+            if (!reservas.exists()) {
+                throw new FileNotFoundException();
+            }
+    
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(" ; ");
+                if (dados.length == 11) {
+                    Hospede hospede = identificarHospede(dados[1]);
+                    Quarto quarto = identificarQuarto(Integer.parseInt(dados[2]));
+                    Funcionario funcionarioReserva = identificarFuncionario(dados[3]);
+                    Funcionario funcionarioFechamento = identificarFuncionario(dados[4]);
+                    Reserva reserva = new Reserva(Integer.parseInt(dados[0]), hospede, quarto, funcionarioReserva, funcionarioFechamento, LocalDateTime.parse(dados[5], dtf), LocalDateTime.parse(dados[6], dtf), LocalDateTime.parse(dados[7], dtf), LocalDateTime.parse(dados[8], dtf), Double.parseDouble(dados[9]), Double.parseDouble(dados[10]));
+                    listaReservas.add(reserva);
+                }
+            }            
+        } catch (IOException e) {
+            System.out.println("ERRO! Falha na leitura do arquivo.");
+        }
+        return listaReservas;
+    }
+
+    public static Reserva identificarReserva(int codigo) {
+        List<Reserva> listaReservas = leituraReservas();
+        for (Reserva reserva : listaReservas) {
+            if (reserva.getCodigo() == codigo) {
+                return reserva;
+            }
+        }
+        return null;
+    }
+
+    public static List<Quarto> leituraQuartos() {
+        List<Quarto> listaQuartos = new ArrayList<>();
+        File quartos = new File("./arquivos/quartos.txt");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(quartos))) {
+
+            if (!quartos.exists() || quartos.length() == 0) {
+                throw new FileNotFoundException();
+            }
+
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(" ; ");
+                if (dados.length == 3) {
+                    Categoria categoria = Quarto.identificarCategoria(Integer.parseInt(dados[1]));
+                    Quarto quarto = new Quarto(Integer.parseInt(dados[0]), categoria, dados[2]);
+                    listaQuartos.add(quarto);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("ERRO! Falha na leitura do arquivo.");
+        }
+        return listaQuartos;
+    }
+
+    public static Quarto identificarQuarto(int codigoQuarto) {
+        List<Quarto> listaQuartos = leituraQuartos();
+        for (Quarto quarto : listaQuartos) {
+            if (quarto.getCodigo() == codigoQuarto) {
+                return quarto;
+            }
+        }
+        return null;
+    }
+
+    public static List<Hospede> leituraHospedes() {
+        List<Hospede> listaHospedes = new ArrayList<>();
+        File hospedes = new File("./arquivos/hospedes.txt");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(hospedes))) {
+
+            if (!hospedes.exists() || hospedes.length() == 0) {
+                throw new FileNotFoundException();
+            }
+
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(" ; ");
+                if (dados.length == 4) {
+                    Hospede hospede = new Hospede(dados[0], dados[1], dados[2], dados[3]);
+                    listaHospedes.add(hospede);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("ERRO! Falha na leitura do arquivo.");
+        }
+        return listaHospedes;
+    }
+
+    public static Hospede identificarHospede(String cpfHospede) {
+        List<Hospede> listaHospedes = leituraHospedes();
+        for (Hospede hospede : listaHospedes) {
+            if (hospede.getCPF().equals(cpfHospede)) {
+                return hospede;
+            }
+        }
+        return null;
+    }
+
+    public static List<Funcionario> leituraFuncionarios() {
+        List<Funcionario> listaFuncionarios = new ArrayList<>();
+        File funcionarios = new File("./arquivos/funcionarios.txt");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(funcionarios))) {
+
+            if (!funcionarios.exists() || funcionarios.length() == 0) {
+                throw new FileNotFoundException();
+            }
+
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(" ; ");
+                if (dados.length == 4) {
+                    Funcionario funcionario = new Funcionario(dados[0], dados[1], dados[2], dados[3]);
+                    listaFuncionarios.add(funcionario);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("ERRO! Falha na leitura do arquivo.");
+        }
+        return listaFuncionarios;
+    }
+
+    public static Funcionario identificarFuncionario(String cpf) {
+        List<Funcionario> listaFuncionarios = leituraFuncionarios();
+        for (Funcionario funcionario : listaFuncionarios) {
+            if (funcionario.getCPF().equals(cpf)) {
+                return funcionario;
+            }
+        }
+        return null;
     }
 }

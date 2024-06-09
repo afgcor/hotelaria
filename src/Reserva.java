@@ -126,10 +126,6 @@ public class Reserva {
         return valorPago;
     }
 
-    public static double valorTotal() {
-        return 0.0; /* editar aqui pra somar com consumo e serviços, copiar esses métodos... puta que pariu chega kkkkkkkkk */
-    }
-
     /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
     public static boolean cadastrarReserva() throws IOException {
         Scanner scan = new Scanner(System.in);
@@ -157,7 +153,7 @@ public class Reserva {
             System.out.print("Insira o CPF do hóspede: ");
             String cpfHospede = scan.nextLine();
 
-            Hospede hospede = identificarHospede(cpfHospede);
+            Hospede hospede = Hospede.identificarHospede(cpfHospede);
 
             if (hospede == null) {
                 System.out.println("");
@@ -168,7 +164,7 @@ public class Reserva {
             System.out.print("Insira o código do quarto: ");
             String codigoQuarto = scan.nextLine();
 
-            Quarto quarto = identificarQuarto(Integer.parseInt(codigoQuarto));
+            Quarto quarto = Quarto.identificarQuarto(Integer.parseInt(codigoQuarto));
 
             if (quarto == null) {
                 System.out.println("");
@@ -180,7 +176,7 @@ public class Reserva {
             String cpfFuncionarioReserva = scan.nextLine();
             String cpf = cpfFuncionarioReserva;
 
-            Funcionario funcionarioReserva = identificarFuncionario(cpf);
+            Funcionario funcionarioReserva = Funcionario.identificarFuncionario(cpf);
 
             if (funcionarioReserva == null) {
                 System.out.println("");
@@ -192,7 +188,7 @@ public class Reserva {
             String cpfFuncionarioFechamento = scan.nextLine();
             cpf = cpfFuncionarioFechamento;
 
-            Funcionario funcionarioFechamento = identificarFuncionario(cpf);
+            Funcionario funcionarioFechamento = Funcionario.identificarFuncionario(cpf);
 
             if (funcionarioFechamento == null) {
                 System.out.println("");
@@ -212,11 +208,8 @@ public class Reserva {
             System.out.print("Insira a data do check-out (dd/MM/yyy - HH:mm:ss): ");
             String dataCheckout = scan.nextLine();
 
-            System.out.print("Insira o valor da reserva: ");
-            String valorReserva = scan.nextLine();
-
-            System.out.print("Insira o valor pago: ");
-            String valorPago = scan.nextLine();
+            String valorReserva = "0.0";
+            String valorPago = "0.0";
 
             if (codigo.isEmpty() || cpfHospede.isEmpty() || codigoQuarto.isEmpty() || cpfFuncionarioReserva.isEmpty() || cpfFuncionarioFechamento.isEmpty() || dataEntrada.isEmpty() || dataSaida.isEmpty() || dataCheckin.isEmpty() || dataCheckout.isEmpty() || valorReserva.isEmpty() || valorPago.isEmpty()) {
                 System.out.println("");
@@ -303,10 +296,10 @@ public class Reserva {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(" ; ");
                 if (dados.length == 11) {
-                    Hospede hospede = identificarHospede(dados[1]);
-                    Quarto quarto = identificarQuarto(Integer.parseInt(dados[2]));
-                    Funcionario funcionarioReserva = identificarFuncionario(dados[3]);
-                    Funcionario funcionarioFechamento = identificarFuncionario(dados[4]);
+                    Hospede hospede = Hospede.identificarHospede(dados[1]);
+                    Quarto quarto = Quarto.identificarQuarto(Integer.parseInt(dados[2]));
+                    Funcionario funcionarioReserva = Funcionario.identificarFuncionario(dados[3]);
+                    Funcionario funcionarioFechamento = Funcionario.identificarFuncionario(dados[4]);
                     Reserva reserva = new Reserva(Integer.parseInt(dados[0]), hospede, quarto, funcionarioReserva, funcionarioFechamento, LocalDateTime.parse(dados[5], dtf), LocalDateTime.parse(dados[6], dtf), LocalDateTime.parse(dados[7], dtf), LocalDateTime.parse(dados[8], dtf), Double.parseDouble(dados[9]), Double.parseDouble(dados[10]));
                     listaReservas.add(reserva);
                 }
@@ -314,7 +307,7 @@ public class Reserva {
 
         System.out.println("");
         System.out.println("*** EDITAR RESERVA ***");
-        System.out.print("Digite o código do item cuja categoria será editada: ");
+        System.out.print("Digite o código da reserva que será editada: ");
         String codigo = scan.nextLine();
         System.out.println("");
 
@@ -466,10 +459,10 @@ public class Reserva {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(" ; ");
                 if (dados.length == 11) {
-                    Hospede hospede = identificarHospede(dados[1]);
-                    Quarto quarto = identificarQuarto(Integer.parseInt(dados[2]));
-                    Funcionario funcionarioReserva = identificarFuncionario(dados[3]);
-                    Funcionario funcionarioFechamento = identificarFuncionario(dados[4]);
+                    Hospede hospede = Hospede.identificarHospede(dados[1]);
+                    Quarto quarto = Quarto.identificarQuarto(Integer.parseInt(dados[2]));
+                    Funcionario funcionarioReserva = Funcionario.identificarFuncionario(dados[3]);
+                    Funcionario funcionarioFechamento = Funcionario.identificarFuncionario(dados[4]);
                     Reserva reserva = new Reserva(Integer.parseInt(dados[0]), hospede, quarto, funcionarioReserva, funcionarioFechamento, LocalDateTime.parse(dados[5], dtf), LocalDateTime.parse(dados[6], dtf), LocalDateTime.parse(dados[7], dtf), LocalDateTime.parse(dados[8], dtf), Double.parseDouble(dados[9]), Double.parseDouble(dados[10]));
                     listaReservas.add(reserva);
                 }
@@ -483,7 +476,7 @@ public class Reserva {
         Scanner scan = new Scanner(System.in);
         System.out.println("");
         System.out.println("*** CONSULTAR RESERVA ***");
-        System.out.print("Digite o código da reserva cuja categoria será consultada: ");
+        System.out.print("Digite o código da reserva que será consultada: ");
         int codigo = scan.nextInt();
         scan.nextLine();
         System.out.println("");
@@ -526,10 +519,10 @@ public class Reserva {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(" ; ");
                 if (dados.length == 11) {
-                    Hospede hospede = identificarHospede(dados[1]);
-                    Quarto quarto = identificarQuarto(Integer.parseInt(dados[2]));
-                    Funcionario funcionarioReserva = identificarFuncionario(dados[3]);
-                    Funcionario funcionarioFechamento = identificarFuncionario(dados[4]);
+                    Hospede hospede = Hospede.identificarHospede(dados[1]);
+                    Quarto quarto = Quarto.identificarQuarto(Integer.parseInt(dados[2]));
+                    Funcionario funcionarioReserva = Funcionario.identificarFuncionario(dados[3]);
+                    Funcionario funcionarioFechamento = Funcionario.identificarFuncionario(dados[4]);
                     Reserva reserva = new Reserva(Integer.parseInt(dados[0]), hospede, quarto, funcionarioReserva, funcionarioFechamento, LocalDateTime.parse(dados[5], dtf), LocalDateTime.parse(dados[6], dtf), LocalDateTime.parse(dados[7], dtf), LocalDateTime.parse(dados[8], dtf), Double.parseDouble(dados[9]), Double.parseDouble(dados[10]));
                     listaReservas.add(reserva);
                 }
@@ -569,10 +562,10 @@ public class Reserva {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(" ; ");
                 if (dados.length == 11) {
-                    Hospede hospede = identificarHospede(dados[1]);
-                    Quarto quarto = identificarQuarto(Integer.parseInt(dados[2]));
-                    Funcionario funcionarioReserva = identificarFuncionario(dados[3]);
-                    Funcionario funcionarioFechamento = identificarFuncionario(dados[4]);
+                    Hospede hospede = Hospede.identificarHospede(dados[1]);
+                    Quarto quarto = Quarto.identificarQuarto(Integer.parseInt(dados[2]));
+                    Funcionario funcionarioReserva = Funcionario.identificarFuncionario(dados[3]);
+                    Funcionario funcionarioFechamento = Funcionario.identificarFuncionario(dados[4]);
                     Reserva reserva = new Reserva(Integer.parseInt(dados[0]), hospede, quarto, funcionarioReserva, funcionarioFechamento, LocalDateTime.parse(dados[5], dtf), LocalDateTime.parse(dados[6], dtf), LocalDateTime.parse(dados[7], dtf), LocalDateTime.parse(dados[8], dtf), Double.parseDouble(dados[9]), Double.parseDouble(dados[10]));
                     listaReservas.add(reserva);
                 }
@@ -593,48 +586,13 @@ public class Reserva {
         return null;
     }
 
-    public static List<Quarto> leituraQuartos() {
-        List<Quarto> listaQuartos = new ArrayList<>();
-        File quartos = new File("./arquivos/quartos.txt");
+    public static double valorConsumoServicos(int idReserva) {
+        double total = 0;
+        List<ConsumoServico> listaConsumosServicos = ConsumoServico.leituraConsumosServicos();
+        File consumosservicos = new File("./arquivos/consumosservicos.txt");
 
-        try (BufferedReader br = new BufferedReader(new FileReader(quartos))) {
-
-            if (!quartos.exists()) {
-                throw new FileNotFoundException();
-            }
-
-            String linha;
-            while ((linha = br.readLine()) != null) {
-                String[] dados = linha.split(" ; ");
-                if (dados.length == 3) {
-                    Categoria categoria = Quarto.identificarCategoria(Integer.parseInt(dados[1]));
-                    Quarto quarto = new Quarto(Integer.parseInt(dados[0]), categoria, dados[2]);
-                    listaQuartos.add(quarto);
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("ERRO! Falha na leitura do arquivo.");
-        }
-        return listaQuartos;
-    }
-
-    public static Quarto identificarQuarto(int codigoQuarto) {
-        List<Quarto> listaQuartos = leituraQuartos();
-        for (Quarto quarto : listaQuartos) {
-            if (quarto.getCodigo() == codigoQuarto) {
-                return quarto;
-            }
-        }
-        return null;
-    }
-
-    public static List<Hospede> leituraHospedes() {
-        List<Hospede> listaHospedes = new ArrayList<>();
-        File hospedes = new File("./arquivos/hospedes.txt");
-
-        try (BufferedReader br = new BufferedReader(new FileReader(hospedes))) {
-
-            if (!hospedes.exists()) {
+        try (BufferedReader br = new BufferedReader(new FileReader(consumosservicos))) {
+            if (!consumosservicos.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -642,57 +600,30 @@ public class Reserva {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(" ; ");
                 if (dados.length == 4) {
-                    Hospede hospede = new Hospede(dados[0], dados[1], dados[2], dados[3]);
-                    listaHospedes.add(hospede);
+                    Servico servico = Servico.identificarServico(Integer.parseInt(dados[0]));
+                    Reserva reserva = Reserva.identificarReserva(Integer.parseInt(dados[1]));
+                    if (reserva != null) {
+                        ConsumoServico consumoServico = new ConsumoServico(servico, reserva, Integer.parseInt(dados[2]), LocalDateTime.parse(dados[3], dtf));
+                        listaConsumosServicos.add(consumoServico);
+                    }
                 }
             }
         } catch (IOException e) {
-            System.out.println("ERRO! Falha na leitura do arquivo.");
+            System.out.println("ERRO: Falha na leitura do arquivo consumosservicos.txt!");
         }
-        return listaHospedes;
-    }
 
-    public static Hospede identificarHospede(String cpfHospede) {
-        List<Hospede> listaHospedes = leituraHospedes();
-        for (Hospede hospede : listaHospedes) {
-            if (hospede.getCPF().equals(cpfHospede)) {
-                return hospede;
+        for (ConsumoServico consumoServico : listaConsumosServicos) {
+            if (consumoServico.getReserva().getCodigo() == idReserva) {
+                total += consumoServico.getServico().getValor() * consumoServico.getQuantidadeSolicitada();
             }
         }
-        return null;
+
+        return total;
     }
 
-    public static List<Funcionario> leituraFuncionarios() {
-        List<Funcionario> listaFuncionarios = new ArrayList<>();
-        File funcionarios = new File("./arquivos/funcionarios.txt");
-
-        try (BufferedReader br = new BufferedReader(new FileReader(funcionarios))) {
-
-            if (!funcionarios.exists()) {
-                throw new FileNotFoundException();
-            }
-
-            String linha;
-            while ((linha = br.readLine()) != null) {
-                String[] dados = linha.split(" ; ");
-                if (dados.length == 4) {
-                    Funcionario funcionario = new Funcionario(dados[0], dados[1], dados[2], dados[3]);
-                    listaFuncionarios.add(funcionario);
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("ERRO! Falha na leitura do arquivo.");
-        }
-        return listaFuncionarios;
-    }
-
-    public static Funcionario identificarFuncionario(String cpf) {
-        List<Funcionario> listaFuncionarios = leituraFuncionarios();
-        for (Funcionario funcionario : listaFuncionarios) {
-            if (funcionario.getCPF().equals(cpf)) {
-                return funcionario;
-            }
-        }
-        return null;
-    }
+    /* public static double valorTotal() {
+        double valorTotal = 0.0;
+        valorTotal = valorServicos(0) + 
+        return valorTotal;
+    } */
 }

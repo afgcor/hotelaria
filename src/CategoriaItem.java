@@ -50,7 +50,7 @@ public class CategoriaItem {
             System.out.print("Insira o código do item: ");
             idItem = scan.nextLine();
 
-            Item item = identificarItem(Integer.parseInt(idItem));
+            Item item = Item.identificarItem(Integer.parseInt(idItem));
 
             if (item == null) {
                 System.out.println("");
@@ -71,7 +71,7 @@ public class CategoriaItem {
             System.out.print("Insira o código da categoria: ");
             String idCategoria = scan.nextLine();
 
-            Categoria categoria = identificarCategoria(Integer.parseInt(idCategoria));
+            Categoria categoria = Categoria.identificarCategoria(Integer.parseInt(idCategoria));
 
             if (categoria == null) {
                 System.out.println("");
@@ -155,8 +155,8 @@ public class CategoriaItem {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(" ; ");
                 if (dados.length == 3) {
-                    Item item = identificarItem(Integer.parseInt(dados[0]));
-                    Categoria categoria = identificarCategoria(Integer.parseInt(dados[1]));
+                    Item item = Item.identificarItem(Integer.parseInt(dados[0]));
+                    Categoria categoria = Categoria.identificarCategoria(Integer.parseInt(dados[1]));
                     if (item != null && categoria != null) {
                         CategoriaItem categoriaItem = new CategoriaItem(item, categoria, Integer.parseInt(dados[2]));
                         listaCategoriaItens.add(categoriaItem);
@@ -256,8 +256,8 @@ public class CategoriaItem {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(" ; ");
                 if (dados.length == 3) {
-                    Item item = identificarItem(Integer.parseInt(dados[0]));
-                    Categoria categoria = identificarCategoria(Integer.parseInt(dados[1]));
+                    Item item = Item.identificarItem(Integer.parseInt(dados[0]));
+                    Categoria categoria = Categoria.identificarCategoria(Integer.parseInt(dados[1]));
                     if (item != null && categoria != null) {
                         CategoriaItem categoriaItem = new CategoriaItem(item, categoria, Integer.parseInt(dados[2]));
                         listaCategoriaItens.add(categoriaItem);
@@ -314,8 +314,8 @@ public class CategoriaItem {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(" ; ");
                 if (dados.length == 3) {
-                    Item item = identificarItem(Integer.parseInt(dados[0]));
-                    Categoria categoria = identificarCategoria(Integer.parseInt(dados[1]));
+                    Item item = Item.identificarItem(Integer.parseInt(dados[0]));
+                    Categoria categoria = Categoria.identificarCategoria(Integer.parseInt(dados[1]));
                     if (item != null && categoria != null) {
                         CategoriaItem categoriaItem = new CategoriaItem(item, categoria, Integer.parseInt(dados[2]));
                         listaCategoriasItens.add(categoriaItem);
@@ -353,8 +353,8 @@ public class CategoriaItem {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(" ; ");
                 if (dados.length == 3) {
-                    Item item = identificarItem(Integer.parseInt(dados[0]));
-                    Categoria categoria = identificarCategoria(Integer.parseInt(dados[1]));
+                    Item item = Item.identificarItem(Integer.parseInt(dados[0]));
+                    Categoria categoria = Categoria.identificarCategoria(Integer.parseInt(dados[1]));
                     CategoriaItem categoriaItem = new CategoriaItem(item, categoria, Integer.parseInt(dados[2]));
                     listaItens.add(categoriaItem);
                 }
@@ -375,71 +375,4 @@ public class CategoriaItem {
         return null;
     }
 
-    public static List<Categoria> leituraCategorias() {
-        List<Categoria> listaCategorias = new ArrayList<>();
-        File categorias = new File("./arquivos/categoriasitens.txt");
-
-        try (BufferedReader br = new BufferedReader(new FileReader(categorias))) {
-
-            if (!categorias.exists()) {
-                throw new FileNotFoundException();
-            }
-
-            String linha;
-            while ((linha = br.readLine()) != null) {
-                String[] dados = linha.split(" ; ");
-                if (dados.length == 3) {
-                    Categoria categoria = new Categoria(Integer.parseInt(dados[0]), dados[1], Double.parseDouble(dados[2]));
-                    listaCategorias.add(categoria);
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("ERRO! Falha na leitura do arquivo.");
-        }
-        return listaCategorias;
-    }
-
-    public static Categoria identificarCategoria(int codigo) {
-        List<Categoria> listaCategorias = leituraCategorias();
-        for (Categoria categoria : listaCategorias) {
-            if (categoria.getCodigo() == codigo) {
-                return categoria;
-            }
-        }
-        return null;
-    }
-
-    public static List<Item> leituraItens() {
-        List<Item> listaItens = new ArrayList<>();
-        File itens = new File("./arquivos/categoriasitens.txt");
-
-        try (BufferedReader br = new BufferedReader(new FileReader(itens))) {
-
-            if (!itens.exists()) {
-                throw new FileNotFoundException();
-            }
-
-            String linha;
-            while ((linha = br.readLine()) != null) {
-                String[] dados = linha.split(" ; ");
-                if (dados.length == 3) {
-                    Item item = new Item(Integer.parseInt(dados[0]), dados[1], Double.parseDouble(dados[2]));
-                    listaItens.add(item);
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("ERRO! Falha na leitura do arquivo.");
-        }
-        return listaItens;
-    }
-
-    public static Item identificarItem(int codigo) {
-        List<Item> listaItens = leituraItens();
-        for (Item item : listaItens) {
-            if (item.getCodigo() == codigo) {
-                return item;
-            }
-        }
-        return null;
-    }
 }

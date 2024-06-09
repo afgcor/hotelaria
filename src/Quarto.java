@@ -116,7 +116,7 @@ public class Quarto {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(" ; ");
                 if (dados.length == 3) {
-                    Categoria categoria = identificarCategoria(Integer.parseInt(dados[1]));
+                    Categoria categoria = Categoria.identificarCategoria(Integer.parseInt(dados[1]));
                     if (categoria != null) {
                         Quarto quarto = new Quarto(Integer.parseInt(dados[0]), categoria, dados[2]);
                         listaQuartos.add(quarto);
@@ -212,7 +212,7 @@ public class Quarto {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(" ; ");
                 if (dados.length == 3) {
-                    Categoria categoria = identificarCategoria(Integer.parseInt(dados[1]));
+                    Categoria categoria = Categoria.identificarCategoria(Integer.parseInt(dados[1]));
                     if (categoria != null) {
                         Quarto quarto = new Quarto(Integer.parseInt(dados[0]), categoria, dados[2]);
                         listaQuartos.add(quarto);
@@ -269,7 +269,7 @@ public class Quarto {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(" ; ");
                 if (dados.length == 3) {
-                    Categoria categoria = identificarCategoria(Integer.parseInt(dados[1]));
+                    Categoria categoria = Categoria.identificarCategoria(Integer.parseInt(dados[1]));
                     if (categoria != null) {
                         Quarto quarto = new Quarto(Integer.parseInt(dados[0]), categoria, dados[2]);
                         listaQuartos.add(quarto);
@@ -307,7 +307,7 @@ public class Quarto {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(" ; ");
                 if (dados.length == 3) {
-                    Categoria categoria = identificarCategoria(Integer.parseInt(dados[1]));
+                    Categoria categoria = Categoria.identificarCategoria(Integer.parseInt(dados[1]));
                     Quarto quarto = new Quarto(Integer.parseInt(dados[0]), categoria, dados[2]);
                     listaQuartos.add(quarto);
                 }
@@ -328,37 +328,4 @@ public class Quarto {
         return null;
     }
 
-    public static List<Categoria> leituraCategorias() {
-        List<Categoria> listaCategorias = new ArrayList<>();
-        File categorias = new File("./arquivos/categorias.txt");
-
-        try (BufferedReader br = new BufferedReader(new FileReader(categorias))) {
-
-            if (!categorias.exists()) {
-                throw new FileNotFoundException();
-            }
-
-            String linha;
-            while ((linha = br.readLine()) != null) {
-                String[] dados = linha.split(" ; ");
-                if (dados.length == 3) {
-                    Categoria categoria = new Categoria(Integer.parseInt(dados[0]), dados[1], Double.parseDouble(dados[2]));
-                    listaCategorias.add(categoria);
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("ERRO! Falha na leitura do arquivo.");
-        }
-        return listaCategorias;
-    }
-
-    public static Categoria identificarCategoria(int codigo) {
-        List<Categoria> listaCategorias = leituraCategorias();
-        for (Categoria categoria : listaCategorias) {
-            if (categoria.getCodigo() == codigo) {
-                return categoria;
-            }
-        }
-        return null;
-    }
 }

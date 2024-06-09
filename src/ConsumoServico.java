@@ -66,7 +66,7 @@ public class ConsumoServico {
             System.out.print("Insira o código do serviço: ");
             String idServico = scan.nextLine();
 
-            Servico servico = identificarServico(Integer.parseInt(idServico));
+            Servico servico = Servico.identificarServico(Integer.parseInt(idServico));
 
             if (servico == null) {
                 System.out.println("");
@@ -77,7 +77,7 @@ public class ConsumoServico {
             System.out.print("Insira o código da reserva: ");
             String idReserva = scan.nextLine();
 
-            Reserva reserva = identificarReserva(Integer.parseInt(idReserva));
+            Reserva reserva = Reserva.identificarReserva(Integer.parseInt(idReserva));
 
             if (reserva == null) {
                 System.out.println("");
@@ -94,7 +94,7 @@ public class ConsumoServico {
             if (idServico.isEmpty() || idReserva.isEmpty() || quantidadeSolicitada.isEmpty() || dataConsumo.isEmpty()) {
                 System.out.println("");
                 System.out.println("ERRO: Entrada inválida (campos em branco)!");
-                System.out.println("Por favor, insira todos os dados da categoria (item) ou encerre a operação.");
+                System.out.println("Por favor, insira todos os dados do consumo ou encerre a operação.");
                 throw new NullPointerException();
             }
 
@@ -164,8 +164,8 @@ public class ConsumoServico {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(" ; ");
                 if (dados.length == 4) {
-                    Servico servico = identificarServico(Integer.parseInt(dados[0]));
-                    Reserva reserva = identificarReserva(Integer.parseInt(dados[1]));
+                    Servico servico = Servico.identificarServico(Integer.parseInt(dados[0]));
+                    Reserva reserva = Reserva.identificarReserva(Integer.parseInt(dados[1]));
                     if (servico != null && reserva != null) {
                         ConsumoServico consumoServico = new ConsumoServico(servico, reserva, Integer.parseInt(dados[2]), LocalDateTime.parse(dados[3], dtf));
                         listaConsumosServicos.add(consumoServico);
@@ -249,8 +249,8 @@ public class ConsumoServico {
                                 dataAtualizada = LocalDateTime.parse(dataAtualizadaS, dtf);
                             }
     
-                            consultaConsumos.setServico(identificarServico(codigoServicoAtualizado));
-                            consultaConsumos.setReserva(identificarReserva(codigoReservaAtualizada));
+                            consultaConsumos.setServico(Servico.identificarServico(codigoServicoAtualizado));
+                            consultaConsumos.setReserva(Reserva.identificarReserva(codigoReservaAtualizada));
                             consultaConsumos.setQuantidadeSolicitada(quantidadeAtualizada);
                             consultaConsumos.setDataConsumo(dataAtualizada);
     
@@ -305,8 +305,8 @@ public class ConsumoServico {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(" ; ");
                 if (dados.length == 4) {
-                    Servico servico = identificarServico(Integer.parseInt(dados[0]));
-                    Reserva reserva = identificarReserva(Integer.parseInt(dados[1]));
+                    Servico servico = Servico.identificarServico(Integer.parseInt(dados[0]));
+                    Reserva reserva = Reserva.identificarReserva(Integer.parseInt(dados[1]));
                     if (servico != null && reserva != null) {
                         ConsumoServico consumoServico = new ConsumoServico(servico, reserva, Integer.parseInt(dados[2]), LocalDateTime.parse(dados[3], dtf));
                         listaConsumosServicos.add(consumoServico);
@@ -314,9 +314,9 @@ public class ConsumoServico {
                 }
             }
         } catch (FileNotFoundException e) {
-            System.out.println("ERRO: O arquivo categoriasitens.txt não foi encontrado!");
+            System.out.println("ERRO: O arquivo consumosservicos.txt não foi encontrado!");
         } catch (IOException e) {
-            System.out.println("ERRO: Falha na leitura do arquivo categoriasitens.txt!");
+            System.out.println("ERRO: Falha na leitura do arquivo consumosservicos.txt!");
         }
 
         Scanner scan = new Scanner(System.in);
@@ -342,7 +342,7 @@ public class ConsumoServico {
                 System.out.println("DATA: " + consultaReserva.getDataConsumo().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + consultaReserva.getDataConsumo().format(dtf) + " | SERVIÇO: " + consultaReserva.getServico().getDescricao() + ", Cód. " + consultaReserva.getServico().getCodigo());
                 }
             }
-        } else {
+        } else if (opcao.equalsIgnoreCase("N")) {
             System.out.println("Consumo (serviço) identificado!");
             for (ConsumoServico consultaGeral : listaConsumosServicos) {
                 cadastrado = true;
@@ -350,6 +350,11 @@ public class ConsumoServico {
                 System.out.println("CONSUMO (SERVIÇO) " + (listaConsumosServicos.indexOf(consultaGeral) + 1));
                 System.out.println("RESERVA: " + consultaGeral.getReserva().getCodigo() + ", Quarto " + consultaGeral.getReserva().getQuarto().getCodigo() + " | DATA: " + consultaGeral.getDataConsumo().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + consultaGeral.getDataConsumo().format(dtf) + " | SERVIÇO: " + consultaGeral.getServico().getDescricao() + ", Cód. " + consultaGeral.getServico().getCodigo() + " | QUANTIDADE: " + consultaGeral.getQuantidadeSolicitada());
             }
+        } else {
+            System.out.println("ERRO: Opção inválida!");
+            System.out.println("");
+            scan.close();
+            return null;
         }
 
         System.out.println("");
@@ -376,8 +381,8 @@ public class ConsumoServico {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(" ; ");
                 if (dados.length == 4) {
-                    Servico servico = identificarServico(Integer.parseInt(dados[0]));
-                    Reserva reserva = identificarReserva(Integer.parseInt(dados[1]));
+                    Servico servico = Servico.identificarServico(Integer.parseInt(dados[0]));
+                    Reserva reserva = Reserva.identificarReserva(Integer.parseInt(dados[1]));
                     if (servico != null && reserva != null) {
                         ConsumoServico consumoServico = new ConsumoServico(servico, reserva, Integer.parseInt(dados[2]), LocalDateTime.parse(dados[3], dtf));
                         listaConsumosServicos.add(consumoServico);
@@ -393,84 +398,12 @@ public class ConsumoServico {
                 System.out.println("DATA: " + consumoServico.getDataConsumo().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + consumoServico.getDataConsumo().format(dtf) + " | SERVIÇO: " + consumoServico.getServico().getDescricao() + ", Cód. " + consumoServico.getServico().getCodigo());
             }
         } catch (FileNotFoundException e) {
-            System.out.println("ERRO: O arquivo categoriasitens.txt não foi encontrado!");
+            System.out.println("ERRO: O arquivo consumosservicos.txt não foi encontrado!");
         } catch (IOException e) {
-            System.out.println("ERRO: Falha na leitura do arquivo categoriasitens.txt!");
+            System.out.println("ERRO: Falha na leitura do arquivo consumosservicos.txt!");
         }
         System.out.println("");
         return listaConsumosServicos;
-    }
-
-    public static List<Servico> leituraServicos() {
-        List<Servico> listaServicos = new ArrayList<>();
-        File servicos = new File("./arquivos/servicos.txt");
-
-        try (BufferedReader br = new BufferedReader(new FileReader(servicos))) {
-
-            if (!servicos.exists()) {
-                throw new FileNotFoundException();
-            }
-
-            String linha;
-            while ((linha = br.readLine()) != null) {
-                String[] dados = linha.split(" ; ");
-                if (dados.length == 3) {
-                    Servico servico = new Servico(Integer.parseInt(dados[0]), dados[1], Double.parseDouble(dados[2]));
-                    listaServicos.add(servico);
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("ERRO! Falha na leitura do arquivo.");
-        }
-        return listaServicos;
-    }
-
-    public static Servico identificarServico(int idServico) {
-        List<Servico> listaServicos = leituraServicos();
-        for (Servico servico : listaServicos) {
-            if (servico.getCodigo() == idServico) {
-                return servico;
-            }
-        }
-        return null;
-    }
-
-    public static List<Reserva> leituraReservas() {
-        List<Reserva> listaReservas = new ArrayList<>();
-        File reservas = new File("./arquivos/reservas.txt");
-    
-        try (BufferedReader br = new BufferedReader(new FileReader(reservas))) {
-    
-            if (!reservas.exists()) {
-                throw new FileNotFoundException();
-            }
-    
-            String linha;
-            while ((linha = br.readLine()) != null) {
-                String[] dados = linha.split(" ; ");
-                if (dados.length == 11) {
-                    Hospede hospede = Hospede.identificarHospede(dados[1]);
-                    Quarto quarto = Quarto.identificarQuarto(Integer.parseInt(dados[2]));
-                    Funcionario funcionarioReserva = Funcionario.identificarFuncionario(dados[3]);
-                    Funcionario funcionarioFechamento = Funcionario.identificarFuncionario(dados[4]);
-                    Reserva reserva = new Reserva(Integer.parseInt(dados[0]), hospede, quarto, funcionarioReserva, funcionarioFechamento, LocalDateTime.parse(dados[5], dtf), LocalDateTime.parse(dados[6], dtf), LocalDateTime.parse(dados[7], Reserva.dtf), LocalDateTime.parse(dados[8], dtf), Double.parseDouble(dados[9]), Double.parseDouble(dados[10]));
-                    listaReservas.add(reserva);
-                }
-            }            
-        } catch (IOException e) {
-            System.out.println("ERRO! Falha na leitura do arquivo.");
-        }
-        return listaReservas;
-    }
-
-    public static Reserva identificarReserva(int idReserva) {
-        List<Reserva> listaReservas = leituraReservas();
-        for (Reserva reserva : listaReservas) {
-            if (reserva.getCodigo() == idReserva) {
-                return reserva;
-            }
-        }
-        return null;
     }
 
     public static List<ConsumoServico> leituraConsumosServicos() {
@@ -487,8 +420,8 @@ public class ConsumoServico {
             while ((linha = br.readLine()) != null) {
                 String[] dados = linha.split(" ; ");
                 if (dados.length == 4) {
-                    Servico servico = identificarServico(Integer.parseInt(dados[0]));
-                    Reserva reserva = identificarReserva(Integer.parseInt(dados[1]));
+                    Servico servico = Servico.identificarServico(Integer.parseInt(dados[0]));
+                    Reserva reserva = Reserva.identificarReserva(Integer.parseInt(dados[1]));
                     ConsumoServico consumoServico = new ConsumoServico(servico, reserva, Integer.parseInt(dados[2]), LocalDateTime.parse(dados[3], dtf));
                     listaConsumosServicos.add(consumoServico);
                 }
@@ -499,10 +432,10 @@ public class ConsumoServico {
         return listaConsumosServicos;
     }
 
-    public static ConsumoServico identificarConsumoServico(int idServico, int idReserva) {
+    public static ConsumoServico identificarConsumoServico(int idReserva) {
         List<ConsumoServico> listaConsumosServicos = leituraConsumosServicos();
         for (ConsumoServico consumoServico : listaConsumosServicos) {
-            if (consumoServico.getServico().getCodigo() == idServico && consumoServico.getReserva().getCodigo() == idReserva) {
+            if (consumoServico.getReserva().getCodigo() == idReserva) {
                 return consumoServico;
             }
         }

@@ -91,7 +91,7 @@ public class Funcionario extends Pessoa {
         File funcionarios = new File("./arquivos/funcionarios.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(funcionarios))) {
-            if (!funcionarios.exists() || funcionarios.length() == 0) {
+            if (!funcionarios.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -145,7 +145,7 @@ public class Funcionario extends Pessoa {
                 if (setorAtualizado.isEmpty()) {
                     setorAtualizado = funcionario.getSetor();
                 }
-                String linhaAtualizada = cpfAtualizado + " ; " + nomeAtualizado + " ; " + emailAtualizado + " ; " + setorAtualizado;
+                String linhaAtualizada = (cpfAtualizado + " ; " + nomeAtualizado + " ; " + emailAtualizado + " ; " + setorAtualizado);
                 listaLinhas.add(linhaAtualizada);
                 System.out.println("");
                 System.out.println("Dados atualizados com sucesso!");
@@ -183,7 +183,7 @@ public class Funcionario extends Pessoa {
         File funcionarios = new File("./arquivos/funcionarios.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(funcionarios))) {
-            if (!funcionarios.exists() || funcionarios.length() == 0) {
+            if (!funcionarios.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -236,7 +236,7 @@ public class Funcionario extends Pessoa {
     
         try (BufferedReader br = new BufferedReader(new FileReader(funcionarios))) {
 
-            if (!funcionarios.exists() || funcionarios.length() == 0) {
+            if (!funcionarios.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -271,7 +271,7 @@ public class Funcionario extends Pessoa {
 
         try (BufferedReader br = new BufferedReader(new FileReader(funcionarios))) {
 
-            if (!funcionarios.exists() || funcionarios.length() == 0) {
+            if (!funcionarios.exists()) {
                 throw new FileNotFoundException();
             }
 

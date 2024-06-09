@@ -108,7 +108,7 @@ public class Categoria {
         File categorias = new File("./arquivos/categorias.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(categorias))) {
-            if (!categorias.exists() || categorias.length() == 0) {
+            if (!categorias.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -163,7 +163,7 @@ public class Categoria {
                 } else {
                     valorAtualizado = Double.parseDouble(valorAtualizadoS);
                 }    
-                String linhaAtualizada = codigoAtualizado + " ; " + descricaoAtualizada + " ; " + valorAtualizado;
+                String linhaAtualizada = (codigoAtualizado + " ; " + descricaoAtualizada + " ; " + valorAtualizado);
                 listaLinhas.add(linhaAtualizada);
                 System.out.println("");
                 System.out.println("Dados atualizados com sucesso!");
@@ -201,7 +201,7 @@ public class Categoria {
         File categorias = new File("./arquivos/categorias.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(categorias))) {
-            if (!categorias.exists() || categorias.length() == 0) {
+            if (!categorias.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -255,7 +255,7 @@ public class Categoria {
     
         try (BufferedReader br = new BufferedReader(new FileReader(categorias))) {
 
-            if (!categorias.exists() || categorias.length() == 0) {
+            if (!categorias.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -290,7 +290,7 @@ public class Categoria {
 
         try (BufferedReader br = new BufferedReader(new FileReader(categorias))) {
 
-            if (!categorias.exists() || categorias.length() == 0) {
+            if (!categorias.exists()) {
                 throw new FileNotFoundException();
             }
 

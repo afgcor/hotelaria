@@ -147,7 +147,7 @@ public class CategoriaItem {
         File categoriasitens = new File("./arquivos/categoriasitens.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(categoriasitens))) {
-            if (!categoriasitens.exists() || categoriasitens.length() == 0) {
+            if (!categoriasitens.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -210,7 +210,7 @@ public class CategoriaItem {
                     quantidadeAtualizada = Integer.parseInt(quantidadeAtualizadaS);
                 }
 
-                String linhaAtualizada = codigoItemAtualizado + " ; " + codigoCategoriaAtualizada + " ; " + quantidadeAtualizada;
+                String linhaAtualizada = (codigoItemAtualizado + " ; " + codigoCategoriaAtualizada + " ; " + quantidadeAtualizada);
                 listaLinhas.add(linhaAtualizada);
                 System.out.println("");
                 System.out.println("Dados atualizados com sucesso!");
@@ -248,7 +248,7 @@ public class CategoriaItem {
         File categoriasitens = new File("./arquivos/categoriasitens.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(categoriasitens))) {
-            if (!categoriasitens.exists() || categoriasitens.length() == 0) {
+            if (!categoriasitens.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -306,7 +306,7 @@ public class CategoriaItem {
     
         try (BufferedReader br = new BufferedReader(new FileReader(categoriasitens))) {
 
-            if (!categoriasitens.exists() || categoriasitens.length() == 0) {
+            if (!categoriasitens.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -345,7 +345,7 @@ public class CategoriaItem {
 
         try (BufferedReader br = new BufferedReader(new FileReader(categoriasitens))) {
 
-            if (!categoriasitens.exists() || categoriasitens.length() == 0) {
+            if (!categoriasitens.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -377,11 +377,11 @@ public class CategoriaItem {
 
     public static List<Categoria> leituraCategorias() {
         List<Categoria> listaCategorias = new ArrayList<>();
-        File categorias = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\categorias.txt");
+        File categorias = new File("./arquivos/categoriasitens.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(categorias))) {
 
-            if (!categorias.exists() || categorias.length() == 0) {
+            if (!categorias.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -411,11 +411,11 @@ public class CategoriaItem {
 
     public static List<Item> leituraItens() {
         List<Item> listaItens = new ArrayList<>();
-        File itens = new File("D:\\Users\\Anna\\Desktop\\ANÁLISE E DESENVOLVIMENTO DE SISTEMAS\\Unifor\\S2\\Programação Orientada a Objetos\\AV3\\arquivos\\itens.txt");
+        File itens = new File("./arquivos/categoriasitens.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(itens))) {
 
-            if (!itens.exists() || itens.length() == 0) {
+            if (!itens.exists()) {
                 throw new FileNotFoundException();
             }
 

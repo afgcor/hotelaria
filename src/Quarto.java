@@ -108,7 +108,7 @@ public class Quarto {
         File quartos = new File("./arquivos/quartos.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(quartos))) {
-            if (!quartos.exists() || quartos.length() == 0) {
+            if (!quartos.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -166,7 +166,7 @@ public class Quarto {
                 if (statusAtualizado.isEmpty()) {
                     statusAtualizado = quarto.getStatus();
                 }
-                String linhaAtualizada = codigoAtualizado + " ; " + categoriaAtualizada + " ; " + statusAtualizado;
+                String linhaAtualizada = (codigoAtualizado + " ; " + categoriaAtualizada + " ; " + statusAtualizado);
                 listaLinhas.add(linhaAtualizada);
                 System.out.println("");
                 System.out.println("Dados atualizados com sucesso!");
@@ -204,7 +204,7 @@ public class Quarto {
         File quartos = new File("./arquivos/quartos.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(quartos))) {
-            if (!quartos.exists() || quartos.length() == 0) {
+            if (!quartos.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -261,7 +261,7 @@ public class Quarto {
     
         try (BufferedReader br = new BufferedReader(new FileReader(quartos))) {
 
-            if (!quartos.exists() || quartos.length() == 0) {
+            if (!quartos.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -299,7 +299,7 @@ public class Quarto {
 
         try (BufferedReader br = new BufferedReader(new FileReader(quartos))) {
 
-            if (!quartos.exists() || quartos.length() == 0) {
+            if (!quartos.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -334,7 +334,7 @@ public class Quarto {
 
         try (BufferedReader br = new BufferedReader(new FileReader(categorias))) {
 
-            if (!categorias.exists() || categorias.length() == 0) {
+            if (!categorias.exists()) {
                 throw new FileNotFoundException();
             }
 

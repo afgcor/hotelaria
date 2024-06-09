@@ -107,7 +107,7 @@ public class Item {
         File itens = new File("./arquivos/itens.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(itens))) {
-            if (!itens.exists() || itens.length() == 0) {
+            if (!itens.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -162,7 +162,7 @@ public class Item {
                 } else {
                     valorAtualizado = Double.parseDouble(valorAtualizadoS);
                 }    
-                String linhaAtualizada = codigoAtualizado + " ; " + descricaoAtualizada + " ; " + valorAtualizado;
+                String linhaAtualizada = (codigoAtualizado + " ; " + descricaoAtualizada + " ; " + valorAtualizado);
                 listaLinhas.add(linhaAtualizada);
                 System.out.println("");
                 System.out.println("Dados atualizados com sucesso!");
@@ -200,7 +200,7 @@ public class Item {
         File itens = new File("./arquivos/itens.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(itens))) {
-            if (!itens.exists() || itens.length() == 0) {
+            if (!itens.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -254,7 +254,7 @@ public class Item {
     
         try (BufferedReader br = new BufferedReader(new FileReader(itens))) {
 
-            if (!itens.exists() || itens.length() == 0) {
+            if (!itens.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -289,7 +289,7 @@ public class Item {
 
         try (BufferedReader br = new BufferedReader(new FileReader(itens))) {
 
-            if (!itens.exists() || itens.length() == 0) {
+            if (!itens.exists()) {
                 throw new FileNotFoundException();
             }
 

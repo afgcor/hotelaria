@@ -422,7 +422,6 @@ public class App {
         scan.close();
     }
 
-
     public static void menuConsumo() { /* AINDA NÃO ESTÁ 100% FUNCIONAL */
         System.out.println("");
         Scanner scan = new Scanner(System.in);
@@ -449,28 +448,44 @@ public class App {
         scan.close();
     }
 
-    public static void menuConsumoServico() { /* AINDA NÃO ESTÁ 100% FUNCIONAL */
+    public static void menuConsumoServico() {
         System.out.println("");
         Scanner scan = new Scanner(System.in);
         System.out.println("*** MENU ***");
-        System.out.println("1. Cadastrar consumo de serviço");
-        System.out.println("2. Editar consumo de serviço");
-        System.out.println("3. Consultar consumo de serviço");
-        System.out.println("4. Listar consumos de serviços");
+        System.out.println("1. Cadastrar consumo (serviço)");
+        System.out.println("2. Editar consumo (serviço)");
+        System.out.println("3. Consultar consumo (serviço)");
+        System.out.println("4. Listar consumos (serviços)");
         System.out.println("5. Voltar ao menu anterior");
         System.out.println("6. Sair");
         System.out.print("INSIRA A OPÇÃO DESEJADA: ");
         String opcao = scan.nextLine();
-        switch (opcao) {
-            /* case 1: cadastrarItem();
-            case 2: editarItem();
-            case 3: consultarItem();
-            case 4: listarItens(); */
-            case "5": menuOpcoes();
-            case "6": break; 
+        try {
+            switch (opcao) {
+                case "1": 
+                    ConsumoServico.cadastrarConsumoServico();
+                    break;
+                case "2":
+                    ConsumoServico.editarConsumoServico();
+                    break;
+                case "3":
+                    ConsumoServico.consultarConsumoServico();
+                    break;
+                case "4":
+                    ConsumoServico.listarConsumosServicos();
+                    break;
+                case "5":
+                    menuOpcoes();
+                    break;
+                case "6": 
+                    break; 
+            }
+            if (opcao == "6") {
+                System.out.println("Encerrando.");
+            }
         }
-        if (opcao == "6") {
-            System.out.println("Encerrando.");
+        catch (IOException e) {
+            System.out.println("ERRO: Falha operacional!");
         }
         scan.close();
     }

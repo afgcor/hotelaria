@@ -91,7 +91,7 @@ public class Hospede extends Pessoa {
         File hospedes = new File("./arquivos/hospedes.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(hospedes))) {
-            if (!hospedes.exists() || hospedes.length() == 0) {
+            if (!hospedes.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -145,7 +145,7 @@ public class Hospede extends Pessoa {
                 if (enderecoAtualizado.isEmpty()) {
                     enderecoAtualizado = hospede.getEnderecoCompleto();
                 }
-                String linhaAtualizada = cpfAtualizado + " ; " + nomeAtualizado + " ; " + emailAtualizado + " ; " + enderecoAtualizado;
+                String linhaAtualizada = (cpfAtualizado + " ; " + nomeAtualizado + " ; " + emailAtualizado + " ; " + enderecoAtualizado);
                 listaLinhas.add(linhaAtualizada);
                 System.out.println("");
                 System.out.println("Dados atualizados com sucesso!");
@@ -183,7 +183,7 @@ public class Hospede extends Pessoa {
         File hospedes = new File("./arquivos/hospedes.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(hospedes))) {
-            if (!hospedes.exists() || hospedes.length() == 0) {
+            if (!hospedes.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -236,7 +236,7 @@ public class Hospede extends Pessoa {
     
         try (BufferedReader br = new BufferedReader(new FileReader(hospedes))) {
 
-            if (!hospedes.exists() || hospedes.length() == 0) {
+            if (!hospedes.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -271,7 +271,7 @@ public class Hospede extends Pessoa {
 
         try (BufferedReader br = new BufferedReader(new FileReader(hospedes))) {
 
-            if (!hospedes.exists() || hospedes.length() == 0) {
+            if (!hospedes.exists()) {
                 throw new FileNotFoundException();
             }
 

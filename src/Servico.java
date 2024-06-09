@@ -108,7 +108,7 @@ public class Servico {
         File servicos = new File("./arquivos/servicos.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(servicos))) {
-            if (!servicos.exists() || servicos.length() == 0) {
+            if (!servicos.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -163,7 +163,7 @@ public class Servico {
                 } else {
                     valorAtualizado = Double.parseDouble(valorAtualizadoS);
                 }    
-                String linhaAtualizada = codigoAtualizado + " ; " + descricaoAtualizada + " ; " + valorAtualizado;
+                String linhaAtualizada = (codigoAtualizado + " ; " + descricaoAtualizada + " ; " + valorAtualizado);
                 listaLinhas.add(linhaAtualizada);
                 System.out.println("");
                 System.out.println("Dados atualizados com sucesso!");
@@ -201,7 +201,7 @@ public class Servico {
         File servicos = new File("./arquivos/servicos.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(servicos))) {
-            if (!servicos.exists() || servicos.length() == 0) {
+            if (!servicos.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -255,7 +255,7 @@ public class Servico {
     
         try (BufferedReader br = new BufferedReader(new FileReader(servicos))) {
 
-            if (!servicos.exists() || servicos.length() == 0) {
+            if (!servicos.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -290,7 +290,7 @@ public class Servico {
 
         try (BufferedReader br = new BufferedReader(new FileReader(servicos))) {
 
-            if (!servicos.exists() || servicos.length() == 0) {
+            if (!servicos.exists()) {
                 throw new FileNotFoundException();
             }
 

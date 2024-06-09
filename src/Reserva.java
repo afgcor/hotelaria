@@ -20,8 +20,7 @@ public class Reserva {
     private double valorReserva;
     private double valorPago;
 
-    public static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy, HH:mm:ss");
-    public static DateTimeFormatter dtts = DateTimeFormatter.ofPattern("dd/MM/yyy - HH:mm:ss");
+    public static DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyy - HH:mm:ss");
 
     /* CONSTRUTOR */
     public Reserva(int codigo, Hospede hospede, Quarto quarto, Funcionario funcionarioReserva, Funcionario funcionarioFechamento, LocalDateTime dataEntradaReserva, LocalDateTime dataSaidaReserva, LocalDateTime dataCheckin, LocalDateTime dataCheckout, double valorReserva, double valorPago) {
@@ -149,8 +148,8 @@ public class Reserva {
                 System.out.println("");
                 System.out.println("CÓDIGO: " + reserva.getCodigo() + " | HÓSPEDE: " + reserva.getHospede().getCPF()); 
                 System.out.println("FUNCIONÁRIO (RESERVA): " + reserva.getFuncionarioReserva().getNome() + " (CPF " + reserva.getFuncionarioReserva().getCPF() + ") | FUNCIONÁRIO (FECHAMENTO): " + reserva.getFuncionarioFechamento().getNome() + " (CPF " + reserva.getFuncionarioReserva().getCPF() + ")");
-                System.out.println("DATA DE ENTRADA DA RESERVA: " + reserva.getDataEntradaReserva().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataEntradaReserva().format(dtts) + " | DATA DE SAÍDA DA RESERVA: " + reserva.getDataSaidaReserva().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataSaidaReserva().format(dtts));
-                System.out.println("DATA DO CHECK-IN: " + reserva.getDataCheckin().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataCheckin().format(dtts) + " | DATA DO CHECK-OUT: " + reserva.getDataCheckout().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataCheckout().format(dtts));
+                System.out.println("DATA DE ENTRADA DA RESERVA: " + reserva.getDataEntradaReserva().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataEntradaReserva().format(dtf) + " | DATA DE SAÍDA DA RESERVA: " + reserva.getDataSaidaReserva().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataSaidaReserva().format(dtf));
+                System.out.println("DATA DO CHECK-IN: " + reserva.getDataCheckin().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataCheckin().format(dtf) + " | DATA DO CHECK-OUT: " + reserva.getDataCheckout().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataCheckout().format(dtf));
                 System.out.printf("VALOR TOTAL: R$ %.2f | VALOR PAGO: R$ %.2f%n", reserva.getValorReserva(), reserva.getValorPago());
                 throw new NullPointerException();
             }
@@ -201,16 +200,16 @@ public class Reserva {
                 throw new InterruptedException();
             }
 
-            System.out.print("Insira a data de abertura (dd-MM-yyyy, HH:mm:ss): ");
+            System.out.print("Insira a data de abertura (dd/MM/yyy - HH:mm:ss): ");
             String dataEntrada = scan.nextLine();
 
-            System.out.print("Insira a data de fechamento (dd-MM-yyyy, HH:mm:ss): ");
+            System.out.print("Insira a data de fechamento (dd/MM/yyy - HH:mm:ss): ");
             String dataSaida = scan.nextLine();
 
-            System.out.print("Insira a data do check-in (dd-MM-yyyy, HH:mm:ss): ");
+            System.out.print("Insira a data do check-in (dd/MM/yyy - HH:mm:ss): ");
             String dataCheckin = scan.nextLine();
 
-            System.out.print("Insira a data do check-out (dd-MM-yyyy, HH:mm:ss): ");
+            System.out.print("Insira a data do check-out (dd/MM/yyy - HH:mm:ss): ");
             String dataCheckout = scan.nextLine();
 
             System.out.print("Insira o valor da reserva: ");
@@ -366,8 +365,8 @@ public class Reserva {
                 if (fechamentoAtualizado.isEmpty()) {
                     fechamentoAtualizado = reserva.getFuncionarioFechamento().getCPF();
                 }
-                System.out.println("Data de entrada da reserva atual: " + reserva.getDataEntradaReserva().format(dtts));
-                System.out.print("Nova data de entrada da reserva atual (dd-MM-yyyy, HH:mm:ss): ");
+                System.out.println("Data de entrada da reserva atual: " + reserva.getDataEntradaReserva().format(dtf));
+                System.out.print("Nova data de entrada da reserva atual (dd/MM/yyy - HH:mm:ss): ");
                 String dataEntradaAtualizadaS = scan.nextLine();
                 LocalDateTime dataEntradaAtualizada;
                 if (dataEntradaAtualizadaS.isEmpty()) {
@@ -375,8 +374,8 @@ public class Reserva {
                 } else {
                     dataEntradaAtualizada = LocalDateTime.parse(dataEntradaAtualizadaS, dtf);
                 }
-                System.out.println("Data de saída da reserva atual: " + reserva.getDataSaidaReserva().format(dtts));
-                System.out.print("Nova data de saída da reserva atual (dd-MM-yyyy, HH:mm:ss): ");
+                System.out.println("Data de saída da reserva atual: " + reserva.getDataSaidaReserva().format(dtf));
+                System.out.print("Nova data de saída da reserva atual (dd/MM/yyy - HH:mm:ss): ");
                 String dataSaidaAtualizadaS = scan.nextLine();
                 LocalDateTime dataSaidaAtualizada;
                 if (dataSaidaAtualizadaS.isEmpty()) {
@@ -384,8 +383,8 @@ public class Reserva {
                 } else {
                     dataSaidaAtualizada = LocalDateTime.parse(dataSaidaAtualizadaS, dtf);
                 }
-                System.out.println("Data de check-in da reserva atual: " + reserva.getDataCheckin().format(dtts));
-                System.out.print("Nova data de check-in da reserva atual (dd-MM-yyyy, HH:mm:ss): ");
+                System.out.println("Data de check-in da reserva atual: " + reserva.getDataCheckin().format(dtf));
+                System.out.print("Nova data de check-in da reserva atual (dd/MM/yyy - HH:mm:ss): ");
                 String dataCheckinAtualizadaS = scan.nextLine();
                 LocalDateTime dataCheckinAtualizada;
                 if (dataCheckinAtualizadaS.isEmpty()) {
@@ -393,8 +392,8 @@ public class Reserva {
                 } else {
                     dataCheckinAtualizada = LocalDateTime.parse(dataCheckinAtualizadaS, dtf);
                 }
-                System.out.println("Data de check-out da reserva atual: " + reserva.getDataCheckout().format(dtts));
-                System.out.print("Nova data de check-out da reserva atual (dd-MM-yyyy, HH:mm:ss): ");
+                System.out.println("Data de check-out da reserva atual: " + reserva.getDataCheckout().format(dtf));
+                System.out.print("Nova data de check-out da reserva atual (dd/MM/yyy - HH:mm:ss): ");
                 String dataCheckoutAtualizadaS = scan.nextLine();
                 LocalDateTime dataCheckoutAtualizada;
                 if (dataCheckoutAtualizadaS.isEmpty()) {
@@ -459,7 +458,7 @@ public class Reserva {
         File reservas = new File("./arquivos/reservas.txt");
 
         try (BufferedReader br = new BufferedReader(new FileReader(reservas))) {
-            if (!reservas.exists() || reservas.length() == 0) {
+            if (!reservas.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -500,8 +499,8 @@ public class Reserva {
                 System.out.println("");
                 System.out.println("CÓDIGO: " + reserva.getCodigo() + " | HÓSPEDE: " + reserva.getHospede().getCPF()); 
                 System.out.println("FUNCIONÁRIO (RESERVA): " + reserva.getFuncionarioReserva().getNome() + " (CPF " + reserva.getFuncionarioReserva().getCPF() + ") | FUNCIONÁRIO (FECHAMENTO): " + reserva.getFuncionarioFechamento().getNome() + " (CPF " + reserva.getFuncionarioReserva().getCPF() + ")");
-                System.out.println("DATA DE ENTRADA DA RESERVA: " + reserva.getDataEntradaReserva().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataEntradaReserva().format(dtts) + " | DATA DE SAÍDA DA RESERVA: " + reserva.getDataSaidaReserva().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataSaidaReserva().format(dtts));
-                System.out.println("DATA DO CHECK-IN: " + reserva.getDataCheckin().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataCheckin().format(dtts) + " | DATA DO CHECK-OUT: " + reserva.getDataCheckout().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataCheckout().format(dtts));
+                System.out.println("DATA DE ENTRADA DA RESERVA: " + reserva.getDataEntradaReserva().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataEntradaReserva().format(dtf) + " | DATA DE SAÍDA DA RESERVA: " + reserva.getDataSaidaReserva().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataSaidaReserva().format(dtf));
+                System.out.println("DATA DO CHECK-IN: " + reserva.getDataCheckin().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataCheckin().format(dtf) + " | DATA DO CHECK-OUT: " + reserva.getDataCheckout().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataCheckout().format(dtf));
                 System.out.printf("VALOR TOTAL: R$ %.2f | VALOR PAGO: R$ %.2f%n", reserva.getValorReserva(), reserva.getValorPago());
                 System.out.println("");
             }
@@ -519,7 +518,7 @@ public class Reserva {
         File reservas = new File("./arquivos/reservas.txt");
         try (BufferedReader br = new BufferedReader(new FileReader(reservas))) {
 
-            if (!reservas.exists() || reservas.length() == 0) {
+            if (!reservas.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -543,8 +542,8 @@ public class Reserva {
                 System.out.println("RESERVA " + (listaReservas.indexOf(reserva) + 1));
                 System.out.println("CÓDIGO: " + reserva.getCodigo() + " | HÓSPEDE: " + reserva.getHospede().getCPF()); 
                 System.out.println("FUNCIONÁRIO (RESERVA): " + reserva.getFuncionarioReserva().getNome() + " (CPF " + reserva.getFuncionarioReserva().getCPF() + ") | FUNCIONÁRIO (FECHAMENTO): " + reserva.getFuncionarioFechamento().getNome() + " (CPF " + reserva.getFuncionarioReserva().getCPF() + ")");
-                System.out.println("DATA DE ENTRADA DA RESERVA: " + reserva.getDataEntradaReserva().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataEntradaReserva().format(dtts) + " | DATA DE SAÍDA DA RESERVA: " + reserva.getDataSaidaReserva().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataSaidaReserva().format(dtts));
-                System.out.println("DATA DO CHECK-IN: " + reserva.getDataCheckin().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataCheckin().format(dtts) + " | DATA DO CHECK-OUT: " + reserva.getDataCheckout().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataCheckout().format(dtts));
+                System.out.println("DATA DE ENTRADA DA RESERVA: " + reserva.getDataEntradaReserva().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataEntradaReserva().format(dtf) + " | DATA DE SAÍDA DA RESERVA: " + reserva.getDataSaidaReserva().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataSaidaReserva().format(dtf));
+                System.out.println("DATA DO CHECK-IN: " + reserva.getDataCheckin().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataCheckin().format(dtf) + " | DATA DO CHECK-OUT: " + reserva.getDataCheckout().getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.getDefault()) + ", " + reserva.getDataCheckout().format(dtf));
                 System.out.printf("VALOR TOTAL: R$ %.2f | VALOR PAGO: R$ %.2f%n", reserva.getValorReserva(), reserva.getValorPago());
             }
         } catch (FileNotFoundException e) {
@@ -600,7 +599,7 @@ public class Reserva {
 
         try (BufferedReader br = new BufferedReader(new FileReader(quartos))) {
 
-            if (!quartos.exists() || quartos.length() == 0) {
+            if (!quartos.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -635,7 +634,7 @@ public class Reserva {
 
         try (BufferedReader br = new BufferedReader(new FileReader(hospedes))) {
 
-            if (!hospedes.exists() || hospedes.length() == 0) {
+            if (!hospedes.exists()) {
                 throw new FileNotFoundException();
             }
 
@@ -669,7 +668,7 @@ public class Reserva {
 
         try (BufferedReader br = new BufferedReader(new FileReader(funcionarios))) {
 
-            if (!funcionarios.exists() || funcionarios.length() == 0) {
+            if (!funcionarios.exists()) {
                 throw new FileNotFoundException();
             }
 

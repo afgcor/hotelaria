@@ -112,11 +112,6 @@ public class Consumo {
             System.out.println("CONSUMO CADASTRADO!");
             System.out.println("");
 
-            /* Código pra atualizar a quantidade em estoque? Ainda não funcional
-            CategoriaItem categoriaItem = CategoriaItem.identificarCategoriaItem(Integer.parseInt(idItem));
-            int novaQuantidade = ((categoriaItem.getQuantidade()) - Integer.parseInt(quantidadeSolicitada));
-            categoriaItem.setQuantidade(novaQuantidade); */
-
         } catch (NullPointerException e) {
             System.out.println("");
             System.out.print("Continuar cadastro (S/N)? ");

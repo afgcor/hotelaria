@@ -421,7 +421,6 @@ public class Reserva {
                 } else {
                     valorPagoAtualizado = Double.parseDouble(valorPagoAtualizadoS);
                 }
-
                 String linhaAtualizada = (codigoAtualizado + " ; " + hospedeAtualizado + " ; " + quartoAtualizado + " ; " + reservaAtualizado + " ; " + fechamentoAtualizado + " ; " + dataEntradaAtualizada.format(dtf) + " ; " + dataSaidaAtualizada.format(dtf) + " ; " + dataCheckinAtualizada.format(dtf) + " ; " + dataCheckoutAtualizada.format(dtf) + " ; " + valorReservaAtualizado + " ; " + valorPagoAtualizado);
                 listaLinhas.add(linhaAtualizada);
                 System.out.println("");
@@ -661,19 +660,88 @@ public class Reserva {
         return total;
     }
 
-    public static double valorTotal(Scanner scan) {
-        System.out.println("Insira o código da reserva: ");
-        String idReserva = scan.nextLine();
+    public static double valorTotalConsumos(Scanner scan, String idReserva) {
         double valorTotal = 0.0;
         valorTotal = valorConsumoServicos(Integer.parseInt(idReserva)) + valorConsumoItens(Integer.parseInt(idReserva));
         return valorTotal;
     }
 
-    public static int pagarReserva(Scanner scan) {
-        valorTotal(scan);
-        int pagamento = 0;
-        return pagamento;
-    }
+    public static void pagarReserva(Scanner scan) {
+        File reservas = new File("./arquivos/reservas.txt");
+    
+        System.out.println("");
+        System.out.print("Insira o código da reserva: ");
+        String codigo = scan.nextLine();
+    
+        if (!codigo.isEmpty()) {
+            Reserva reservaConsulta = identificarReserva(Integer.parseInt(codigo));
+            int quantiaDiarias = reservaConsulta.getDataCheckout().getDayOfMonth() - reservaConsulta.getDataCheckin().getDayOfMonth();
+            if (reservaConsulta.getDataCheckout().getHour() > 12) {
+                quantiaDiarias++;
+            }
+            double valorTotalDiarias = (quantiaDiarias * reservaConsulta.getQuarto().getCategoria().getValor());
+            double valorConsumos = valorTotalConsumos(scan, codigo);
+            double valorFinal = valorTotalDiarias + valorConsumos;
+    
+            System.out.println("");
+            System.out.println("Total (diárias): R$ " + valorTotalDiarias);
+            System.out.println("Total (itens e serviços): R$ " + valorConsumos);
+            System.out.println("---------------------------------------");
+            System.out.println("TOTAL: R$ " + valorFinal);
+            System.out.println("");
+            System.out.print("Receber pagamento pela reserva (S/N)? ");
+            String opcao = scan.nextLine();
+    
+            switch (opcao.toUpperCase()) {
+                case "S":
+                    System.out.println("");
+                    System.out.print("Insira o valor do pagamento: ");
+                    String valorPagamento = scan.nextLine();
+                    reservaConsulta.setValorReserva(valorFinal);
+                    reservaConsulta.setValorPago(Double.parseDouble(valorPagamento));
+    
+                    try {
+                        BufferedReader br = new BufferedReader(new FileReader(reservas));
+                        List<String> listaLinhas = new ArrayList<>();
+                        String linha;
+    
+                        while ((linha = br.readLine()) != null) {
+                            String[] partes = linha.split(" ; ");
+                            if (partes.length >= 11 && partes[0].equals(codigo)) {
+                                linha = codigo + " ; " + reservaConsulta.getHospede().getCPF() + " ; " + reservaConsulta.getQuarto().getCodigo() + " ; " +
+                                        reservaConsulta.getFuncionarioReserva().getCPF() + " ; " + reservaConsulta.getFuncionarioFechamento().getCPF() + " ; " +
+                                        reservaConsulta.getDataEntradaReserva().format(dtf) + " ; " + reservaConsulta.getDataSaidaReserva().format(dtf) + " ; " +
+                                        reservaConsulta.getDataCheckin().format(dtf) + " ; " + reservaConsulta.getDataCheckout().format(dtf) + " ; " +
+                                        valorFinal + " ; " + Double.parseDouble(valorPagamento);
+                            }
+                            listaLinhas.add(linha);
+                        }
+                        br.close();
+    
+                        BufferedWriter bw = new BufferedWriter(new FileWriter(reservas));
+                        for (String linhaAtualizada : listaLinhas) {
+                            bw.write(linhaAtualizada);
+                            bw.newLine();
+                        }
+                        bw.close();
+    
+                        System.out.println("");
+                        System.out.println("Pagamento recebido!");
+                        System.out.println("Valor pendente: " + (valorFinal - Double.parseDouble(valorPagamento)));
+                    } catch (IOException e) {
+                        System.out.println("Erro ao gravar no arquivo reservas.txt");
+                    }
+                    break;
+                case "N":
+                    System.out.println("ERRO: O pagamento da reserva " + reservaConsulta.getCodigo() + " ainda não foi quitado!");
+                    break;
+                default:
+                    System.out.println("Opção inválida, por favor tente novamente.");
+            }
+        } else {
+            System.out.println("ERRO: O código da reserva não pode estar vazio!");
+        }
+    }    
 
     @Override
     public String toString() {

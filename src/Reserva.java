@@ -127,8 +127,7 @@ public class Reserva {
     }
 
     /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
-    public static boolean cadastrarReserva() throws IOException {
-        Scanner scan = new Scanner(System.in);
+    public static boolean cadastrarReserva(Scanner scan) throws IOException {
         String codigo = "";
         try {
             System.out.println("");
@@ -234,11 +233,14 @@ public class Reserva {
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
-                    cadastrarReserva();
+                    cadastrarReserva(scan);
                     break;
                 case "N":
                     System.out.println("Encerrando.");
                     System.out.println("");
+                    break;
+                default:
+                    System.out.println("Opção inválida, por favor tente novamente.");
                     break;
             }
         } catch (NoSuchFieldException e) {
@@ -247,9 +249,12 @@ public class Reserva {
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
-                    Quarto.cadastrarQuarto();
+                    Quarto.cadastrarQuarto(scan);
                     break;
                 case "N":
+                    break;
+                default:
+                    System.out.println("Opção inválida, por favor tente novamente.");
                     break;
             }
         } catch (InterruptedException e) {
@@ -258,9 +263,12 @@ public class Reserva {
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
-                    Funcionario.cadastrarFuncionario();
+                    Funcionario.cadastrarFuncionario(scan);
                     break;
                 case "N":
+                    break;
+                default:
+                    System.out.println("Opção inválida, por favor tente novamente.");
                     break;
             }
         } catch (IOException e) {
@@ -271,19 +279,20 @@ public class Reserva {
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
-                    Hospede.cadastrarHospede();
+                    Hospede.cadastrarHospede(scan);
                     break;
                 case "N":
                     break;
+                default:
+                    System.out.println("Opção inválida, por favor tente novamente.");
+                    break;
             }
-        } finally {
-            scan.close();
         }
+
         return true;
     }
 
-    public static boolean editarReserva() throws IOException {
-        Scanner scan = new Scanner(System.in);
+    public static boolean editarReserva(Scanner scan) throws IOException {
         List<Reserva> listaReservas = new ArrayList<>();
         File reservas = new File("./arquivos/reservas.txt");
 
@@ -439,14 +448,12 @@ public class Reserva {
             System.out.println("ERRO: O arquivo reservas.txt não foi encontrado!");
         } catch (IOException e) {
             System.out.println("ERRO: Falha na gravação do arquivo reservas.txt!");
-        } finally {
-            scan.close();
         }
 
         return true;
     }
 
-    public static Reserva consultarReserva() {
+    public static Reserva consultarReserva(Scanner scan) {
         List<Reserva> listaReservas = new ArrayList<>();
         File reservas = new File("./arquivos/reservas.txt");
 
@@ -473,14 +480,12 @@ public class Reserva {
             System.out.println("ERRO: Falha na leitura do arquivo reservas.txt!");
         }
 
-        Scanner scan = new Scanner(System.in);
         System.out.println("");
         System.out.println("*** CONSULTAR RESERVA ***");
         System.out.print("Digite o código da reserva que será consultada: ");
         int codigo = scan.nextInt();
         scan.nextLine();
         System.out.println("");
-        scan.close();
 
         boolean cadastrado = false;
 
@@ -656,17 +661,16 @@ public class Reserva {
         return total;
     }
 
-    public static double valorTotal() {
-        Scanner scan = new Scanner(System.in);
+    public static double valorTotal(Scanner scan) {
         System.out.println("Insira o código da reserva: ");
         String idReserva = scan.nextLine();
         double valorTotal = 0.0;
         valorTotal = valorConsumoServicos(Integer.parseInt(idReserva)) + valorConsumoItens(Integer.parseInt(idReserva));
-        scan.close();
         return valorTotal;
     }
 
-    public static int pagarReserva() {
+    public static int pagarReserva(Scanner scan) {
+        valorTotal(scan);
         int pagamento = 0;
         return pagamento;
     }

@@ -41,8 +41,7 @@ public class Quarto {
     }
     
     /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
-    public static boolean cadastrarQuarto() throws IOException {
-        Scanner scan = new Scanner(System.in);
+    public static boolean cadastrarQuarto(Scanner scan) throws IOException {
         String codigo = "";
         try {
             System.out.println("");
@@ -87,23 +86,24 @@ public class Quarto {
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
-                    cadastrarQuarto();
+                    cadastrarQuarto(scan);
                     break;
                 case "N":
                     System.out.println("Encerrando.");
                     System.out.println("");
                     break;
+                default:
+                    System.out.println("Opção inválida, por favor tente novamente.");
+                    break;
             }
         } catch (IOException e) {
             System.out.println("ERRO: Falha na gravação do arquivo quartos.txt!");
-        } finally {
-            scan.close();
         }
+
         return true;
     }
 
-    public static boolean editarQuarto() throws IOException {
-        Scanner scan = new Scanner(System.in);
+    public static boolean editarQuarto(Scanner scan) throws IOException {
         List<Quarto> listaQuartos = new ArrayList<>();
         File quartos = new File("./arquivos/quartos.txt");
 
@@ -192,14 +192,12 @@ public class Quarto {
             System.out.println("ERRO: O arquivo quartos.txt não foi encontrado!");
         } catch (IOException e) {
             System.out.println("ERRO: Falha na gravação do arquivo quartos.txt!");
-        } finally {
-            scan.close();
         }
 
         return true;
     }
 
-    public static Quarto consultarQuarto() {
+    public static Quarto consultarQuarto(Scanner scan) {
         List<Quarto> listaQuartos = new ArrayList<>();
         File quartos = new File("./arquivos/quartos.txt");
 
@@ -225,14 +223,12 @@ public class Quarto {
             System.out.println("ERRO: Falha na leitura do arquivo quartos.txt!");
         }
 
-        Scanner scan = new Scanner(System.in);
         System.out.println("");
         System.out.println("*** CONSULTAR QUARTO ***");
         System.out.print("Digite o código do quarto a ser consultado: ");
         int codigo = scan.nextInt();
         scan.nextLine();
         System.out.println("");
-        scan.close();
 
         boolean cadastrado = false;
 

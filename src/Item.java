@@ -41,8 +41,7 @@ public class Item {
     }
 
     /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
-    public static boolean cadastrarItem() throws IOException {
-        Scanner scan = new Scanner(System.in);
+    public static boolean cadastrarItem(Scanner scan) throws IOException {
         String codigo = "";
         try {
             System.out.println("");
@@ -86,23 +85,24 @@ public class Item {
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
-                    cadastrarItem();
+                    cadastrarItem(scan);
                     break;
                 case "N":
                     System.out.println("Encerrando.");
                     System.out.println("");
                     break;
+                default:
+                    System.out.println("Opção inválida, por favor tente novamente.");
+                    break;
             }
         } catch (IOException e) {
             System.out.println("ERRO: Falha na gravação do arquivo itens.txt!");
-        } finally {
-            scan.close();
         }
+
         return true;
     }
 
-    public static boolean editarItem() throws IOException {
-        Scanner scan = new Scanner(System.in);
+    public static boolean editarItem(Scanner scan) throws IOException {
         List<Item> listaItens = new ArrayList<>();
         File itens = new File("./arquivos/itens.txt");
 
@@ -188,14 +188,12 @@ public class Item {
             System.out.println("ERRO: O arquivo itens.txt não foi encontrado!");
         } catch (IOException e) {
             System.out.println("ERRO: Falha na gravação do arquivo itens.txt!");
-        } finally {
-            scan.close();
         }
 
         return true;
     }
 
-    public static Item consultarItem() {
+    public static Item consultarItem(Scanner scan) {
         List<Item> listaItens = new ArrayList<>();
         File itens = new File("./arquivos/itens.txt");
 
@@ -218,14 +216,12 @@ public class Item {
             System.out.println("ERRO: Falha na leitura do arquivo itens.txt!");
         }
 
-        Scanner scan = new Scanner(System.in);
         System.out.println("");
         System.out.println("*** CONSULTAR ITEM ***");
         System.out.print("Digite o código do item a ser consultado: ");
         int codigo = scan.nextInt();
         scan.nextLine();
         System.out.println("");
-        scan.close();
 
         boolean cadastrado = false;
 

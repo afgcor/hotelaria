@@ -57,8 +57,7 @@ public class ConsumoServico {
     }
 
     /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
-    public static boolean cadastrarConsumoServico() throws IOException {
-        Scanner scan = new Scanner(System.in);
+    public static boolean cadastrarConsumoServico(Scanner scan) throws IOException {
         String quantidadeSolicitada = "";
         try {
             System.out.println("");
@@ -113,11 +112,15 @@ public class ConsumoServico {
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
-                    cadastrarConsumoServico();
+                    System.out.println("");
+                    cadastrarConsumoServico(scan);
                     break;
                 case "N":
                     System.out.println("Encerrando.");
                     System.out.println("");
+                    break;
+                default:
+                    System.out.println("Opção inválida, por favor tente novamente.");
                     break;
             }
         } catch (IOException e) {
@@ -128,9 +131,12 @@ public class ConsumoServico {
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
-                    Servico.cadastrarServico();
+                    Servico.cadastrarServico(scan);
                     break;
                 case "N":
+                    break;
+                default:
+                    System.out.println("Opção inválida, por favor tente novamente.");
                     break;
             }
         } catch (Exception e) {
@@ -139,19 +145,20 @@ public class ConsumoServico {
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
-                    Reserva.cadastrarReserva();
+                    Reserva.cadastrarReserva(scan);
                     break;
                 case "N":
                     break;
+                default:
+                    System.out.println("Opção inválida, por favor tente novamente.");
+                    break;
             }
-        } finally {
-            scan.close();
         }
+
         return true;
     }
 
-    public static boolean editarConsumoServico() throws IOException {
-        Scanner scan = new Scanner(System.in);
+    public static boolean editarConsumoServico(Scanner scan) throws IOException {
         List<ConsumoServico> listaConsumosServicos = new ArrayList<>();
         File consumosservicos = new File("./arquivos/consumosservicos.txt");
     
@@ -285,14 +292,12 @@ public class ConsumoServico {
             System.out.println("ERRO: O arquivo consumosservicos.txt não foi encontrado!");
         } catch (IOException e) {
             System.out.println("ERRO: Falha na gravação do arquivo consumosservicos.txt!");
-        } finally {
-            scan.close();
         }
     
         return true;
     }
 
-    public static ConsumoServico consultarConsumoServico() {
+    public static ConsumoServico consultarConsumoServico(Scanner scan) {
         List<ConsumoServico> listaConsumosServicos = new ArrayList<>();
         File consumosservicos = new File("./arquivos/consumosservicos.txt");
 
@@ -319,7 +324,6 @@ public class ConsumoServico {
             System.out.println("ERRO: Falha na leitura do arquivo consumosservicos.txt!");
         }
 
-        Scanner scan = new Scanner(System.in);
         System.out.println("");
         System.out.println("*** CONSULTAR CONSUMO (SERVIÇO) ***");
         System.out.println("");
@@ -353,12 +357,10 @@ public class ConsumoServico {
         } else {
             System.out.println("ERRO: Opção inválida!");
             System.out.println("");
-            scan.close();
             return null;
         }
 
         System.out.println("");
-        scan.close();
 
         if (!cadastrado) {
             System.out.println("Consumo (serviço) com código " + codigo + " não encontrado.");

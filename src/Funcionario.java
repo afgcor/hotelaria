@@ -22,8 +22,7 @@ public class Funcionario extends Pessoa {
     }
 
     /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
-    public static boolean cadastrarFuncionario() throws IOException {
-        Scanner scan = new Scanner(System.in);
+    public static boolean cadastrarFuncionario(Scanner scan) throws IOException {
         String cpf = "";
         try {
             System.out.println("");
@@ -70,23 +69,23 @@ public class Funcionario extends Pessoa {
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
-                    cadastrarFuncionario();
+                    cadastrarFuncionario(scan);
                     break;
                 case "N":
                     System.out.println("Encerrando.");
                     System.out.println("");
                     break;
+                default:
+                    System.out.println("Opção inválida, por favor tente novamente.");
+                    break;
             }
         } catch (IOException e) {
             System.out.println("ERRO: Falha na gravação do arquivo funcionarios.txt!");
-        } finally {
-            scan.close();
         }
         return true;
     }
 
-    public static boolean editarFuncionario() throws IOException {
-        Scanner scan = new Scanner(System.in);
+    public static boolean editarFuncionario(Scanner scan) throws IOException {
         List<Funcionario> listaFuncionarios = new ArrayList<>();
         File funcionarios = new File("./arquivos/funcionarios.txt");
 
@@ -171,14 +170,12 @@ public class Funcionario extends Pessoa {
             System.out.println("ERRO: O arquivo funcionarios.txt não foi encontrado!");
         } catch (IOException e) {
             System.out.println("ERRO: Falha na gravação do arquivo funcionarios.txt!");
-        } finally {
-            scan.close();
         }
 
         return true;
     }
 
-    public static Funcionario consultarFuncionario() {
+    public static Funcionario consultarFuncionario(Scanner scan) {
         List<Funcionario> listaFuncionarios = new ArrayList<>();
         File funcionarios = new File("./arquivos/funcionarios.txt");
 
@@ -201,13 +198,11 @@ public class Funcionario extends Pessoa {
             System.out.println("ERRO: Falha na leitura do arquivo funcionarios.txt!");
         }
 
-        Scanner scan = new Scanner(System.in);
         System.out.println("");
         System.out.println("*** CONSULTAR FUNCIONÁRIO ***");
         System.out.print("Digite o CPF do funcionário a ser consultado: ");
         String cpf = scan.nextLine();
         System.out.println("");
-        scan.close();
 
         boolean cadastrado = false;
 
@@ -215,11 +210,11 @@ public class Funcionario extends Pessoa {
             if (listaFuncionarios.get(i).getCPF().equals(cpf)) {
                 cadastrado = true;
                 Funcionario funcionario = listaFuncionarios.get(i);
+                System.out.println("");
                 System.out.println("Funcionário identificado!");
                 System.out.println("");
                 System.out.println("FUNCIONÁRIO " + (i + 1));
                 System.out.println("NOME: " + funcionario.getNome() + " | CPF: " + funcionario.getCPF() + " | E-MAIL: " + funcionario.getEmail() + " | SETOR: " + funcionario.getSetor());
-                System.out.println("");
             }
         }
 
@@ -261,7 +256,7 @@ public class Funcionario extends Pessoa {
         } catch (IOException e) {
             System.out.println("ERRO: Falha na leitura do arquivo funcionarios.txt!");
         }
-        System.out.println("");
+        
         return listaFuncionarios;
     }
 

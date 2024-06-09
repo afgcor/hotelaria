@@ -41,8 +41,7 @@ public class CategoriaItem {
     }
 
     /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
-    public static boolean cadastrarCategoriaItem() throws IOException {
-        Scanner scan = new Scanner(System.in);
+    public static boolean cadastrarCategoriaItem(Scanner scan) throws IOException {
         String idItem = "";
         try {
             System.out.println("");
@@ -104,11 +103,14 @@ public class CategoriaItem {
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
-                    cadastrarCategoriaItem();
+                    cadastrarCategoriaItem(scan);
                     break;
                 case "N":
                     System.out.println("Encerrando.");
                     System.out.println("");
+                    break;
+                default:
+                    System.out.println("Opção inválida, por favor tente novamente.");
                     break;
             }
         } catch (IOException e) {
@@ -119,9 +121,12 @@ public class CategoriaItem {
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
-                    Item.cadastrarItem();
+                    Item.cadastrarItem(scan);
                     break;
                 case "N":
+                    break;
+                default:
+                    System.out.println("Opção inválida, por favor tente novamente.");
                     break;
             }
         } catch (Exception e) {
@@ -130,19 +135,20 @@ public class CategoriaItem {
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
-                    Categoria.cadastrarCategoria();
+                    Categoria.cadastrarCategoria(scan);
                     break;
                 case "N":
                     break;
+                default:
+                    System.out.println("Opção inválida, por favor tente novamente.");
+                    break;
             }
-        } finally {
-            scan.close();
         }
+
         return true;
     }
 
-    public static boolean editarCategoriaItem() throws IOException {
-        Scanner scan = new Scanner(System.in);
+    public static boolean editarCategoriaItem(Scanner scan) throws IOException {
         List<CategoriaItem> listaCategoriaItens = new ArrayList<>();
         File categoriasitens = new File("./arquivos/categoriasitens.txt");
 
@@ -236,14 +242,12 @@ public class CategoriaItem {
             System.out.println("ERRO: O arquivo categoriasitens.txt não foi encontrado!");
         } catch (IOException e) {
             System.out.println("ERRO: Falha na gravação do arquivo categoriasitens.txt!");
-        } finally {
-            scan.close();
         }
 
         return true;
     }
 
-    public static CategoriaItem consultarCategoriaItem() {
+    public static CategoriaItem consultarCategoriaItem(Scanner scan) {
         List<CategoriaItem> listaCategoriaItens = new ArrayList<>();
         File categoriasitens = new File("./arquivos/categoriasitens.txt");
 
@@ -270,14 +274,12 @@ public class CategoriaItem {
             System.out.println("ERRO: Falha na leitura do arquivo categoriasitens.txt!");
         }
 
-        Scanner scan = new Scanner(System.in);
         System.out.println("");
         System.out.println("*** CONSULTAR CATEGORIA (ITEM) ***");
         System.out.print("Digite o código do item cuja categoria será consultada: ");
         int codigo = scan.nextInt();
         scan.nextLine();
         System.out.println("");
-        scan.close();
 
         boolean cadastrado = false;
 

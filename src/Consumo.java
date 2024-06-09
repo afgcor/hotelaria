@@ -63,9 +63,7 @@ public class Consumo {
     }
 
     /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
-    public static boolean cadastrarConsumo() throws IOException {
-        Scanner scan = new Scanner(System.in);
-        String quantidadeSolicitada = "";
+    public static boolean cadastrarConsumo(Scanner scan) throws IOException {
         try {
             System.out.println("");
             System.out.println("*** CADASTRAR CONSUMO ***");
@@ -92,7 +90,7 @@ public class Consumo {
             }
 
             System.out.print("Insira a quantidade solicitada: ");
-            quantidadeSolicitada = scan.nextLine();
+            String quantidadeSolicitada = scan.nextLine();
 
             System.out.print("Insira a data do consumo (dd/MM/yyy - HH:mm:ss): ");
             String dataConsumo = scan.nextLine();
@@ -113,17 +111,26 @@ public class Consumo {
 
             System.out.println("CONSUMO CADASTRADO!");
             System.out.println("");
+
+            /* Código pra atualizar a quantidade em estoque? Ainda não funcional
+            CategoriaItem categoriaItem = CategoriaItem.identificarCategoriaItem(Integer.parseInt(idItem));
+            int novaQuantidade = ((categoriaItem.getQuantidade()) - Integer.parseInt(quantidadeSolicitada));
+            categoriaItem.setQuantidade(novaQuantidade); */
+
         } catch (NullPointerException e) {
             System.out.println("");
             System.out.print("Continuar cadastro (S/N)? ");
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
-                    cadastrarConsumo();
+                    cadastrarConsumo(scan);
                     break;
                 case "N":
                     System.out.println("Encerrando.");
                     System.out.println("");
+                    break;
+                default:
+                    System.out.println("Opção inválida, por favor tente novamente.");
                     break;
             }
         } catch (IOException e) {
@@ -134,9 +141,12 @@ public class Consumo {
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
-                    Item.cadastrarItem();
+                    Item.cadastrarItem(scan);
                     break;
                 case "N":
+                    break;
+                default:
+                    System.out.println("Opção inválida, por favor tente novamente.");
                     break;
             }
         } catch (Exception e) {
@@ -145,19 +155,20 @@ public class Consumo {
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
-                    Reserva.cadastrarReserva();
+                    Reserva.cadastrarReserva(scan);
                     break;
                 case "N":
                     break;
+                default:
+                    System.out.println("Opção inválida, por favor tente novamente.");
+                    break;
             }
-        } finally {
-            scan.close();
         }
+
         return true;
     }
 
-    public static boolean editarConsumo() throws IOException {
-        Scanner scan = new Scanner(System.in);
+    public static boolean editarConsumo(Scanner scan) throws IOException {
         List<Consumo> listaConsumos = new ArrayList<>();
         File consumos = new File("./arquivos/consumos.txt");
     
@@ -298,7 +309,7 @@ public class Consumo {
         return true;
     }
 
-    public static Consumo consultarConsumo() {
+    public static Consumo consultarConsumo(Scanner scan) {
         List<Consumo> listaConsumos = new ArrayList<>();
         File consumos = new File("./arquivos/consumos.txt");
 
@@ -325,7 +336,6 @@ public class Consumo {
             System.out.println("ERRO: Falha na leitura do arquivo consumos.txt!");
         }
 
-        Scanner scan = new Scanner(System.in);
         System.out.println("");
         System.out.println("*** CONSULTAR CONSUMO ***");
         System.out.println("");
@@ -359,12 +369,10 @@ public class Consumo {
         } else {
             System.out.println("ERRO: Opção inválida!");
             System.out.println("");
-            scan.close();
             return null;
         }
 
         System.out.println("");
-        scan.close();
 
         if (!cadastrado) {
             System.out.println("Consumo com código " + codigo + " não encontrado.");

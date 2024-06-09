@@ -22,8 +22,7 @@ public class Hospede extends Pessoa {
     }
 
     /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
-    public static boolean cadastrarHospede() throws IOException {
-        Scanner scan = new Scanner(System.in);
+    public static boolean cadastrarHospede(Scanner scan) throws IOException {
         String cpf = "";
         try {
             System.out.println("");
@@ -70,23 +69,24 @@ public class Hospede extends Pessoa {
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
-                    cadastrarHospede();
+                    cadastrarHospede(scan);
                     break;
                 case "N":
                     System.out.println("Encerrando.");
                     System.out.println("");
                     break;
+                default:
+                    System.out.println("Opção inválida, por favor tente novamente.");
+                    break;
             }
         } catch (IOException e) {
             System.out.println("ERRO: Falha na gravação do arquivo hospedes.txt!");
-        } finally {
-            scan.close();
         }
+
         return true;
     }
 
-    public static boolean editarHospede() throws IOException {
-        Scanner scan = new Scanner(System.in);
+    public static boolean editarHospede(Scanner scan) throws IOException {
         List<Hospede> listaHospedes = new ArrayList<>();
         File hospedes = new File("./arquivos/hospedes.txt");
 
@@ -171,14 +171,12 @@ public class Hospede extends Pessoa {
             System.out.println("ERRO: O arquivo hospedes.txt não foi encontrado!");
         } catch (IOException e) {
             System.out.println("ERRO: Falha na gravação do arquivo hospedes.txt!");
-        } finally {
-            scan.close();
         }
 
         return true;
     }
 
-    public static Hospede consultarHospede() {
+    public static Hospede consultarHospede(Scanner scan) {
         List<Hospede> listaHospedes = new ArrayList<>();
         File hospedes = new File("./arquivos/hospedes.txt");
 
@@ -201,13 +199,11 @@ public class Hospede extends Pessoa {
             System.out.println("ERRO: Falha na leitura do arquivo hospedes.txt!");
         }
 
-        Scanner scan = new Scanner(System.in);
         System.out.println("");
         System.out.println("*** CONSULTAR HÓSPEDE ***");
         System.out.print("Digite o CPF do hóspede a ser consultado: ");
         String cpf = scan.nextLine();
         System.out.println("");
-        scan.close();
 
         boolean cadastrado = false;
 

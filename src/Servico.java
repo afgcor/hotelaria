@@ -41,8 +41,7 @@ public class Servico {
     }
 
     /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
-    public static boolean cadastrarServico() throws IOException {
-        Scanner scan = new Scanner(System.in);
+    public static boolean cadastrarServico(Scanner scan) throws IOException {
         String codigo = "";
         try {
             System.out.println("");
@@ -87,23 +86,24 @@ public class Servico {
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
-                    cadastrarServico();
+                    cadastrarServico(scan);
                     break;
                 case "N":
                     System.out.println("Encerrando.");
                     System.out.println("");
                     break;
+                default:
+                    System.out.println("Opção inválida, por favor tente novamente.");
+                    break;
             }
         } catch (IOException e) {
             System.out.println("ERRO: Falha na gravação do arquivo servicos.txt!");
-        } finally {
-            scan.close();
         }
+        
         return true;
     }
 
-    public static boolean editarServico() throws IOException {
-        Scanner scan = new Scanner(System.in);
+    public static boolean editarServico(Scanner scan) throws IOException {
         List<Servico> listaServicos = new ArrayList<>();
         File servicos = new File("./arquivos/servicos.txt");
 
@@ -189,14 +189,12 @@ public class Servico {
             System.out.println("ERRO: O arquivo servicos.txt não foi encontrado!");
         } catch (IOException e) {
             System.out.println("ERRO: Falha na gravação do arquivo servicos.txt!");
-        } finally {
-            scan.close();
         }
 
         return true;
     }
 
-    public static Servico consultarServico() {
+    public static Servico consultarServico(Scanner scan) {
         List<Servico> listaServicos = new ArrayList<>();
         File servicos = new File("./arquivos/servicos.txt");
 
@@ -219,14 +217,12 @@ public class Servico {
             System.out.println("ERRO: Falha na leitura do arquivo servicos.txt!");
         }
 
-        Scanner scan = new Scanner(System.in);
         System.out.println("");
         System.out.println("*** CONSULTAR SERVIÇO ***");
         System.out.print("Digite o código do serviço a ser consultado: ");
         int codigo = scan.nextInt();
         scan.nextLine();
         System.out.println("");
-        scan.close();
 
         boolean cadastrado = false;
 

@@ -41,8 +41,7 @@ public class Categoria {
     }
 
     /* MÉTODOS - CADASTRAR, EDITAR, CONSULTAR E LISTAR */
-    public static boolean cadastrarCategoria() throws IOException {
-        Scanner scan = new Scanner(System.in);
+    public static boolean cadastrarCategoria(Scanner scan) throws IOException {
         String codigo = "";
         try {
             System.out.println("");
@@ -87,23 +86,24 @@ public class Categoria {
             String opcao = scan.nextLine();
             switch (opcao.toUpperCase()) {
                 case "S":
-                    cadastrarCategoria();
+                    cadastrarCategoria(scan);
                     break;
                 case "N":
                     System.out.println("Encerrando.");
                     System.out.println("");
                     break;
+                default:
+                    System.out.println("Opção inválida, por favor tente novamente.");
+                    break;
             }
         } catch (IOException e) {
             System.out.println("ERRO: Falha na gravação do arquivo categorias.txt!");
-        } finally {
-            scan.close();
         }
+
         return true;
     }
 
-    public static boolean editarCategoria() throws IOException {
-        Scanner scan = new Scanner(System.in);
+    public static boolean editarCategoria(Scanner scan) throws IOException {
         List<Categoria> listaCategorias = new ArrayList<>();
         File categorias = new File("./arquivos/categorias.txt");
 
@@ -189,14 +189,12 @@ public class Categoria {
             System.out.println("ERRO: O arquivo categorias.txt não foi encontrado!");
         } catch (IOException e) {
             System.out.println("ERRO: Falha na gravação do arquivo categorias.txt!");
-        } finally {
-            scan.close();
         }
 
         return true;
     }
 
-    public static Categoria consultarCategoria() {
+    public static Categoria consultarCategoria(Scanner scan) {
         List<Categoria> listaCategorias = new ArrayList<>();
         File categorias = new File("./arquivos/categorias.txt");
 
@@ -219,14 +217,12 @@ public class Categoria {
             System.out.println("ERRO: Falha na leitura do arquivo categorias.txt!");
         }
 
-        Scanner scan = new Scanner(System.in);
         System.out.println("");
         System.out.println("*** CONSULTAR CATEGORIA ***");
         System.out.print("Digite o código da categoria a ser consultada: ");
         int codigo = scan.nextInt();
         scan.nextLine();
         System.out.println("");
-        scan.close();
 
         boolean cadastrado = false;
 
@@ -238,7 +234,6 @@ public class Categoria {
                 System.out.println("");
                 System.out.println("CATEGORIA " + (i + 1));
                 System.out.printf("CÓDIGO: %d | DESCRIÇÃO: %s | VALOR: R$ %.2f%n", categoria.getCodigo(), categoria.getDescricao(), categoria.getValor());
-                System.out.println("");
             }
         }
 

@@ -441,4 +441,9 @@ public class ConsumoServico {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "ConsumoServico{servico='" + getServico().getDescricao() + "(" + getServico().getCodigo() + ")', reserva='" + getReserva().getCodigo() + "', quantidadeSolicitada='" + getQuantidadeSolicitada() + "', dataConsumo='" + getDataConsumo().format(dtf) + "'}";
+    }
 }

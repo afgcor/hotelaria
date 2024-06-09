@@ -328,4 +328,8 @@ public class Quarto {
         return null;
     }
 
+    @Override
+    public String toString() {
+        return "Quarto{codigo='" + getCodigo() + "', categoria='" + getCategoria().getCodigo() + "(" + getCategoria().getDescricao() + ")', status='" + getStatus() + "'}";
+    }
 }

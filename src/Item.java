@@ -316,4 +316,9 @@ public class Item {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "Item{codigo='" + getCodigo() + "', descricao='" + getDescricao() + "', valor='" + getValor() + "'}";
+    }
 }

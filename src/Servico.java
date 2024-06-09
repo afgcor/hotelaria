@@ -317,4 +317,9 @@ public class Servico {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "Servico{codigo='" + getCodigo() + "', descricao='" + getDescricao() + "', valor='" + getValor() + "'}";
+    }
 }

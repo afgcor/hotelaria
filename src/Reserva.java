@@ -621,9 +621,58 @@ public class Reserva {
         return total;
     }
 
-    /* public static double valorTotal() {
+    public static double valorConsumoItens(int idReserva) {
+        double total = 0;
+        List<Consumo> listaConsumos = Consumo.leituraConsumos();
+        File consumos = new File("./arquivos/consumos.txt");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(consumos))) {
+            if (!consumos.exists()) {
+                throw new FileNotFoundException();
+            }
+
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(" ; ");
+                if (dados.length == 4) {
+                    Item item = Item.identificarItem(Integer.parseInt(dados[0]));
+                    Reserva reserva = Reserva.identificarReserva(Integer.parseInt(dados[1]));
+                    if (reserva != null) {
+                        Consumo consumo = new Consumo(item, reserva, Integer.parseInt(dados[2]), LocalDateTime.parse(dados[3], dtf));
+                        listaConsumos.add(consumo);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("ERRO: Falha na leitura do arquivo consumos.txt!");
+        }
+
+        for (Consumo consumo : listaConsumos) {
+            if (consumo.getReserva().getCodigo() == idReserva) {
+                total += consumo.getItem().getValor() * consumo.getQuantidadeSolicitada();
+            }
+        }
+
+        return total;
+    }
+
+    public static double valorTotal() {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("Insira o código da reserva: ");
+        String idReserva = scan.nextLine();
         double valorTotal = 0.0;
-        valorTotal = valorServicos(0) + 
+        valorTotal = valorConsumoServicos(Integer.parseInt(idReserva)) + valorConsumoItens(Integer.parseInt(idReserva));
+        scan.close();
         return valorTotal;
-    } */
+    }
+
+    public static int pagarReserva() {
+        int pagamento = 0;
+        return pagamento;
+    }
+
+    @Override
+    public String toString() {
+        return "Reserva{codigo='" + getCodigo() + "', hospede='" + getHospede().getNome() + "(" + getHospede().getCPF() + ")', quarto='" + getQuarto().getCodigo() + "(" + getQuarto().getCategoria().getDescricao() + ")', funcionarioReserva='" + getFuncionarioReserva().getNome() + "(" + getFuncionarioReserva().getCPF() +  ")', funcionarioReserva='" + getFuncionarioFechamento().getNome() + "(" + getFuncionarioFechamento().getCPF() + ")', dataEntradaReserva='" + getDataEntradaReserva().format(dtf) + "', dataSaidaReserva='" + getDataSaidaReserva().format(dtf) + "', dataCheckin='" + getDataCheckin().format(dtf) + "', dataCheckout='" + getDataCheckout().format(dtf) + "', valorReserva='" + getValorReserva() + "', valorPago='" + getValorPago() + "'}";
+    }
 }

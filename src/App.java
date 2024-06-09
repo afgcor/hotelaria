@@ -119,7 +119,9 @@ public class App {
                     menuOpcoes();
                     break;
                 case "6": 
-                    break; 
+                    break;
+                case "0": /* teste tostring */
+                    System.out.println(Hospede.identificarHospede("111.111.111-11").toString());
             }
             if (opcao == "6") {
                 System.out.println("Encerrando.");
@@ -161,7 +163,9 @@ public class App {
                     menuOpcoes();
                     break;
                 case "6": 
-                    break; 
+                    break;
+                case "0": /* teste tostring */
+                    System.out.println(Funcionario.identificarFuncionario("999.999.999-99").toString());
             }
             if (opcao == "6") {
                 System.out.println("Encerrando.");
@@ -204,6 +208,8 @@ public class App {
                     break;
                 case "6": 
                     break;
+                case "0": /* teste tostring */
+                    System.out.println(Quarto.identificarQuarto(104));
             }
         }
         catch (IOException e) {
@@ -242,7 +248,9 @@ public class App {
                     menuOpcoes();
                     break;
                 case "6": 
-                    break; 
+                    break;
+                case "0": /* teste tostring */
+                    System.out.println(Reserva.identificarReserva(1));
             }
             if (opcao == "6") {
                 System.out.println("Encerrando.");
@@ -284,7 +292,9 @@ public class App {
                     menuOpcoes();
                     break;
                 case "6": 
-                    break; 
+                    break;
+                case "0": /* teste tostring */
+                    System.out.println(Servico.identificarServico(3));
             }
             if (opcao == "6") {
                 System.out.println("Encerrando.");
@@ -326,7 +336,9 @@ public class App {
                     menuOpcoes();
                     break;
                 case "6": 
-                    break; 
+                    break;
+                case "0": /* teste tostring */
+                    System.out.println(Categoria.identificarCategoria(101));
             }
             if (opcao == "6") {
                 System.out.println("Encerrando.");
@@ -368,7 +380,9 @@ public class App {
                     menuOpcoes();
                     break;
                 case "6": 
-                    break; 
+                    break;
+                case "0": /* teste tostring */
+                    System.out.println(Item.identificarItem(11));
             }
             if (opcao == "6") {
                 System.out.println("Encerrando.");
@@ -410,7 +424,9 @@ public class App {
                     menuOpcoes();
                     break;
                 case "6": 
-                    break; 
+                    break;
+                case "0": /* teste tostring */
+                    System.out.println(CategoriaItem.identificarCategoriaItem(12));
             }
             if (opcao == "6") {
                 System.out.println("Encerrando.");
@@ -452,7 +468,9 @@ public class App {
                     menuOpcoes();
                     break;
                 case "6": 
-                    break; 
+                    break;
+                case "0": /* teste tostring */
+                    System.out.println(Consumo.identificarConsumo(1));
             }
             if (opcao == "6") {
                 System.out.println("Encerrando.");
@@ -494,7 +512,9 @@ public class App {
                     menuOpcoes();
                     break;
                 case "6": 
-                    break; 
+                    break;
+                case "0": /* teste tostring */
+                    System.out.println(ConsumoServico.identificarConsumoServico(1));
             }
             if (opcao == "6") {
                 System.out.println("Encerrando.");

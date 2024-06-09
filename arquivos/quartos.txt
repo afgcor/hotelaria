@@ -1,5 +1,5 @@
-101 ; 1 ; Dispon�vel
-102 ; 1 ; Indispon�vel
-103 ; 2 ; Dispon�vel
-104 ; 2 ; Indispon�vel
-105 ; 3 ; Dispon�vel
+101 ; 1 ; Disponvel
+102 ; 1 ; Indisponível
+103 ; 2 ; Disponível
+104 ; 2 ; Indisponível
+105 ; 3 ; Disponível

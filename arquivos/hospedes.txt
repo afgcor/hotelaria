@@ -1,3 +1,3 @@
 111.111.111-11 ; Maria Silva ; mariasilva@gmail.com ; Avenida Borboleta, 123
 222.222.222-22 ; Carlos Paiva ; cpaiva@bol.com.br ; Rua do Meio, 35
-333.333.333-33 ; J�lia Peixoto ; julinha@hotmail.com ; Rua Azul, 987
+333.333.333-33 ; Julia Peixoto ; julinha@hotmail.com ; Rua Azul, 987

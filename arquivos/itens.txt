@@ -1,6 +1,6 @@
 10 ; Sprite Lata 350ml ; 5.0
 25 ; Chocolate Kit-Kat ; 4.5
-11 ; �gua mineral com g�s (500ml) ; 2.5
-12 ; Coca-cola sem a��car Lata 350ml ; 5.0
+11 ; Água mineral com gás (500ml) ; 2.5
+12 ; Coca-cola sem açúcar Lata 350ml ; 5.0
 24 ; Snickers ; 3.5
-18 ; Cheetos Requeij�o ; 7.5
+18 ; Cheetos Requeijão ; 7.5

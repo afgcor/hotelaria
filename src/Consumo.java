@@ -411,4 +411,45 @@ public class Consumo {
         System.out.println("");
         return listaConsumos;
     }
+
+    public static List<Consumo> leituraConsumos() {
+        List<Consumo> listaConsumos = new ArrayList<>();
+        File consumos = new File("./arquivos/consumos.txt");
+    
+        try (BufferedReader br = new BufferedReader(new FileReader(consumos))) {
+    
+            if (!consumos.exists()) {
+                throw new FileNotFoundException();
+            }
+    
+            String linha;
+            while ((linha = br.readLine()) != null) {
+                String[] dados = linha.split(" ; ");
+                if (dados.length == 4) {
+                    Item item = Item.identificarItem(Integer.parseInt(dados[0]));
+                    Reserva reserva = Reserva.identificarReserva(Integer.parseInt(dados[1]));
+                    Consumo consumo = new Consumo(item, reserva, Integer.parseInt(dados[2]), LocalDateTime.parse(dados[3], dtf));
+                    listaConsumos.add(consumo);
+                }
+            }            
+        } catch (IOException e) {
+            System.out.println("ERRO! Falha na leitura do arquivo.");
+        }
+        return listaConsumos;
+    }
+
+    public static Consumo identificarConsumo(int idReserva) {
+        List<Consumo> listaConsumos = leituraConsumos();
+        for (Consumo consumo : listaConsumos) {
+            if (consumo.getReserva().getCodigo() == idReserva) {
+                return consumo;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return "Consumo{item='" + getItem().getDescricao() + "(" + getItem().getCodigo() + ")', reserva='" + getReserva().getCodigo() + "', quantidadeSolicitada='" + getQuantidadeSolicitada() + "', dataConsumo='" + getDataConsumo().format(dtf) + "'}";
+    }
 }

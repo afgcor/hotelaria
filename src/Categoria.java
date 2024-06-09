@@ -317,4 +317,9 @@ public class Categoria {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "Categoria{codigo='" + getCodigo() + "', descricao='" + getDescricao() + "', valor='" + getValor() + "'}";
+    }
 }

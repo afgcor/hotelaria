@@ -375,4 +375,8 @@ public class CategoriaItem {
         return null;
     }
 
+    @Override
+    public String toString() {
+        return "CategoriaItem{item='" + getItem().getDescricao() + "(" + getItem().getCodigo() + ")', categoria='" + getCategoria().getDescricao() + "(" + getCategoria().getCodigo() + ")', quantidade='" + getQuantidade() + "'}";
+    }
 }

@@ -298,4 +298,9 @@ public class Hospede extends Pessoa {
         }
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "Hospede{cpf='" + getCPF() + "', nome='" + getNome() + "', email='" + getEmail() + "', enderecoCompleto='" + getEnderecoCompleto() + "'}";
+    }
 }

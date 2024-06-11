@@ -438,7 +438,7 @@ public class App {
     public static void menuConsumoServico(Scanner scan) {
         System.out.println("");
         System.out.println("*** MENU ***");
-        System.out.println("1. Cadastrar consumo serviço");
+        System.out.println("1. Cadastrar consumo s1erviço");
         System.out.println("2. Editar consumo serviço");
         System.out.println("3. Consultar consumo serviço");
         System.out.println("4. Listar consumos serviços");

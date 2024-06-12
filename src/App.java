@@ -362,10 +362,10 @@ public class App {
     public static void menuCategoriaItem(Scanner scan) {
         System.out.println("");
         System.out.println("*** MENU ***");
-        System.out.println("1. Cadastrar categoria item");
-        System.out.println("2. Editar categoria item");
-        System.out.println("3. Consultar categoria item");
-        System.out.println("4. Listar categorias itens");
+        System.out.println("1. Cadastrar categoria (item)");
+        System.out.println("2. Editar categoria (item)");
+        System.out.println("3. Consultar categoria (item)");
+        System.out.println("4. Listar categorias (itens)");
         System.out.println("5. Voltar ao menu anterior");
         System.out.print("INSIRA A OPÇÃO DESEJADA: ");
         String selecao = scan.nextLine();
@@ -438,10 +438,10 @@ public class App {
     public static void menuConsumoServico(Scanner scan) {
         System.out.println("");
         System.out.println("*** MENU ***");
-        System.out.println("1. Cadastrar consumo s1erviço");
-        System.out.println("2. Editar consumo serviço");
-        System.out.println("3. Consultar consumo serviço");
-        System.out.println("4. Listar consumos serviços");
+        System.out.println("1. Cadastrar consumo (serviço)");
+        System.out.println("2. Editar consumo (serviço)");
+        System.out.println("3. Consultar consumo (serviço)");
+        System.out.println("4. Listar consumos (serviços)");
         System.out.println("5. Voltar ao menu anterior");
         System.out.print("INSIRA A OPÇÃO DESEJADA: ");
         String selecao = scan.nextLine();

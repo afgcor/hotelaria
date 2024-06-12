@@ -59,9 +59,9 @@ public class Servico {
                 throw new NullPointerException();
             }
 
-            System.out.print("Insira o nome: ");
+            System.out.print("Insira a descrição: ");
             String descricao = scan.nextLine();
-            System.out.print("Insira o e-mail: ");
+            System.out.print("Insira o valor: ");
             String valor = scan.nextLine();
 
             if (codigo.isEmpty() || descricao.isEmpty() || valor.isEmpty()) {
